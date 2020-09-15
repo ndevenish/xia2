@@ -22,7 +22,7 @@ def windows_environment_vars_to_unix(token):
             result += l
             in_env_variable = True
         else:
-            result += "$%s" % l
+            result += f"${l}"
             in_env_variable = False
 
     return result

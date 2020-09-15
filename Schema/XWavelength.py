@@ -91,7 +91,7 @@ class XWavelength:
         return return_obj
 
     def get_output(self):
-        result = "Wavelength name: %s\n" % self._name
+        result = f"Wavelength name: {self._name}\n"
         result += "Wavelength %7.5f\n" % self._wavelength
         if self._f_pr != 0.0 and self._f_prpr != 0.0:
             result += f"F', F'' = ({self._f_pr:5.2f}, {self._f_prpr:5.2f})\n"
@@ -107,7 +107,7 @@ class XWavelength:
             # would be nice to put this somewhere else in the hierarchy - not
             # sure how to do that though (should be handled in Interfaces?)
             try:
-                result += "%s\n" % s.get_output()
+                result += f"{s.get_output()}\n"
             except Exception as e:
                 if failover:
                     logger.warning(

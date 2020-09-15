@@ -42,7 +42,7 @@ def Report(DriverType=None):
             if self._reflections_filename is not None:
                 self.add_command_line(self._reflections_filename)
             if self._html_filename is not None:
-                self.add_command_line("output.html=%s" % self._html_filename)
+                self.add_command_line(f"output.html={self._html_filename}")
             self.start()
             if wait_for_completion:
                 self.close_wait()

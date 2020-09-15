@@ -50,13 +50,13 @@ def SplitExperiments(DriverType=None):
             if not self._experiments_prefix:
                 self._experiments_prefix = "split"
             self.add_command_line(
-                "output.experiments_prefix=%s" % self._experiments_prefix
+                f"output.experiments_prefix={self._experiments_prefix}"
             )
 
             if not self._reflections_prefix:
                 self._reflections_prefix = "split"
             self.add_command_line(
-                "output.reflections_prefix=%s" % self._reflections_prefix
+                f"output.reflections_prefix={self._reflections_prefix}"
             )
             if self._by_wavelength:
                 self.add_command_line("by_wavelength=True")

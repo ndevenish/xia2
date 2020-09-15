@@ -263,8 +263,7 @@ class CCP4ScalerA(Scaler):
 
                 pointless_hklin = os.path.join(
                     self.get_working_directory(),
-                    "%s_%s_prepointless_sorted.mtz"
-                    % (self._scalr_pname, self._scalr_xname),
+                    f"{self._scalr_pname}_{self._scalr_xname}_prepointless_sorted.mtz",
                 )
 
                 s.set_hklout(pointless_hklin)
@@ -279,8 +278,7 @@ class CCP4ScalerA(Scaler):
 
                 pointless_const = os.path.join(
                     self.get_working_directory(),
-                    "%s_%s_prepointless_const.mtz"
-                    % (self._scalr_pname, self._scalr_xname),
+                    f"{self._scalr_pname}_{self._scalr_xname}_prepointless_const.mtz",
                 )
                 FileHandler.record_temporary_file(pointless_const)
 
@@ -456,8 +454,7 @@ class CCP4ScalerA(Scaler):
 
                 hklout = os.path.join(
                     self.get_working_directory(),
-                    "%s_%s_%s_%s_prepointless.mtz"
-                    % (pname, xname, dname, si.get_sweep_name()),
+                    f"{pname}_{xname}_{dname}_{si.get_sweep_name()}_prepointless.mtz",
                 )
 
                 # we will want to delete this one exit
@@ -486,8 +483,7 @@ class CCP4ScalerA(Scaler):
 
             pointless_hklin = os.path.join(
                 self.get_working_directory(),
-                "%s_%s_prepointless_sorted.mtz"
-                % (self._scalr_pname, self._scalr_xname),
+                f"{self._scalr_pname}_{self._scalr_xname}_prepointless_sorted.mtz",
             )
 
             s.set_hklout(pointless_hklin)
@@ -579,9 +575,7 @@ class CCP4ScalerA(Scaler):
         pointgroup_set = {pointgroups[e] for e in pointgroups}
 
         if len(pointgroup_set) > 1 and not probably_twinned:
-            raise RuntimeError(
-                "non uniform pointgroups: %s" % str(list(pointgroup_set))
-            )
+            raise RuntimeError(f"non uniform pointgroups: {str(list(pointgroup_set))}")
 
         if len(pointgroup_set) > 1:
             logger.debug(
@@ -692,7 +686,7 @@ class CCP4ScalerA(Scaler):
 
                 hklout = os.path.join(
                     self.get_working_directory(),
-                    "%s_rdx2.mtz" % os.path.split(hklin)[-1][:-4],
+                    f"{os.path.split(hklin)[-1][:-4]}_rdx2.mtz",
                 )
 
                 # we will want to delete this one exit
@@ -737,7 +731,7 @@ class CCP4ScalerA(Scaler):
 
                 if len(datasets) > 1:
                     raise RuntimeError(
-                        "more than one dataset in %s" % si.get_reflections()
+                        f"more than one dataset in {si.get_reflections()}"
                     )
 
                 # then get the unit cell, lattice etc.
@@ -789,7 +783,7 @@ class CCP4ScalerA(Scaler):
         sc = self._updated_aimless()
         sc.set_hklin(self._prepared_reflections)
         sc.set_chef_unmerged(True)
-        sc.set_new_scales_file("%s.scales" % self._scalr_xname)
+        sc.set_new_scales_file(f"{self._scalr_xname}.scales")
 
         user_resolution_limits = {}
 
@@ -923,7 +917,7 @@ class CCP4ScalerA(Scaler):
         )
 
         sc.set_hklin(self._prepared_reflections)
-        sc.set_new_scales_file("%s_final.scales" % self._scalr_xname)
+        sc.set_new_scales_file(f"{self._scalr_xname}_final.scales")
 
         for epoch in epochs:
 
@@ -1029,7 +1023,7 @@ class CCP4ScalerA(Scaler):
         for key in self._scalr_scaled_refl_files:
             hklout = self._scalr_scaled_refl_files[key]
 
-            scaout = "%s.sca" % hklout[:-4]
+            scaout = f"{hklout[:-4]}.sca"
             self._scalr_scaled_reflection_files["sca"][key] = scaout
             FileHandler.record_data_file(scaout)
             scalepack = os.path.join(

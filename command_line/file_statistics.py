@@ -19,7 +19,7 @@ for ma in mas:
         intensities = ma
         break
 
-assert intensities, "intensity data not found in %s" % sys.argv[1]
+assert intensities, f"intensity data not found in {sys.argv[1]}"
 
 print("Removing %d absent reflections" % absent.count(True))
 intensities = intensities.select(~absent)

@@ -92,12 +92,12 @@ def Spotfinder(DriverType=None):
             logger.debug("Running dials.find_spots")
 
             self.clear_command_line()
-            self.add_command_line("input.experiments=%s" % self._input_sweep_filename)
+            self.add_command_line(f"input.experiments={self._input_sweep_filename}")
             if self._output_sweep_filename is not None:
                 self.add_command_line(
-                    "output.experiments=%s" % self._output_sweep_filename
+                    f"output.experiments={self._output_sweep_filename}"
                 )
-            self.add_command_line("output.reflections=%s" % self._input_spot_filename)
+            self.add_command_line(f"output.reflections={self._input_spot_filename}")
             nproc = PhilIndex.params.xia2.settings.multiprocessing.nproc
             njob = PhilIndex.params.xia2.settings.multiprocessing.njob
             mp_mode = PhilIndex.params.xia2.settings.multiprocessing.mode
@@ -120,24 +120,24 @@ def Spotfinder(DriverType=None):
                 )
             if self._global_threshold is not None:
                 self.add_command_line(
-                    "dispersion.global_threshold=%s" % self._global_threshold
+                    f"dispersion.global_threshold={self._global_threshold}"
                 )
             if self._threshold_algorithm is not None:
                 self.add_command_line(
-                    "threshold.algorithm=%s" % self._threshold_algorithm
+                    f"threshold.algorithm={self._threshold_algorithm}"
                 )
             if self._sigma_strong is not None:
                 self.add_command_line("dispersion.sigma_strong=%i" % self._sigma_strong)
             if self._filter_ice_rings:
-                self.add_command_line("ice_rings.filter=%s" % self._filter_ice_rings)
+                self.add_command_line(f"ice_rings.filter={self._filter_ice_rings}")
             if self._phil_file is not None:
                 self.add_command_line(self._phil_file)
             if self._write_hot_mask:
                 self.add_command_line("write_hot_mask=true")
             if self._hot_mask_prefix:
-                self.add_command_line("hot_mask_prefix=%s" % self._hot_mask_prefix)
+                self.add_command_line(f"hot_mask_prefix={self._hot_mask_prefix}")
             if self._gain:
-                self.add_command_line("gain=%f" % self._gain)
+                self.add_command_line(f"gain={self._gain:f}")
             self.start()
             self.close_wait()
             self.check_for_errors()

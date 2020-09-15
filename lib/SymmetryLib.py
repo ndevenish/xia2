@@ -42,7 +42,7 @@ def lattice_to_spacegroup(lattice):
     }
 
     if lattice not in _lattice_to_spacegroup:
-        raise RuntimeError('lattice "%s" unknown' % lattice)
+        raise RuntimeError(f'lattice "{lattice}" unknown')
 
     return _lattice_to_spacegroup[lattice]
 
@@ -79,7 +79,7 @@ def spacegroup_name_xHM_to_old(xHM):
     if xHM not in mapping:
         if xHM in old_names:
             return xHM
-        raise RuntimeError("spacegroup %s unknown" % xHM)
+        raise RuntimeError(f"spacegroup {xHM} unknown")
 
     return mapping[xHM]
 

@@ -74,12 +74,12 @@ def check_result(
         os.path.dirname(xia2.Test.regression.__file__), "expected"
     )
     if not os.path.exists(expected_result_dir):
-        return False, "Reference result directory (%s) not found" % expected_result_dir
+        return False, f"Reference result directory ({expected_result_dir}) not found"
 
     expected_result_file, expected_result_file_version = None, None
     cv_search = re.compile(r"\.([0-9]+)\.([0-9]+)\.([0-9]+)(\.([0-9]+)(\.([^.]+))?)?$")
     for f in os.listdir(expected_result_dir):
-        if f.startswith("result.%s." % test_name) and os.path.isfile(
+        if f.startswith(f"result.{test_name}.") and os.path.isfile(
             os.path.join(expected_result_dir, f)
         ):
             candidate_version = cv_search.search(f)
@@ -137,8 +137,8 @@ def check_result(
     print("CCP4 version is %d.%d.%d" % (ccp4[0], ccp4[1], ccp4[2]))
     if xds:
         print("XDS revision is %d" % xds)
-    print("Platform is %s" % system)
-    print("Comparing against %s" % expected_result_file)
+    print(f"Platform is {system}")
+    print(f"Comparing against {expected_result_file}")
     print("-" * 80)
 
     number = re.compile(r"(-?\d*\.\d+|-?\d+\.?)")
@@ -219,7 +219,7 @@ def check_result(
 
     for data_file in expected_data_files:
         if not (tmpdir / "DataFiles" / data_file).check():
-            return False, "expected file %s is missing" % data_file
+            return False, f"expected file {data_file} is missing"
         if expected_space_group is not None:
             miller_arrays = any_reflection_file(
                 (tmpdir / "DataFiles" / data_file).strpath
@@ -287,7 +287,7 @@ def generate_tolerant_template(lines):
                     if callable(tolerance):
                         tolerance = tolerance(items[pos])
                     if tolerance != "":
-                        tolerance = "(%s)" % tolerance
+                        tolerance = f"({tolerance})"
                     items[pos] += tolerance
                 l = "".join(items)
         f.append(l)

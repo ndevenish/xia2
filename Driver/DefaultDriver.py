@@ -104,7 +104,7 @@ class DefaultDriver:
         if full_path:
             self._executable = full_path
         else:
-            raise NotAvailableError("executable %s does not exist in PATH" % executable)
+            raise NotAvailableError(f"executable {executable} does not exist in PATH")
 
     def get_executable(self):
         """Get the name of the executable."""
@@ -180,7 +180,7 @@ class DefaultDriver:
     def describe(self):
         """Give a short description of what this job will do..."""
 
-        return "%s task" % self.getExecutable()
+        return f"{self.getExecutable()} task"
 
     def reset(self):
         """Reset the output things."""
@@ -258,10 +258,10 @@ class DefaultDriver:
             return
 
         if self.get_log_file():
-            log_file_extra = ": see %s for more details" % self.get_log_file()
+            log_file_extra = f": see {self.get_log_file()} for more details"
         else:
             log_file_extra = ""
-        executable = "%s" % os.path.basename(self._executable)
+        executable = f"{os.path.basename(self._executable)}"
 
         if os.name == "nt":
             if code == 3:
@@ -276,29 +276,17 @@ class DefaultDriver:
 
             if code == segv:
                 raise RuntimeError(
-                    "{executable}: child segmentation fault{log_file_extra}".format(
-                        executable=executable, log_file_extra=log_file_extra
-                    )
+                    f"{executable}: child segmentation fault{log_file_extra}"
                 )
 
             if code == kill:
-                raise RuntimeError(
-                    "{executable} killed{log_file_extra}".format(
-                        executable=executable, log_file_extra=log_file_extra
-                    )
-                )
+                raise RuntimeError(f"{executable} killed{log_file_extra}")
 
             if code == abrt:
-                raise RuntimeError(
-                    "{executable} failed{log_file_extra}".format(
-                        executable=executable, log_file_extra=log_file_extra
-                    )
-                )
+                raise RuntimeError(f"{executable} failed{log_file_extra}")
 
         raise RuntimeError(
-            "{executable} subprocess failed with exitcode {code}{log_file_extra}".format(
-                executable=executable, code=code, log_file_extra=log_file_extra
-            )
+            f"{executable} subprocess failed with exitcode {code}{log_file_extra}"
         )
 
     def _input(self, record):
@@ -312,7 +300,7 @@ class DefaultDriver:
         # copy record somehow
 
         if newline:
-            record = "%s\n" % record
+            record = f"{record}\n"
 
         self._standard_input_records.append(record)
 
@@ -407,13 +395,11 @@ class DefaultDriver:
         if self._log_file:
             # close the existing log file: also add a comment at the end containing the
             # command-line (replacing working directory & executable path for brevity)
-            command_line = "%s " % os.path.basename(self._executable)
+            command_line = f"{os.path.basename(self._executable)} "
             for c in self._command_line:
-                command_line += " '%s'" % c.replace(
-                    self._working_directory + os.sep, ""
-                )
+                command_line += f" '{c.replace(self._working_directory + os.sep, '')}'"
             self._log_file.write("# command line:\n")
-            self._log_file.write("# %s\n" % command_line)
+            self._log_file.write(f"# {command_line}\n")
             if hasattr(self, "_runtime_log") and self._runtime_log:
                 self._log_file.write("#\n# timing information:\n")
                 for k in self._runtime_log:
@@ -432,7 +418,7 @@ class DefaultDriver:
                 logger.debug(line.rstrip("\n"))
         elif hasattr(self, "_runtime_log") and self._runtime_log:
             if self._executable:
-                command_line = "%s " % os.path.basename(self._executable)
+                command_line = f"{os.path.basename(self._executable)} "
                 for c in self._command_line:
                     command_line += " '%s'" % c.replace(
                         self._working_directory + os.sep, ""

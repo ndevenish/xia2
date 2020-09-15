@@ -55,19 +55,17 @@ def ExportMtz(DriverType=None):
             logger.debug("Running dials.export")
 
             self.clear_command_line()
-            self.add_command_line("experiments=%s" % self._experiments_filename)
-            self.add_command_line("reflections=%s" % self._reflections_filename)
-            self.add_command_line("mtz.hklout=%s" % self._mtz_filename)
+            self.add_command_line(f"experiments={self._experiments_filename}")
+            self.add_command_line(f"reflections={self._reflections_filename}")
+            self.add_command_line(f"mtz.hklout={self._mtz_filename}")
             if self.crystal_name:
-                self.add_command_line("mtz.crystal_name=%s" % self.crystal_name)
+                self.add_command_line(f"mtz.crystal_name={self.crystal_name}")
             if self.project_name:
-                self.add_command_line("mtz.project_name=%s" % self.project_name)
+                self.add_command_line(f"mtz.project_name={self.project_name}")
             if self._combine_partials:
                 self.add_command_line("combine_partials=true")
-            self.add_command_line(
-                "partiality_threshold=%s" % self._partiality_threshold
-            )
-            self.add_command_line("intensity=%s" % self._intensity_choice)
+            self.add_command_line(f"partiality_threshold={self._partiality_threshold}")
+            self.add_command_line(f"intensity={self._intensity_choice}")
             self.start()
             self.close_wait()
             self.check_for_errors()

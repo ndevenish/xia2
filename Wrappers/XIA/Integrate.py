@@ -53,7 +53,7 @@ def Integrate(DriverType=None):
                 self.add_command_line("njob=%i" % self._njob)
 
             if self._mp_mode is not None:
-                self.add_command_line("multiprocessing.mode=%s" % self._mp_mode)
+                self.add_command_line(f"multiprocessing.mode={self._mp_mode}")
 
             self.add_command_line("failover=False")
 

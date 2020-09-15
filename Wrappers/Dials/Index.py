@@ -128,7 +128,7 @@ def Index(DriverType=None):
                 self.add_command_line(f)
             if len(self._sweep_filenames) > 1:
                 self.add_command_line("auto_reduction.action=fix")
-            self.add_command_line("indexing.method=%s" % method)
+            self.add_command_line(f"indexing.method={method}")
             nproc = PhilIndex.params.xia2.settings.multiprocessing.nproc
             self.set_cpu_threads(nproc)
             self.add_command_line("indexing.nproc=%i" % nproc)
@@ -144,21 +144,21 @@ def Index(DriverType=None):
                 )
             if self._close_to_spindle_cutoff is not None:
                 self.add_command_line(
-                    "close_to_spindle_cutoff=%f" % self._close_to_spindle_cutoff
+                    f"close_to_spindle_cutoff={self._close_to_spindle_cutoff:f}"
                 )
             if self._outlier_algorithm:
-                self.add_command_line("outlier.algorithm=%s" % self._outlier_algorithm)
+                self.add_command_line(f"outlier.algorithm={self._outlier_algorithm}")
             if self._max_cell:
-                self.add_command_line("max_cell=%g" % self._max_cell)
+                self.add_command_line(f"max_cell={self._max_cell:g}")
             if self._max_cell_max_height_fraction is not None:
                 self.add_command_line(
-                    "max_height_fraction=%g" % self._max_cell_max_height_fraction
+                    f"max_height_fraction={self._max_cell_max_height_fraction:g}"
                 )
             if self._min_cell:
                 self.add_command_line("min_cell=%d" % self._min_cell)
             if self._histogram_binning is not None:
                 self.add_command_line(
-                    "max_cell_estimation.histogram_binning=%s" % self._histogram_binning
+                    f"max_cell_estimation.histogram_binning={self._histogram_binning}"
                 )
             if self._nearest_neighbor_percentile is not None:
                 self.add_command_line(
@@ -166,12 +166,12 @@ def Index(DriverType=None):
                     % self._nearest_neighbor_percentile
                 )
             if self._d_min_start:
-                self.add_command_line("d_min_start=%f" % self._d_min_start)
+                self.add_command_line(f"d_min_start={self._d_min_start:f}")
             if self._indxr_input_lattice is not None:
                 from xia2.Experts.SymmetryExpert import lattice_to_spacegroup_number
 
                 self._symm = lattice_to_spacegroup_number(self._indxr_input_lattice)
-                self.add_command_line("known_symmetry.space_group=%s" % self._symm)
+                self.add_command_line(f"known_symmetry.space_group={self._symm}")
             if self._indxr_input_cell is not None:
                 self.add_command_line(
                     'known_symmetry.unit_cell="%s,%s,%s,%s,%s,%s"'
@@ -179,12 +179,12 @@ def Index(DriverType=None):
                 )
             if self._maximum_spot_error:
                 self.add_command_line(
-                    "maximum_spot_error=%.f" % self._maximum_spot_error
+                    f"maximum_spot_error={self._maximum_spot_error:.f}"
                 )
             if self._detector_fix:
-                self.add_command_line("detector.fix=%s" % self._detector_fix)
+                self.add_command_line(f"detector.fix={self._detector_fix}")
             if self._beam_fix:
-                self.add_command_line("beam.fix=%s" % self._beam_fix)
+                self.add_command_line(f"beam.fix={self._beam_fix}")
             if self._phil_file is not None:
                 self.add_command_line(self._phil_file)
 
@@ -194,8 +194,8 @@ def Index(DriverType=None):
             self._indexed_filename = os.path.join(
                 self.get_working_directory(), "%d_indexed.refl" % self.get_xpid()
             )
-            self.add_command_line("output.experiments=%s" % self._experiment_filename)
-            self.add_command_line("output.reflections=%s" % self._indexed_filename)
+            self.add_command_line(f"output.experiments={self._experiment_filename}")
+            self.add_command_line(f"output.reflections={self._indexed_filename}")
 
             self.start()
             self.close_wait()

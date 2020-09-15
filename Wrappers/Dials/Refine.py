@@ -82,23 +82,23 @@ def Refine(DriverType=None):
             self.clear_command_line()
             self.add_command_line(self._experiments_filename)
             self.add_command_line(self._indexed_filename)
-            self.add_command_line("scan_varying=%s" % self._scan_varying)
+            self.add_command_line(f"scan_varying={self._scan_varying}")
             if self._close_to_spindle_cutoff is not None:
                 self.add_command_line(
-                    "close_to_spindle_cutoff=%f" % self._close_to_spindle_cutoff
+                    f"close_to_spindle_cutoff={self._close_to_spindle_cutoff:f}"
                 )
             if self._outlier_algorithm:
-                self.add_command_line("outlier.algorithm=%s" % self._outlier_algorithm)
+                self.add_command_line(f"outlier.algorithm={self._outlier_algorithm}")
             self._refined_experiments_filename = os.path.join(
-                self.get_working_directory(), "%s_refined.expt" % self.get_xpid()
+                self.get_working_directory(), f"{self.get_xpid()}_refined.expt"
             )
             self.add_command_line(
-                "output.experiments=%s" % self._refined_experiments_filename
+                f"output.experiments={self._refined_experiments_filename}"
             )
             self._refined_filename = os.path.join(
-                self.get_working_directory(), "%s_refined.refl" % self.get_xpid()
+                self.get_working_directory(), f"{self.get_xpid()}_refined.refl"
             )
-            self.add_command_line("output.reflections=%s" % self._refined_filename)
+            self.add_command_line(f"output.reflections={self._refined_filename}")
             if self._reflections_per_degree is not None:
                 self.add_command_line(
                     "reflections_per_degree=%i" % self._reflections_per_degree
@@ -113,9 +113,9 @@ def Refine(DriverType=None):
                     % self._interval_width_degrees
                 )
             if self._detector_fix:
-                self.add_command_line("detector.fix=%s" % self._detector_fix)
+                self.add_command_line(f"detector.fix={self._detector_fix}")
             if self._beam_fix:
-                self.add_command_line("beam.fix=%s" % self._beam_fix)
+                self.add_command_line(f"beam.fix={self._beam_fix}")
 
             # Arguments for restrained multiple-sweep joint refinement
             # of unit cell parameters.

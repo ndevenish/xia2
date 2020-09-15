@@ -31,7 +31,7 @@ class SimpleDriver(DefaultDriver):
 
             command_line = self._executable
             for c in self._command_line:
-                command_line += " '%s'" % c
+                command_line += f" '{c}'"
 
         environment = copy.deepcopy(os.environ)
 
@@ -41,7 +41,7 @@ class SimpleDriver(DefaultDriver):
                 added += f"{os.pathsep}{value}"
 
             if name in environment and name not in self._working_environment_exclusive:
-                environment[name] = "%s%s%s" % (added, os.pathsep, environment[name])
+                environment[name] = f"{added}{os.pathsep}{environment[name]}"
             else:
                 environment[name] = added
 

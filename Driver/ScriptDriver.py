@@ -74,12 +74,12 @@ class ScriptDriver(DefaultDriver):
 
         if os.name == "posix":
             pipe = subprocess.Popen(
-                ["bash", "%s.sh" % self._script_name], cwd=self._working_directory
+                ["bash", f"{self._script_name}.sh"], cwd=self._working_directory
             )
 
         else:
             pipe = subprocess.Popen(
-                ["%s.bat" % self._script_name], cwd=self._working_directory, shell=True
+                [f"{self._script_name}.bat"], cwd=self._working_directory, shell=True
             )
 
         self._script_status = pipe.wait()
@@ -89,7 +89,7 @@ class ScriptDriver(DefaultDriver):
 
         try:
             xstatus_file = os.path.join(
-                self._working_directory, "%s.xstatus" % self._script_name
+                self._working_directory, f"{self._script_name}.xstatus"
             )
             with open(xstatus_file) as fh:
                 self._script_status = int(fh.read())
@@ -99,7 +99,7 @@ class ScriptDriver(DefaultDriver):
             self._script_status = 0
 
         self._output_file = open(
-            os.path.join(self._working_directory, "%s.xout" % self._script_name)
+            os.path.join(self._working_directory, f"{self._script_name}.xout")
         )
 
     def kill(self):

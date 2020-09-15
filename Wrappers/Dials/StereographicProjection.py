@@ -48,7 +48,7 @@ def StereographicProjection(DriverType=None):
             self.add_command_line("hkl=%i,%i,%i" % self._hkl)
             if self._labels:
                 self.add_command_line(
-                    "plot.labels=%s" % " ".join([str(l) for l in self._labels])
+                    f"plot.labels={' '.join([str(l) for l in self._labels])}"
                 )
             if self.get_xpid():
                 prefix = "%i_" % self.get_xpid()
@@ -66,8 +66,8 @@ def StereographicProjection(DriverType=None):
                 self._hkl[1],
                 self._hkl[2],
             )
-            self.add_command_line("plot.filename=%s" % self._plot_filename)
-            self.add_command_line("json.filename=%s" % self._json_filename)
+            self.add_command_line(f"plot.filename={self._plot_filename}")
+            self.add_command_line(f"json.filename={self._json_filename}")
 
             self.start()
             self.close_wait()

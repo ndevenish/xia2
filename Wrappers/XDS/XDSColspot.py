@@ -104,13 +104,13 @@ def XDSColspot(DriverType=None, params=None):
                 )
 
             for record in header:
-                xds_inp.write("%s\n" % record)
+                xds_inp.write(f"{record}\n")
 
             name_template = template_to_xds(
                 os.path.join(self.get_directory(), self.get_template())
             )
 
-            record = "NAME_TEMPLATE_OF_DATA_FRAMES=%s\n" % name_template
+            record = f"NAME_TEMPLATE_OF_DATA_FRAMES={name_template}\n"
 
             xds_inp.write(record)
 

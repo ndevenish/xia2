@@ -74,7 +74,7 @@ def xia2_to_json_object(xcrystals):
 
                 cell = sweep.get_integrater_cell()
                 for name, value in zip(["a", "b", "c", "alpha", "beta", "gamma"], cell):
-                    integration["cell_%s" % name] = value
+                    integration[f"cell_{name}"] = value
 
                 # FIXME this is naughty
                 indxr = sweep._get_indexer()

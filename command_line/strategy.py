@@ -96,9 +96,9 @@ def run():
                 export.run()
                 if isweep == 0:
                     best.set_t_ref(t_ref)
-                    best.set_mos_dat("%s.dat" % prefix)
-                    best.set_mos_par("%s.par" % prefix)
-                best.add_mos_hkl("%s.hkl" % prefix)
+                    best.set_mos_dat(f"{prefix}.dat")
+                    best.set_mos_par(f"{prefix}.par")
+                best.add_mos_hkl(f"{prefix}.hkl")
             best.set_i2s(strategy.i_over_sigi)
             best.set_T_max(strategy.max_total_exposure)
             best.set_t_min(strategy.min_exposure)
@@ -169,7 +169,7 @@ def run():
             results_all[name] = result
             multiplicity = result["redundancy"]
             try:
-                multiplicity = "%.2f" % multiplicity
+                multiplicity = f"{multiplicity:.2f}"
             except TypeError:
                 pass
             logger.info("Strategy %i", istrategy)

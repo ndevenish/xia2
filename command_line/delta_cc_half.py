@@ -139,7 +139,7 @@ def run(args):
             for b in params.batch:
                 assert b.id is not None
                 assert b.range is not None
-                assert b.id not in id_to_batches, "Duplicate batch id: %s" % b.id
+                assert b.id not in id_to_batches, f"Duplicate batch id: {b.id}"
                 id_to_batches[b.id] = b.range
 
         separate = separate_unmerged(
@@ -158,10 +158,10 @@ def run(args):
     )
     logger.info(tabulate(result.get_table(), headers="firstrow"))
     hist_filename = "delta_cc_hist.png"
-    logger.info("Saving histogram to %s" % hist_filename)
+    logger.info(f"Saving histogram to {hist_filename}")
     result.plot_histogram(hist_filename)
     normalised_scores_filename = "normalised_scores.png"
-    logger.info("Saving normalised scores to %s" % normalised_scores_filename)
+    logger.info(f"Saving normalised scores to {normalised_scores_filename}")
     result.plot_normalised_scores(normalised_scores_filename)
 
     Citations.cite("delta_cc_half")

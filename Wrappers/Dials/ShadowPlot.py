@@ -39,7 +39,7 @@ def ShadowPlot(DriverType=None):
             assert self._sweep_filename is not None
             self.add_command_line(self._sweep_filename)
             if self._json_filename is not None:
-                self.add_command_line("json=%s" % self._json_filename)
+                self.add_command_line(f"json={self._json_filename}")
             self.add_command_line("mode=1d")
             self.start()
             self.close_wait()

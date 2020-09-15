@@ -45,17 +45,17 @@ class _FileHandler:
         log_directory.mkdir(parents=True, exist_ok=True)
 
         for tag, source in self._log_files.items():
-            filename = log_directory.joinpath("%s.log" % tag.replace(" ", "_"))
+            filename = log_directory.joinpath(f"{tag.replace(' ', '_')}.log")
             shutil.copyfile(source, filename)
             logger.debug(f"Copied log file {source} to {filename}")
 
         for tag, source in self._xml_files.items():
-            filename = log_directory.joinpath("%s.xml" % tag.replace(" ", "_"))
+            filename = log_directory.joinpath(f"{tag.replace(' ', '_')}.xml")
             shutil.copyfile(source, filename)
             logger.debug(f"Copied xml file {source} to {filename}")
 
         for tag, source in self._html_files.items():
-            filename = log_directory.joinpath("%s.html" % tag.replace(" ", "_"))
+            filename = log_directory.joinpath(f"{tag.replace(' ', '_')}.html")
             shutil.copyfile(source, filename)
             logger.debug(f"Copied html file {source} to {filename}")
 
@@ -68,9 +68,7 @@ class _FileHandler:
             logger.debug(f"Copied data file {f} to {filename}")
 
         for tag, ext in self._more_data_files:
-            filename_out = data_directory.joinpath(
-                "{}.{}".format(tag.replace(" ", "_"), ext)
-            )
+            filename_out = data_directory.joinpath(f"{tag.replace(' ', '_')}.{ext}")
             filename_in = self._more_data_files[(tag, ext)]
             shutil.copyfile(filename_in, filename_out)
             logger.debug(f"Copied extra data file {filename_in} to {filename_out}")
@@ -90,7 +88,7 @@ class _FileHandler:
     def record_data_file(self, filename):
         """Record a data file."""
         if filename not in self._data_files:
-            assert os.path.isfile(filename), "Required file %s not found" % filename
+            assert os.path.isfile(filename), f"Required file {filename} not found"
             self._data_files.append(filename)
 
     def record_more_data_file(self, tag, filename):

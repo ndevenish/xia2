@@ -348,15 +348,15 @@ def generate_xia2_html(xinfo, filename="xia2.html", params=None, args=[]):
             log_files_table.append(
                 [
                     os.path.basename(logfile),
-                    '<a href="%s">original</a>' % os.path.relpath(logfile),
-                    '<a href="%s">html</a>' % os.path.relpath(html_file),
+                    f'<a href="{os.path.relpath(logfile)}">original</a>',
+                    f'<a href="{os.path.relpath(html_file)}">html</a>',
                 ]
             )
         else:
             log_files_table.append(
                 [
                     os.path.basename(logfile),
-                    '<a href="%s">original</a>' % os.path.relpath(logfile),
+                    f'<a href="{os.path.relpath(logfile)}">original</a>',
                     " ",
                 ]
             )
@@ -391,7 +391,7 @@ def generate_xia2_html(xinfo, filename="xia2.html", params=None, args=[]):
         styles=styles,
     )
 
-    with open("%s-report.json" % os.path.splitext(filename)[0], "w") as fh:
+    with open(f"{os.path.splitext(filename)[0]}-report.json", "w") as fh:
         json.dump(json_data, fh, indent=2)
 
     with open(filename, "wb") as f:
@@ -449,7 +449,7 @@ def make_logfile_html(logfile):
 
     rst = "\n".join(rst)
 
-    html_file = "%s.html" % (os.path.splitext(logfile)[0])
+    html_file = f"{os.path.splitext(logfile)[0]}.html"
     with open(html_file, "wb") as f:
         f.write(rst2html(rst))
     return html_file

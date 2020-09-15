@@ -194,18 +194,18 @@ def XDSIntegrate(DriverType=None, params=None):
             xds_inp.write("TEST=2\n")
 
             if self._params.delphi:
-                xds_inp.write("DELPHI=%.1f\n" % self._params.delphi)
+                xds_inp.write(f"DELPHI={self._params.delphi:.1f}\n")
             elif PhilIndex.params.xia2.settings.small_molecule:
-                xds_inp.write("DELPHI=%.1f\n" % xds_params.delphi_small)
+                xds_inp.write(f"DELPHI={xds_params.delphi_small:.1f}\n")
             else:
-                xds_inp.write("DELPHI=%.1f\n" % xds_params.delphi)
+                xds_inp.write(f"DELPHI={xds_params.delphi:.1f}\n")
 
             if self._refined_xparm:
                 xds_inp.write(
-                    "REFINE(INTEGRATE)=%s\n" % " ".join(self._params.refine_final)
+                    f"REFINE(INTEGRATE)={' '.join(self._params.refine_final)}\n"
                 )
             else:
-                xds_inp.write("REFINE(INTEGRATE)=%s\n" % " ".join(self._params.refine))
+                xds_inp.write(f"REFINE(INTEGRATE)={' '.join(self._params.refine)}\n")
 
             if self._params.fix_scale:
                 if _running_xds_version() >= 20130330:
@@ -252,13 +252,13 @@ def XDSIntegrate(DriverType=None, params=None):
                 )
 
             for record in header:
-                xds_inp.write("%s\n" % record)
+                xds_inp.write(f"{record}\n")
 
             name_template = template_to_xds(
                 os.path.join(self.get_directory(), self.get_template())
             )
 
-            record = "NAME_TEMPLATE_OF_DATA_FRAMES=%s\n" % name_template
+            record = f"NAME_TEMPLATE_OF_DATA_FRAMES={name_template}\n"
 
             xds_inp.write(record)
 

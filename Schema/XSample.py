@@ -80,7 +80,7 @@ class XSample:
         return return_obj
 
     def get_output(self):
-        result = "Sample name: %s\n" % self._name
+        result = f"Sample name: {self._name}\n"
         result += "Sweeps:\n"
         return result[:-1]
 

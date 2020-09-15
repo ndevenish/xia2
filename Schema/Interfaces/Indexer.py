@@ -78,7 +78,7 @@ class _IndexerHelper:
         """Return a string representation."""
 
         return [
-            "%s %s" % (l[0], "%6.2f %6.2f %6.2f %6.2f %6.2f %6.2f" % l[1])
+            f"{l[0]} {'%6.2f %6.2f %6.2f %6.2f %6.2f %6.2f' % l[1]}"
             for l in self._sorted_list
         ]
 
@@ -490,7 +490,7 @@ class Indexer:
                             banner("Autoindexing %s (%s)", sweep_names, template)
                         )
                     else:
-                        logger.notice(banner("Autoindexing %s" % sweep_names))
+                        logger.notice(banner(f"Autoindexing {sweep_names}"))
 
                 if not self._indxr_helper:
                     self._index()
@@ -588,7 +588,7 @@ class Indexer:
         """Set the input unit cell (optional.)"""
 
         if not (isinstance(cell, type(())) or isinstance(cell, type([]))):
-            raise RuntimeError("cell must be a 6-tuple of floats, is %s" % str(cell))
+            raise RuntimeError(f"cell must be a 6-tuple of floats, is {str(cell)}")
 
         if len(cell) != 6:
             raise RuntimeError("cell must be a 6-tuple of floats")

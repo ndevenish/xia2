@@ -135,7 +135,7 @@ class _CIFHandler:
 
                 program = dials.util.version.dials_version()
             if citations:
-                program = program + " (%s)" % ("; ".join(citations))
+                program = program + f" ({'; '.join(citations)})"
             programs.append(program)
         block[self._keyname["sw.reduction"]] = "\n".join(programs)
 

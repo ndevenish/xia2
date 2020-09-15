@@ -60,7 +60,7 @@ def run():
         print(dials_version())
         ccp4_version = get_ccp4_version()
         if ccp4_version:
-            print("CCP4 %s" % ccp4_version)
+            print(f"CCP4 {ccp4_version}")
         sys.exit()
 
     xia2.Handlers.Streams.setup_logging(logfile="xia2.txt", debugfile="xia2-debug.txt")
@@ -70,7 +70,7 @@ def run():
     except Exception as e:
         traceback.print_exc(file=open("xia2-error.txt", "w"))
         logger.debug(traceback.format_exc())
-        logger.error("Error setting up xia2 environment: %s" % str(e))
+        logger.error(f"Error setting up xia2 environment: {str(e)}")
         logger.warning(
             "Please send the contents of xia2.txt, xia2-error.txt and xia2-debug.txt to:"
         )

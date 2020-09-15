@@ -252,7 +252,7 @@ class DialsIndexer(Indexer):
 
         for imageset, xsweep in zip(self._indxr_imagesets, self._indxr_sweeps):
 
-            logger.notice(banner("Spotfinding %s" % xsweep.get_name()))
+            logger.notice(banner(f"Spotfinding {xsweep.get_name()}"))
 
             first, last = imageset.get_scan().get_image_range()
 
@@ -265,7 +265,7 @@ class DialsIndexer(Indexer):
             from dxtbx.model.experiment_list import ExperimentListFactory
 
             sweep_filename = os.path.join(
-                self.get_working_directory(), "%s_import.expt" % xsweep.get_name()
+                self.get_working_directory(), f"{xsweep.get_name()}_import.expt"
             )
             ExperimentListFactory.from_imageset_and_crystal(imageset, None).as_file(
                 sweep_filename
@@ -343,7 +343,7 @@ class DialsIndexer(Indexer):
 
             refl = flex.reflection_table.from_file(spot_filename)
             if not len(refl):
-                raise RuntimeError("No spots found in sweep %s" % xsweep.get_name())
+                raise RuntimeError(f"No spots found in sweep {xsweep.get_name()}")
             logger.info(spot_counts_per_image_plot(refl))
 
             if not PhilIndex.params.dials.fast_mode:
@@ -564,7 +564,7 @@ class DialsIndexer(Indexer):
                 rbs.set_detector_fix("distance")
 
             FileHandler.record_log_file(
-                "%s LATTICE" % self.get_indexer_full_name(), rbs.get_log_file()
+                f"{self.get_indexer_full_name()} LATTICE", rbs.get_log_file()
             )
             rbs.run()
 
@@ -706,18 +706,17 @@ class DialsIndexer(Indexer):
                 method = PhilIndex.params.dials.index.method
 
         FileHandler.record_log_file(
-            "%s INDEX" % self.get_indexer_full_name(), indexer.get_log_file()
+            f"{self.get_indexer_full_name()} INDEX", indexer.get_log_file()
         )
         indexer.run(method)
 
         if not os.path.exists(indexer.get_experiments_filename()):
             raise RuntimeError(
-                "Indexing has failed: see %s for more details." % indexer.get_log_file()
+                f"Indexing has failed: see {indexer.get_log_file()} for more details."
             )
         elif not os.path.exists(indexer.get_indexed_filename()):
             raise RuntimeError(
-                "Indexing has failed: %s does not exist."
-                % indexer.get_indexed_filename()
+                f"Indexing has failed: {indexer.get_indexed_filename()} does not exist."
             )
 
         report = self.Report()
@@ -730,7 +729,7 @@ class DialsIndexer(Indexer):
         report.set_html_filename(html_filename)
         report.run()
         FileHandler.record_html_file(
-            "%s INDEX" % self.get_indexer_full_name(), html_filename
+            f"{self.get_indexer_full_name()} INDEX", html_filename
         )
 
         return indexer
@@ -782,7 +781,7 @@ class DialsIndexer(Indexer):
                         del self._solutions[s]
 
                 raise RuntimeError(
-                    "no solution for lattice %s" % self._indxr_input_lattice
+                    f"no solution for lattice {self._indxr_input_lattice}"
                 )
 
     def _index_finish(self):

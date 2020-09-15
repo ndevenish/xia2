@@ -67,7 +67,7 @@ def Reindex(DriverType=None):
                         wd, "%d_reindexed.expt" % self.get_xpid()
                     )
                 self.add_command_line(
-                    "output.experiments=%s" % self._reindexed_experiments_filename
+                    f"output.experiments={self._reindexed_experiments_filename}"
                 )
             if self._indexed_filename is not None:
                 self.add_command_line(self._indexed_filename)
@@ -76,20 +76,20 @@ def Reindex(DriverType=None):
                         wd, "%d_reindexed.refl" % self.get_xpid()
                     )
                 self.add_command_line(
-                    "output.reflections=%s" % self._reindexed_reflections_filename
+                    f"output.reflections={self._reindexed_reflections_filename}"
                 )
             if self._reference_filename is not None:
                 self.add_command_line(
-                    "reference.experiments=%s" % self._reference_filename
+                    f"reference.experiments={self._reference_filename}"
                 )
             if self._reference_reflections is not None:
                 self.add_command_line(
-                    "reference.reflections=%s" % self._reference_reflections
+                    f"reference.reflections={self._reference_reflections}"
                 )
             if self._cb_op:
-                self.add_command_line("change_of_basis_op=%s" % self._cb_op)
+                self.add_command_line(f"change_of_basis_op={self._cb_op}")
             if self._space_group:
-                self.add_command_line("space_group=%s" % self._space_group)
+                self.add_command_line(f"space_group={self._space_group}")
             if self._hkl_offset is not None:
                 self.add_command_line("hkl_offset=%i,%i,%i" % self._hkl_offset)
 

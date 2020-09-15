@@ -42,15 +42,11 @@ END PROJECT AUTOMATIC
 
 @pytest.mark.parametrize("pipeline,scaler", (("dials", "xdsa"), ("3dii", "dials")))
 def test_incompatible_pipeline_scaler(pipeline, scaler, tmpdir, ccp4):
-    command_line = ["xia2", "pipeline=%s" % pipeline, "nproc=1", "scaler=%s" % scaler]
+    command_line = ["xia2", f"pipeline={pipeline}", "nproc=1", f"scaler={scaler}"]
     result = procrunner.run(command_line, working_directory=tmpdir)
     assert result.returncode
     assert (
-        "Error: scaler=%s not compatible with pipeline=%s"
-        % (
-            scaler,
-            pipeline,
-        )
+        f"Error: scaler={scaler} not compatible with pipeline={pipeline}"
         in result.stdout.decode("latin-1")
     )
 
@@ -147,7 +143,7 @@ def test_dials_aimless_split(regression_test, dials_data, tmpdir, ccp4):
         "njob=2",
         "mode=parallel",
         "trust_beam_centre=True",
-        "xinfo=%s" % split_xinfo(dials_data("x4wide"), tmpdir),
+        f"xinfo={split_xinfo(dials_data('x4wide'), tmpdir)}",
     ]
     result = procrunner.run(command_line, working_directory=tmpdir)
     success, issues = xia2.Test.regression.check_result(
@@ -163,7 +159,7 @@ def test_dials_split(regression_test, dials_data, tmpdir, ccp4):
         "nproc=1",
         "njob=2",
         "trust_beam_centre=True",
-        "xinfo=%s" % split_xinfo(dials_data("x4wide"), tmpdir),
+        f"xinfo={split_xinfo(dials_data('x4wide'), tmpdir)}",
         "mode=parallel",
     ]
     result = procrunner.run(command_line, working_directory=tmpdir)
@@ -204,7 +200,7 @@ def test_xds_split(regression_test, dials_data, tmpdir, ccp4, xds):
         "njob=2",
         "mode=parallel",
         "trust_beam_centre=True",
-        "xinfo=%s" % split_xinfo(dials_data("x4wide"), tmpdir),
+        f"xinfo={split_xinfo(dials_data('x4wide'), tmpdir)}",
     ]
     result = procrunner.run(command_line, working_directory=tmpdir)
     success, issues = xia2.Test.regression.check_result(
@@ -239,7 +235,7 @@ def test_xds_ccp4a_split(regression_test, dials_data, tmpdir, ccp4, xds):
         "merging_statistics.source=aimless",
         "trust_beam_centre=True",
         "mode=parallel",
-        "xinfo=%s" % split_xinfo(dials_data("x4wide"), tmpdir),
+        f"xinfo={split_xinfo(dials_data('x4wide'), tmpdir)}",
     ]
     result = procrunner.run(command_line, working_directory=tmpdir)
     success, issues = xia2.Test.regression.check_result(
@@ -255,18 +251,18 @@ def test_space_group_dials(
 ):
     command_line = [
         "xia2",
-        "pipeline=%s" % pipeline,
-        "space_group=%s" % space_group,
+        f"pipeline={pipeline}",
+        f"space_group={space_group}",
         "nproc=1",
         "trust_beam_centre=True",
         "read_all_image_headers=False",
         "truncate=cctbx",
         "free_total=1000",
-        "image=%s" % dials_data("x4wide").join("X4_wide_M1S4_2_0001.cbf:20:30"),
+        f"image={dials_data('x4wide').join('X4_wide_M1S4_2_0001.cbf:20:30')}",
     ]
     result = procrunner.run(command_line, working_directory=tmpdir)
     success, issues = xia2.Test.regression.check_result(
-        "X4_wide.space_group.%s" % pipeline,
+        f"X4_wide.space_group.{pipeline}",
         result,
         tmpdir,
         ccp4,
@@ -280,13 +276,13 @@ def test_space_group_3dii(space_group, regression_test, dials_data, tmpdir, ccp4
     command_line = [
         "xia2",
         "pipeline=3dii",
-        "space_group=%s" % space_group,
+        f"space_group={space_group}",
         "nproc=1",
         "trust_beam_centre=True",
         "read_all_image_headers=False",
         "truncate=cctbx",
         "free_total=1000",
-        "image=%s" % dials_data("x4wide").join("X4_wide_M1S4_2_0001.cbf:20:30"),
+        f"image={dials_data('x4wide').join('X4_wide_M1S4_2_0001.cbf:20:30')}",
     ]
     result = procrunner.run(command_line, working_directory=tmpdir)
     success, issues = xia2.Test.regression.check_result(

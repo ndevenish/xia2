@@ -316,7 +316,7 @@ class DataManager:
             return scaled_arrays, batch_arrays, scale_arrays
 
     def reindex(self, cb_op, space_group=None):
-        logger.info("Reindexing: %s" % cb_op)
+        logger.info(f"Reindexing: {cb_op}")
         self._reflections["miller_index"] = cb_op.apply(
             self._reflections["miller_index"]
         )
@@ -452,7 +452,7 @@ class MultiCrystalScale:
         elif self._params.cluster_method == "correlation":
             clusters = self._cc_clusters
         else:
-            raise ValueError("Invalid cluster method: %s" % self._params.cluster_method)
+            raise ValueError(f"Invalid cluster method: {self._params.cluster_method}")
         if max_clusters or min_completeness is not None or min_multiplicity is not None:
             self._data_manager_original = self._data_manager
             cwd = os.path.abspath(os.getcwd())
@@ -769,7 +769,7 @@ class MultiCrystalScale:
             ).build_derived_acentric_group()
             self._params.symmetry.laue_group = best_space_group.info()
             logger.info(
-                "Laue group determined by dials.cosym: %s" % best_space_group.info()
+                f"Laue group determined by dials.cosym: {best_space_group.info()}"
             )
 
     def decide_space_group(self):
@@ -820,7 +820,7 @@ class MultiCrystalScale:
         )
         space_group = self._data_manager.experiments[0].crystal.get_space_group()
 
-        logger.info("Space group determined by dials.symmetry: %s" % space_group.info())
+        logger.info(f"Space group determined by dials.symmetry: {space_group.info()}")
 
     def multi_crystal_analysis(self):
         from xia2.Modules.MultiCrystalAnalysis import MultiCrystalReport
@@ -1042,27 +1042,27 @@ class Scale:
         if params.completeness is not None:
             r_comp = m.get_resolution_completeness()
             resolution_limits.append(r_comp)
-            reasoning.append("completeness > %s" % params.completeness)
+            reasoning.append(f"completeness > {params.completeness}")
 
         if params.cc_half is not None:
             r_cc_half = m.get_resolution_cc_half()
             resolution_limits.append(r_cc_half)
-            reasoning.append("cc_half > %s" % params.cc_half)
+            reasoning.append(f"cc_half > {params.cc_half}")
 
         if params.rmerge is not None:
             r_rm = m.get_resolution_rmerge()
             resolution_limits.append(r_rm)
-            reasoning.append("rmerge > %s" % params.rmerge)
+            reasoning.append(f"rmerge > {params.rmerge}")
 
         if params.isigma is not None:
             r_uis = m.get_resolution_isigma()
             resolution_limits.append(r_uis)
-            reasoning.append("unmerged <I/sigI> > %s" % params.isigma)
+            reasoning.append(f"unmerged <I/sigI> > {params.isigma}")
 
         if params.misigma is not None:
             r_mis = m.get_resolution_misigma()
             resolution_limits.append(r_mis)
-            reasoning.append("merged <I/sigI> > %s" % params.misigma)
+            reasoning.append(f"merged <I/sigI> > {params.misigma}")
 
         if len(resolution_limits):
             resolution = max(resolution_limits)

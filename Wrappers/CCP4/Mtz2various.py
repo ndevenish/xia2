@@ -25,7 +25,7 @@ def Mtz2various(DriverType=None):
 
         def set_suffix(self, suffix):
             if suffix:
-                self._dataset_suffix = "_%s" % suffix
+                self._dataset_suffix = f"_{suffix}"
             else:
                 self._dataset_suffix = suffix
 

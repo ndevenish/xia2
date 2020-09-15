@@ -46,7 +46,7 @@ def Cad(DriverType=None):
             # exists... - also that it has a sensible FreeR column...
 
             if not os.path.exists(freein):
-                raise RuntimeError("reflection file does not exist: %s" % freein)
+                raise RuntimeError(f"reflection file does not exist: {freein}")
 
             cname = FindFreeFlag(freein)
 
@@ -274,7 +274,7 @@ def Cad(DriverType=None):
             self.add_command_line(hklin)
             self.start()
 
-            self.input("labin file_number 1 E1=%s" % self._freein_column)
+            self.input(f"labin file_number 1 E1={self._freein_column}")
             self.input("resolution file_number 1 %f %f" % resolution_range)
             self.input("labin file_number 2 all")
 

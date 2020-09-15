@@ -118,7 +118,7 @@ def XDSCorrect(DriverType=None, params=None):
 
         def set_polarization(self, polarization):
             if polarization > 1.0 or polarization < 0.0:
-                raise RuntimeError("bad value for polarization: %.2f" % polarization)
+                raise RuntimeError(f"bad value for polarization: {polarization:.2f}")
             self._polarization = polarization
 
         def set_reindex_matrix(self, reindex_matrix):
@@ -166,7 +166,7 @@ def XDSCorrect(DriverType=None, params=None):
                 raise RuntimeError("no results")
 
             if name not in self._results:
-                raise RuntimeError('result name "%s" unknown' % name)
+                raise RuntimeError(f'result name "{name}" unknown')
 
             return self._results[name]
 
@@ -226,7 +226,7 @@ def XDSCorrect(DriverType=None, params=None):
 
             # exclude requested resolution ranges
             if self._excluded_regions:
-                logger.debug("Excluding regions: %s" % repr(self._excluded_regions))
+                logger.debug(f"Excluding regions: {repr(self._excluded_regions)}")
 
                 for upper, lower in self._excluded_regions:
                     xds_inp.write(
@@ -235,22 +235,22 @@ def XDSCorrect(DriverType=None, params=None):
 
             # postrefine everything to give better values to the
             # next INTEGRATE run
-            xds_inp.write("REFINE(CORRECT)=%s\n" % " ".join(self._params.refine))
+            xds_inp.write(f"REFINE(CORRECT)={' '.join(self._params.refine)}\n")
 
             if self._polarization > 0.0:
-                xds_inp.write("FRACTION_OF_POLARIZATION=%.2f\n" % self._polarization)
+                xds_inp.write(f"FRACTION_OF_POLARIZATION={self._polarization:.2f}\n")
 
             if self._params.air is not None:
-                xds_inp.write("AIR=%f" % self._params.air)
+                xds_inp.write(f"AIR={self._params.air:f}")
 
             for record in header:
-                xds_inp.write("%s\n" % record)
+                xds_inp.write(f"{record}\n")
 
             name_template = template_to_xds(
                 os.path.join(self.get_directory(), self.get_template())
             )
 
-            record = "NAME_TEMPLATE_OF_DATA_FRAMES=%s\n" % name_template
+            record = f"NAME_TEMPLATE_OF_DATA_FRAMES={name_template}\n"
 
             xds_inp.write(record)
 

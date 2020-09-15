@@ -56,7 +56,7 @@ def SearchBeamPosition(DriverType=None):
             self._optimized_filename = os.path.join(
                 self.get_working_directory(), "%d_optimised.expt" % self.get_xpid()
             )
-            self.add_command_line("output.experiments=%s" % self._optimized_filename)
+            self.add_command_line(f"output.experiments={self._optimized_filename}")
 
             self.start()
             self.close_wait()

@@ -81,13 +81,13 @@ def Sortmtz(DriverType=None):
             # result from XDS output...
 
             if vrset:
-                self.input("VRSET_MAGIC %f" % vrset)
+                self.input(f"VRSET_MAGIC {vrset:f}")
 
             self.input(self._sort_order)
 
             if self._hklin_files:
                 for m in self._hklin_files:
-                    self.input('"%s"' % m)
+                    self.input(f'"{m}"')
 
             self.close_wait()
 
@@ -95,7 +95,7 @@ def Sortmtz(DriverType=None):
                 self.check_for_errors()
                 self.check_ccp4_errors()
                 if "Error" in self.get_ccp4_status():
-                    raise RuntimeError("[SORTMTZ] %s" % self.get_ccp4_status())
+                    raise RuntimeError(f"[SORTMTZ] {self.get_ccp4_status()}")
                 self.check_sortmtz_errors()
 
             except RuntimeError as e:

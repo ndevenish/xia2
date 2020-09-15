@@ -223,7 +223,7 @@ def plot_merging_stats(
             plt.figlegend(handles, lab, loc="lower right")
 
         plt.tight_layout()
-        plt.savefig(os.path.join(image_dir, k + ".%s" % format))
+        plt.savefig(os.path.join(image_dir, k + f".{format}"))
         plt.clf()
 
 
@@ -311,7 +311,7 @@ def plot_data(
             ax.set_ylim(0, ax.get_ylim()[1])
         xticks = ax.get_xticks()
         xticks_d = [
-            "%.2f" % uctbx.d_star_sq_as_d(ds2) if ds2 > 0 else 0 for ds2 in xticks
+            f"{uctbx.d_star_sq_as_d(ds2):.2f}" if ds2 > 0 else 0 for ds2 in xticks
         ]
         ax.set_xticklabels(xticks_d)
 

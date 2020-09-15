@@ -151,7 +151,7 @@ class FrameProcessor:
             )
             self._fp_beam_prov = "user"
         except AssertionError as e:
-            logger.debug("Error setting mosflm beam centre: %s" % e)
+            logger.debug(f"Error setting mosflm beam centre: {e}")
 
     def get_beam_centre(self):
         detector = self.get_detector()
@@ -242,7 +242,7 @@ class FrameProcessor:
             directory,
             image_range=(self._fp_matching_images[0], self._fp_matching_images[-1]),
         )
-        assert len(imagesets) == 1, "multiple imagesets match %s" % template
+        assert len(imagesets) == 1, f"multiple imagesets match {template}"
         imageset = imagesets[0]
 
         self._setup_from_imageset(imageset)

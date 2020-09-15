@@ -145,7 +145,7 @@ class Report:
                 mult_img_files[settings.slice_axis] = data.replace("\n", "")
 
         return OrderedDict(
-            ("multiplicity_%s" % axis, mult_img_files[axis]) for axis in ("h", "k", "l")
+            (f"multiplicity_{axis}", mult_img_files[axis]) for axis in ("h", "k", "l")
         )
 
     def symmetry_table_html(self):
@@ -276,7 +276,7 @@ class Report:
                 min_completeness=self.params.chef_min_completeness,
                 n_bins=n_bins,
             )
-            print("Estimated d_min for CHEF analysis: %.2f" % d_min)
+            print(f"Estimated d_min for CHEF analysis: {d_min:.2f}")
             sel = flex.bool(intensities.size(), True)
             d_spacings = intensities.d_spacings().data()
             sel &= d_spacings >= d_min

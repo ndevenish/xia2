@@ -23,9 +23,7 @@ def script_writer(
     if os.name == "nt":
         # write out a windows batch file
 
-        with open(
-            "%s.bat" % os.path.join(working_directory, script_name), "w"
-        ) as script:
+        with open(f"{os.path.join(working_directory, script_name)}.bat", "w") as script:
 
             # try to delete the .xstatus file - if it exists
             script.write(f"@if exist {script_name}.xstatus del {script_name}.xstatus\n")
@@ -41,37 +39,33 @@ def script_writer(
                 script.write(f"@set {name}={added}{os.pathsep}%{name}%\n")
             # make the directories we've been asked to
             for dir in mkdirs:
-                script.write("@mkdir %s\n" % dir)
+                script.write(f"@mkdir {dir}\n")
 
             # FIXME 1/SEP/06 - if the "executable" is a batch file on
             # windows then this should be called. We know in here that
             # we're on win32, so...
 
             if executable.split(".")[-1] == "bat":
-                script.write("@call %s " % executable)
+                script.write(f"@call {executable} ")
             else:
-                script.write("@%s " % executable)
+                script.write(f"@{executable} ")
 
             for c in command_line_tokens:
-                script.write('"%s" ' % c)
+                script.write(f'"{c}" ')
 
             script.write(f"< {script_name}.xin > {script_name}.xout\n")
 
             # add the status stuff - for NT this will be NULL.
-            script.write("@echo 0 > %s.xstatus\n" % script_name)
+            script.write(f"@echo 0 > {script_name}.xstatus\n")
 
-        with open(
-            "%s.xin" % os.path.join(working_directory, script_name), "w"
-        ) as input:
+        with open(f"{os.path.join(working_directory, script_name)}.xin", "w") as input:
             for i in input_records:
-                input.write("%s" % i)
+                input.write(f"{i}")
 
     if os.name == "posix":
         # write out a bash script
 
-        with open(
-            "%s.sh" % os.path.join(working_directory, script_name), "w"
-        ) as script:
+        with open(f"{os.path.join(working_directory, script_name)}.sh", "w") as script:
 
             script.write("#!/bin/bash\n\n")
 
@@ -86,29 +80,29 @@ def script_writer(
                 script.write(f"export {name}={added}{os.pathsep}${name}\n")
 
             # delete the xatstus file if it exists
-            script.write("rm -f %s.xstatus\n" % script_name)
+            script.write(f"rm -f {script_name}.xstatus\n")
 
             # make the directories we have been asked to
             for dir in mkdirs:
-                script.write("mkdir -p %s\n" % dir)
+                script.write(f"mkdir -p {dir}\n")
 
-            script.write("%s " % executable)
+            script.write(f"{executable} ")
 
             for c in command_line_tokens:
-                script.write("'%s' " % c)
+                script.write(f"'{c}' ")
 
-            script.write("<< eof > %s.xout\n" % script_name)
+            script.write(f"<< eof > {script_name}.xout\n")
 
             for i in input_records:
-                script.write("%s" % i)
+                script.write(f"{i}")
 
             script.write("eof\n")
 
             # record the status from this script
-            script.write('echo "$?" > %s.xstatus\n' % script_name)
+            script.write(f'echo "$?" > {script_name}.xstatus\n')
 
         os.chmod(
-            os.path.join(working_directory, "%s.sh" % script_name),
+            os.path.join(working_directory, f"{script_name}.sh"),
             stat.S_IEXEC | stat.S_IREAD | stat.S_IWRITE,
         )
 
@@ -152,7 +146,7 @@ def error_no_program(record):
     else:
         if "command not found" in record:
             raise RuntimeError(
-                'executable "%s" does not exist' % record.split()[-4].replace(":", "")
+                f"executable \"{record.split()[-4].replace(':', '')}\" does not exist"
             )
 
 
@@ -173,9 +167,9 @@ def error_missing_library(record):
                     break
 
             if missing_library:
-                raise RuntimeError("child missing library %s" % missing_library)
+                raise RuntimeError(f"child missing library {missing_library}")
             else:
-                raise RuntimeError("child missing library (%s)" % record.strip())
+                raise RuntimeError(f"child missing library ({record.strip()})")
 
 
 def error_segv(record):
@@ -279,7 +273,7 @@ def executable_exists(executable):
 
     if os.name == "nt":
         if not executable.split(".")[-1] in ["exe", "bat"]:
-            executable_files = ["%s.bat" % executable, "%s.exe" % executable]
+            executable_files = [f"{executable}.bat", f"{executable}.exe"]
         else:
             executable_files = [executable]
     else:

@@ -35,10 +35,10 @@ class XInfo:
     def get_output(self):
         """Generate a string representation of the project."""
 
-        text = "Project %s\n" % self._project
+        text = f"Project {self._project}\n"
         for crystal in self._crystals:
-            text += "Crystal %s\n" % crystal
-            text += "%s\n" % self._crystals[crystal].get_output()
+            text += f"Crystal {crystal}\n"
+            text += f"{self._crystals[crystal].get_output()}\n"
 
         # remove a trailing newline...
 
@@ -78,7 +78,7 @@ class XInfo:
             if "BEGIN PROJECT" in record:
                 pname = record.replace("BEGIN PROJECT", "").strip()
                 if len(pname.split()) != 1:
-                    raise RuntimeError("project name contains white space: %s" % pname)
+                    raise RuntimeError(f"project name contains white space: {pname}")
                 self._project = pname
             if "END PROJECT" in record:
                 if not self._project == record.replace("END PROJECT", "").strip():
@@ -117,11 +117,9 @@ class XInfo:
 
                 crystal = record.replace("BEGIN CRYSTAL ", "").strip()
                 if len(crystal.split()) != 1:
-                    raise RuntimeError(
-                        "crystal name contains white space: %s" % crystal
-                    )
+                    raise RuntimeError(f"crystal name contains white space: {crystal}")
                 if crystal in self._crystals:
-                    raise RuntimeError("crystal %s already exists" % crystal)
+                    raise RuntimeError(f"crystal {crystal} already exists")
 
                 # cardinality:
                 #
@@ -206,13 +204,12 @@ class XInfo:
                 wavelength = record.replace("BEGIN WAVELENGTH ", "").strip()
                 if len(wavelength.split()) != 1:
                     raise RuntimeError(
-                        "wavelength name contains white space: %s" % wavelength
+                        f"wavelength name contains white space: {wavelength}"
                     )
                 # check that this is a new wavelength definition
                 if wavelength in self._crystals[crystal]["wavelengths"]:
                     raise RuntimeError(
-                        "wavelength %s already exists for crystal %s"
-                        % (wavelength, crystal)
+                        f"wavelength {wavelength} already exists for crystal {crystal}"
                     )
 
                 self._crystals[crystal]["wavelengths"][wavelength] = {}
@@ -274,7 +271,7 @@ class XInfo:
 
                     if len(record.split()) == 1:
                         raise RuntimeError(
-                            "missing value for token %s" % record.split()[0]
+                            f"missing value for token {record.split()[0]}"
                         )
 
                     try:
@@ -331,8 +328,7 @@ class XInfo:
                         wavelength = record.replace("WAVELENGTH", "").strip()
                         if wavelength not in self._crystals[crystal]["wavelengths"]:
                             raise RuntimeError(
-                                "wavelength %s unknown for crystal %s"
-                                % (wavelength, crystal)
+                                f"wavelength {wavelength} unknown for crystal {crystal}"
                             )
                         self._crystals[crystal]["sweeps"][sweep][
                             "wavelength"

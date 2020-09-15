@@ -117,7 +117,7 @@ def run(args):
 
     styles = {}
     for axis in ("h", "k", "l"):
-        styles["multiplicity_%s" % axis] = "square-plot"
+        styles[f"multiplicity_{axis}"] = "square-plot"
 
     loader = ChoiceLoader(
         [PackageLoader("xia2", "templates"), PackageLoader("dials", "templates")]
@@ -151,10 +151,10 @@ def run(args):
         log_text=log_text,
     )
 
-    with open("%s-report.json" % params.prefix, "w") as fh:
+    with open(f"{params.prefix}-report.json", "w") as fh:
         json.dump(json_data, fh, indent=params.json.indent)
 
-    with open("%s-report.html" % params.prefix, "wb") as fh:
+    with open(f"{params.prefix}-report.html", "wb") as fh:
         fh.write(html.encode("utf-8", "xmlcharrefreplace"))
 
 

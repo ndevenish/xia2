@@ -23,16 +23,14 @@ batch
 """
 
 master_phil_scope = iotbx.phil.parse(
-    """\
-unit_cell = None
+    f"""unit_cell = None
   .type = unit_cell
 n_bins = 20
   .type = int(value_min=1)
 d_min = None
   .type = float(value_min=0)
-%s
+{batch_phil_scope}
 """
-    % batch_phil_scope
 )
 
 
@@ -51,12 +49,12 @@ class ClusterInfo:
         lines = [
             "Cluster %i" % self.cluster_id,
             "  Number of datasets: %i" % len(self.labels),
-            "  Completeness: %.1f %%" % (self.completeness * 100),
-            "  Multiplicity: %.2f" % self.multiplicity,
+            f"  Completeness: {self.completeness * 100:.1f} %",
+            f"  Multiplicity: {self.multiplicity:.2f}",
             "  Datasets:" + ",".join("%s" % s for s in self.labels),
         ]
         if self.height is not None:
-            lines.append("  height: %f" % self.height)
+            lines.append(f"  height: {self.height:f}")
         return "\n".join(lines)
 
 
@@ -99,14 +97,14 @@ class multi_crystal_analysis:
 
         d = self.to_plotly_json(correlation_matrix, linkage_matrix, labels=labels)
 
-        with open("%sintensity_clusters.json" % self._prefix, "w") as f:
+        with open(f"{self._prefix}intensity_clusters.json", "w") as f:
             json.dump(d, f, indent=2)
 
         d = self.to_plotly_json(
             cos_angle_matrix, ca_linkage_matrix, labels=labels, matrix_type="cos_angle"
         )
 
-        with open("%scos_angle_clusters.json" % self._prefix, "w") as f:
+        with open(f"{self._prefix}cos_angle_clusters.json", "w") as f:
             json.dump(d, f, indent=2)
 
         self.cos_angle_linkage_matrix = ca_linkage_matrix
@@ -182,9 +180,9 @@ class multi_crystal_analysis:
                     "%i" % info.cluster_id,
                     "%i" % len(info.labels),
                     wordwrap(" ".join("%s" % l for l in info.labels)),
-                    "%.2g" % info.height,
-                    "%.1f" % info.multiplicity,
-                    "%.2f" % info.completeness,
+                    f"{info.height:.2g}",
+                    f"{info.multiplicity:.1f}",
+                    f"{info.completeness:.2f}",
                 ]
             )
 
@@ -299,7 +297,7 @@ class multi_crystal_analysis:
         ccdict = {
             "data": [
                 {
-                    "name": "%s_matrix" % matrix_type,
+                    "name": f"{matrix_type}_matrix",
                     "x": list(range(D.shape[0])),
                     "y": list(range(D.shape[1])),
                     "z": D.tolist(),

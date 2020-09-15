@@ -298,10 +298,10 @@ class XCrystal:
         return return_obj
 
     def get_output(self):
-        result = "Crystal: %s\n" % self._name
+        result = f"Crystal: {self._name}\n"
 
         if self._aa_sequence:
-            result += "Sequence: %s\n" % self._aa_sequence.get_sequence()
+            result += f"Sequence: {self._aa_sequence.get_sequence()}\n"
         for wavelength in list(self._wavelengths.keys()):
             result += self._wavelengths[wavelength].get_output()
 
@@ -319,7 +319,7 @@ class XCrystal:
                         result += "%s\n" % banner(
                             "Autoindexing %s" % idxr.get_indexer_sweep_name()
                         )
-                    result += "%s\n" % idxr.show_indexer_solutions()
+                    result += f"{idxr.show_indexer_solutions()}\n"
 
                     intgr = xsweep._get_integrater()
                     if PhilIndex.params.xia2.settings.show_template:
@@ -331,7 +331,7 @@ class XCrystal:
                         result += "%s\n" % banner(
                             "Integrating %s" % intgr.get_integrater_sweep_name()
                         )
-                    result += "%s\n" % intgr.show_per_image_statistics()
+                    result += f"{intgr.show_per_image_statistics()}\n"
 
             result += "%s\n" % banner("Scaling %s" % self.get_name())
 
@@ -390,11 +390,7 @@ class XCrystal:
             )
         else:
             for wavelength in list(self._wavelengths.keys()):
-                full_wave_name = "%s_%s_%s" % (
-                    self._project._name,
-                    self._name,
-                    wavelength,
-                )
+                full_wave_name = f"{self._project._name}_{self._name}_{wavelength}"
                 CIF.get_block(full_wave_name)[
                     "_diffrn_radiation_wavelength"
                 ] = self._wavelengths[wavelength].get_wavelength()
@@ -414,11 +410,11 @@ class XCrystal:
                 }
             )
 
-        result += "Assuming spacegroup: %s\n" % spacegroup
+        result += f"Assuming spacegroup: {spacegroup}\n"
         if len(spacegroups) > 1:
             result += "Other likely alternatives are:\n"
             for sg in spacegroups[1:]:
-                result += "%s\n" % sg
+                result += f"{sg}\n"
 
         if cell_esd:
 
@@ -495,7 +491,7 @@ class XCrystal:
 
         if isinstance(reflections_all, type({})):
             for format in list(reflections_all.keys()):
-                result += "%s format:\n" % format
+                result += f"{format} format:\n"
                 reflections = reflections_all[format]
 
                 if isinstance(reflections, type({})):
@@ -507,7 +503,7 @@ class XCrystal:
 
                 else:
                     target = FileHandler.get_data_file(self._project.path, reflections)
-                    result += "Scaled reflections: %s\n" % target
+                    result += f"Scaled reflections: {target}\n"
 
         CIF.write_cif(self._project.path / "DataFiles")
         mmCIF.write_cif(self._project.path / "DataFiles")
@@ -517,7 +513,7 @@ class XCrystal:
     def summarise(self):
         """Produce a short summary of this crystal."""
 
-        summary = ["Crystal: %s" % self._name]
+        summary = [f"Crystal: {self._name}"]
 
         if self._aa_sequence:
             summary.append(
@@ -556,18 +552,18 @@ class XCrystal:
                         + [format_str.strip()] * (len(statistics_all[key][s]) - 1)
                     )
                     summary.append(
-                        "%s: " % (s.ljust(40))
+                        f"{s.ljust(40)}: "
                         + expanded_format_str % (statistics_all[key][s])
                     )
                 elif isinstance(statistics_all[key][s], str):
-                    summary.append("%s: %s" % (s.ljust(40), statistics_all[key][s]))
+                    summary.append(f"{s.ljust(40)}: {statistics_all[key][s]}")
                 else:
                     expanded_format_str = " ".join(
                         [format_str]
                         + [format_str.strip()] * (len(statistics_all[key][s]) - 1)
                     )
                     summary.append(
-                        "%s " % s.ljust(43)
+                        f"{s.ljust(43)} "
                         + expanded_format_str % tuple(statistics_all[key][s])
                     )
 
@@ -575,7 +571,7 @@ class XCrystal:
         spacegroup = self._get_scaler().get_scaler_likely_spacegroups()[0]
 
         summary.append("Cell: %7.3f %7.3f %7.3f %7.3f %7.3f %7.3f" % tuple(cell))
-        summary.append("Spacegroup: %s" % spacegroup)
+        summary.append(f"Spacegroup: {spacegroup}")
 
         return summary
 
@@ -648,7 +644,7 @@ class XCrystal:
 
         if xwavelength.get_name() in list(self._wavelengths.keys()):
             raise RuntimeError(
-                "XWavelength with name %s already exists" % xwavelength.get_name()
+                f"XWavelength with name {xwavelength.get_name()} already exists"
             )
 
         self._wavelengths[xwavelength.get_name()] = xwavelength
@@ -669,9 +665,7 @@ class XCrystal:
             raise RuntimeError("input should be an XSample object")
 
         if xsample.get_name() in list(self._samples.keys()):
-            raise RuntimeError(
-                "XSample with name %s already exists" % xsample.get_name()
-            )
+            raise RuntimeError(f"XSample with name {xsample.get_name()} already exists")
 
         self._samples[xsample.get_name()] = xsample
 

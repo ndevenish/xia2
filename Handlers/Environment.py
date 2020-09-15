@@ -28,7 +28,7 @@ def memory_usage():
 
         return resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
     except Exception as e:
-        logger.debug("Error getting RAM usage: %s" % str(e))
+        logger.debug(f"Error getting RAM usage: {str(e)}")
         return 0
 
 
@@ -44,7 +44,7 @@ def debug_memory_usage():
             % (os.path.split(frameinfo.filename)[-1], frameinfo.lineno, memory_usage())
         )
     except Exception as e:
-        logger.debug("Error getting RAM usage: %s" % str(e))
+        logger.debug(f"Error getting RAM usage: {str(e)}")
 
 
 def df(path=None):
@@ -59,7 +59,7 @@ def df(path=None):
             )
             return bytes.value
         except Exception as e:
-            logger.debug("Error getting disk space: %s" % str(e))
+            logger.debug(f"Error getting disk space: {str(e)}")
             return 0
 
     s = os.statvfs(path)
@@ -86,7 +86,7 @@ def set_up_ccp4_tmpdir():
     """define a local CCP4_SCR"""
     ccp4_scr = tempfile.mkdtemp()
     os.environ["CCP4_SCR"] = ccp4_scr
-    logger.debug("Created CCP4_SCR: %s" % ccp4_scr)
+    logger.debug(f"Created CCP4_SCR: {ccp4_scr}")
 
     def drop_ccp4_scr_tmpdir_if_possible():
         try:

@@ -29,13 +29,13 @@ def IntegraterForXSweep(xsweep, json_file=None):
 
     if json_file is not None:
         assert os.path.isfile(json_file)
-        logger.debug("Loading integrater from json: %s" % json_file)
+        logger.debug(f"Loading integrater from json: {json_file}")
         import time
 
         t0 = time.time()
         integrater = integrater.__class__.from_json(filename=json_file)
         t1 = time.time()
-        logger.debug("Loaded integrater in %.2f seconds" % (t1 - t0))
+        logger.debug(f"Loaded integrater in {t1 - t0:.2f} seconds")
     else:
         integrater.setup_from_imageset(xsweep.get_imageset())
     integrater.set_integrater_sweep_name(xsweep.get_name())
@@ -55,13 +55,13 @@ def IntegraterForXSweep(xsweep, json_file=None):
         if d_min is not None and d_min != integrater.get_integrater_high_resolution():
 
             logger.debug("Assigning resolution limits from XINFO input:")
-            logger.debug("d_min: %.3f" % d_min)
+            logger.debug(f"d_min: {d_min:.3f}")
             integrater.set_integrater_high_resolution(d_min, user=True)
 
         if d_max is not None and d_max != integrater.get_integrater_low_resolution():
 
             logger.debug("Assigning resolution limits from XINFO input:")
-            logger.debug("d_max: %.3f" % d_max)
+            logger.debug(f"d_max: {d_max:.3f}")
             integrater.set_integrater_low_resolution(d_max, user=True)
 
     # check the epoch and perhaps pass this in for future reference
@@ -82,7 +82,7 @@ def IntegraterForXSweep(xsweep, json_file=None):
     # likewise the distance...
     if xsweep.get_distance():
         logger.debug(
-            "Integrater factory: Setting distance: %.2f" % xsweep.get_distance()
+            f"Integrater factory: Setting distance: {xsweep.get_distance():.2f}"
         )
         integrater.set_distance(xsweep.get_distance())
 
@@ -141,7 +141,7 @@ def Integrater():
 
         else:
 
-            logger.debug("dmin: %.3f" % dmin)
+            logger.debug(f"dmin: {dmin:.3f}")
             integrater.set_integrater_high_resolution(dmin, user=True)
 
     return integrater

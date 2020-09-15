@@ -11,9 +11,9 @@ def CCP4DecoratorFactory(DriverInstance):
 
     DriverInstanceClass = DriverInstance.__class__
 
-    assert issubclass(DriverInstanceClass, xia2.Driver.DefaultDriver.DefaultDriver), (
-        "%s is not a Driver implementation" % DriverInstance
-    )
+    assert issubclass(
+        DriverInstanceClass, xia2.Driver.DefaultDriver.DefaultDriver
+    ), f"{DriverInstance} is not a Driver implementation"
 
     # verify that the object matches the Driver specification
 
@@ -58,11 +58,11 @@ def CCP4DecoratorFactory(DriverInstance):
                 raise RuntimeError("hklin not defined")
             elif isinstance(self._hklin, str):
                 if not os.path.exists(self._hklin):
-                    raise RuntimeError("hklin %s does not exist" % self._hklin)
+                    raise RuntimeError(f"hklin {self._hklin} does not exist")
             else:
                 for hklin in self._hklin:
                     if not os.path.exists(hklin):
-                        raise RuntimeError("hklin %s does not exist" % hklin)
+                        raise RuntimeError(f"hklin {hklin} does not exist")
 
         def set_hklout(self, hklout):
             self._hklout = hklout
@@ -78,21 +78,21 @@ def CCP4DecoratorFactory(DriverInstance):
 
             if self._hklout == self._hklin:
                 raise RuntimeError(
-                    "hklout and hklin are the same file (%s)" % str(self._hklin)
+                    f"hklout and hklin are the same file ({str(self._hklin)})"
                 )
 
         def describe(self):
             """An overloading of the Driver describe() method."""
 
-            description = "CCP4 program: %s" % self.get_executable()
+            description = f"CCP4 program: {self.get_executable()}"
 
             if self._hklin is not None:
-                description += " %s" % ("hklin")
-                description += " %s" % (self._hklin)
+                description += f" {'hklin'}"
+                description += f" {self._hklin}"
 
             if self._hklout is not None:
-                description += " %s" % ("hklout")
-                description += " %s" % (self._hklout)
+                description += f" {'hklout'}"
+                description += f" {self._hklout}"
 
             return description
 
@@ -238,7 +238,7 @@ def CCP4DecoratorFactory(DriverInstance):
                     self._loggraph[current]["columns"] = tokens[1].split()
 
                     if len(tokens) < 4:
-                        raise RuntimeError('loggraph "%s" broken' % current)
+                        raise RuntimeError(f'loggraph "{current}" broken')
 
                     data = tokens[3].split("\n")
 

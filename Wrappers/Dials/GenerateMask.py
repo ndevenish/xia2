@@ -43,7 +43,7 @@ def GenerateMask(DriverType=None):
             working_phil = phil_scope.format(self._params)
             diff_phil = phil_scope.fetch_diff(source=working_phil)
             phil_filename = os.path.join(
-                self.get_working_directory(), "%s_mask.phil" % self.get_xpid()
+                self.get_working_directory(), f"{self.get_xpid()}_mask.phil"
             )
             with open(phil_filename, "w") as f:
                 f.write(diff_phil.as_str())
@@ -52,19 +52,19 @@ def GenerateMask(DriverType=None):
                 )  # temporarily required for https://github.com/dials/dials/issues/522
 
             self.add_command_line(
-                "input.experiments=%s" % self._input_experiments_filename
+                f"input.experiments={self._input_experiments_filename}"
             )
             if self._output_mask_filename is None:
                 self._output_mask_filename = os.path.join(
-                    self.get_working_directory(), "%s_pixels.mask" % self.get_xpid()
+                    self.get_working_directory(), f"{self.get_xpid()}_pixels.mask"
                 )
             if self._output_experiments_filename is None:
                 self._output_experiments_filename = os.path.join(
-                    self.get_working_directory(), "%s_masked.expt" % self.get_xpid()
+                    self.get_working_directory(), f"{self.get_xpid()}_masked.expt"
                 )
-            self.add_command_line("output.mask=%s" % self._output_mask_filename)
+            self.add_command_line(f"output.mask={self._output_mask_filename}")
             self.add_command_line(
-                "output.experiments=%s" % self._output_experiments_filename
+                f"output.experiments={self._output_experiments_filename}"
             )
             self.add_command_line(phil_filename)
             self.start()

@@ -84,12 +84,12 @@ def Import(DriverType=None):
 
             if self._wavelength_tolerance is not None:
                 self.add_command_line(
-                    "input.tolerance.beam.wavelength=%s" % self._wavelength_tolerance
+                    f"input.tolerance.beam.wavelength={self._wavelength_tolerance}"
                 )
 
             if self._reference_geometry is not None:
                 self.add_command_line(
-                    "input.reference_geometry=%s" % self._reference_geometry
+                    f"input.reference_geometry={self._reference_geometry}"
                 )
 
             elif self._mosflm_beam_centre is not None:
@@ -105,7 +105,7 @@ def Import(DriverType=None):
                 for image in self._images:
                     self.add_command_line(image)
 
-            self.add_command_line("output.experiments=%s" % self._sweep_filename)
+            self.add_command_line(f"output.experiments={self._sweep_filename}")
             self.start()
             self.close_wait()
             self.check_for_errors()

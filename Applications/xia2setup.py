@@ -154,7 +154,7 @@ def get_template(f):
     directory = None
 
     if not os.access(f, os.R_OK):
-        logger.debug("No read permission for %s" % f)
+        logger.debug(f"No read permission for {f}")
 
     try:
         template, directory = image2template_directory(f)
@@ -165,11 +165,11 @@ def get_template(f):
                 return
 
     except Exception as e:
-        logger.debug("Exception A: %s (%s)" % (str(e), f))
+        logger.debug(f"Exception A: {str(e)} ({f})")
         logger.debug(traceback.format_exc())
 
     if template is None or directory is None:
-        raise RuntimeError("template not recognised for %s" % f)
+        raise RuntimeError(f"template not recognised for {f}")
 
     return template
 
@@ -199,7 +199,7 @@ def visit(directory, files):
             format_class = Registry.get_format_class_for_file(full_path)
             if format_class is None:
                 logger.debug(
-                    "Ignoring %s (Registry can not find format class)" % full_path
+                    f"Ignoring {full_path} (Registry can not find format class)"
                 )
                 continue
             elif format_class.ignore():
@@ -210,7 +210,7 @@ def visit(directory, files):
             try:
                 template = get_template(full_path)
             except Exception as e:
-                logger.debug("Exception B: %s" % str(e))
+                logger.debug(f"Exception B: {str(e)}")
                 logger.debug(traceback.format_exc())
                 continue
             if template is not None:
@@ -316,7 +316,7 @@ def _write_sweeps(sweeps, out):
         )
         for s in sweeps:
             if len(s.get_images()) < min_images:
-                logger.debug("Rejecting sweep %s:" % s.get_template())
+                logger.debug(f"Rejecting sweep {s.get_template()}:")
                 logger.debug(
                     "  Not enough images (found %i, require at least %i)"
                     % (len(s.get_images()), min_images)
@@ -326,7 +326,7 @@ def _write_sweeps(sweeps, out):
             oscillation_range = s.get_imageset().get_scan().get_oscillation_range()
             width = oscillation_range[1] - oscillation_range[0]
             if min_oscillation_range is not None and width < min_oscillation_range:
-                logger.debug("Rejecting sweep %s:" % s.get_template())
+                logger.debug(f"Rejecting sweep {s.get_template()}:")
                 logger.debug(
                     "  Too narrow oscillation range (found %i, require at least %i)"
                     % (width, min_oscillation_range)
@@ -351,8 +351,8 @@ def _write_sweeps(sweeps, out):
     project = settings.project
     crystal = settings.crystal
 
-    out.write("BEGIN PROJECT %s\n" % project)
-    out.write("BEGIN CRYSTAL %s\n" % crystal)
+    out.write(f"BEGIN PROJECT {project}\n")
+    out.write(f"BEGIN CRYSTAL {crystal}\n")
 
     out.write("\n")
 
@@ -360,7 +360,7 @@ def _write_sweeps(sweeps, out):
     # copy it in...
 
     if settings.space_group is not None:
-        out.write("USER_SPACEGROUP %s\n" % settings.space_group.type().lookup_symbol())
+        out.write(f"USER_SPACEGROUP {settings.space_group.type().lookup_symbol()}\n")
         out.write("\n")
 
     if settings.unit_cell is not None:
@@ -372,7 +372,7 @@ def _write_sweeps(sweeps, out):
 
     freer_file = PhilIndex.params.xia2.settings.scale.freer_file
     if freer_file is not None:
-        out.write("FREER_FILE %s\n" % PhilIndex.params.xia2.settings.scale.freer_file)
+        out.write(f"FREER_FILE {PhilIndex.params.xia2.settings.scale.freer_file}\n")
         out.write("\n")
 
     if latest_sequence:
@@ -381,14 +381,14 @@ def _write_sweeps(sweeps, out):
         for sequence_chunk in [
             latest_sequence[i : i + 60] for i in range(0, len(latest_sequence), 60)
         ]:
-            out.write("%s\n" % sequence_chunk)
+            out.write(f"{sequence_chunk}\n")
         out.write("\n")
         out.write("END AA_SEQUENCE\n")
         out.write("\n")
 
     if settings.input.atom:
         out.write("BEGIN HA_INFO\n")
-        out.write("ATOM %s\n" % settings.input.atom.lower())
+        out.write(f"ATOM {settings.input.atom.lower()}\n")
         out.write("END HA_INFO\n")
         out.write("\n")
     elif settings.input.anomalous:
@@ -410,7 +410,7 @@ def _write_sweeps(sweeps, out):
 
         wavelength_map[wavelength] = name
 
-        out.write("BEGIN WAVELENGTH %s\n" % name)
+        out.write(f"BEGIN WAVELENGTH {name}\n")
 
         dmin = PhilIndex.params.xia2.settings.resolution.d_min
         dmax = PhilIndex.params.xia2.settings.resolution.d_max
@@ -418,11 +418,11 @@ def _write_sweeps(sweeps, out):
         if dmin and dmax:
             out.write(f"RESOLUTION {dmin:f} {dmax:f}\n")
         elif dmin:
-            out.write("RESOLUTION %f\n" % dmin)
+            out.write(f"RESOLUTION {dmin:f}\n")
 
-        out.write("WAVELENGTH %f\n" % wavelengths[j])
+        out.write(f"WAVELENGTH {wavelengths[j]:f}\n")
 
-        out.write("END WAVELENGTH %s\n" % name)
+        out.write(f"END WAVELENGTH {name}\n")
         out.write("\n")
 
     j = 0
@@ -441,7 +441,7 @@ def _write_sweeps(sweeps, out):
         for s in sweeps:
             # require at least n images to represent a sweep...
             if len(s.get_images()) < min_images:
-                logger.debug("Rejecting sweep %s:" % s.get_template())
+                logger.debug(f"Rejecting sweep {s.get_template()}:")
                 logger.debug(
                     "  Not enough images (found %i, require at least %i)"
                     % (len(s.get_images()), min_images)
@@ -451,7 +451,7 @@ def _write_sweeps(sweeps, out):
             oscillation_range = s.get_imageset().get_scan().get_oscillation_range()
             width = oscillation_range[1] - oscillation_range[0]
             if min_oscillation_range is not None and width < min_oscillation_range:
-                logger.debug("Rejecting sweep %s:" % s.get_template())
+                logger.debug(f"Rejecting sweep {s.get_template()}:")
                 logger.debug(
                     "  Too narrow oscillation range (found %i, require at least %i)"
                     % (width, min_oscillation_range)
@@ -468,7 +468,7 @@ def _write_sweeps(sweeps, out):
                     min(s.get_images()) <= start_ends[0][1] <= max(s.get_images())
                 )
                 if not all((start_good, end_good)):
-                    logger.debug("Rejecting sweep %s:" % s.get_template())
+                    logger.debug(f"Rejecting sweep {s.get_template()}:")
                     if not start_good:
                         logger.debug(
                             "  Your specified start-point image lies outside the bounds of this sweep."
@@ -499,16 +499,16 @@ def _write_sweeps(sweeps, out):
                 j += 1
                 name = "SWEEP%d" % j
 
-                out.write("BEGIN SWEEP %s\n" % name)
+                out.write(f"BEGIN SWEEP {name}\n")
 
                 if PhilIndex.params.xia2.settings.input.reverse_phi:
                     out.write("REVERSEPHI\n")
 
-                out.write("WAVELENGTH %s\n" % wavelength_map[s.get_wavelength()])
+                out.write(f"WAVELENGTH {wavelength_map[s.get_wavelength()]}\n")
 
-                out.write("DIRECTORY %s\n" % s.get_directory())
+                out.write(f"DIRECTORY {s.get_directory()}\n")
                 imgset = s.get_imageset()
-                out.write("IMAGE %s\n" % os.path.split(imgset.get_path(0))[-1])
+                out.write(f"IMAGE {os.path.split(imgset.get_path(0))[-1]}\n")
                 out.write("START_END %d %d\n" % start_end)
 
                 # really don't need to store the epoch in the xinfo file
@@ -518,14 +518,14 @@ def _write_sweeps(sweeps, out):
                     PhilIndex.get_python_object()
 
                 if settings.detector_distance is not None:
-                    out.write("DISTANCE %.2f\n" % settings.detector_distance)
+                    out.write(f"DISTANCE {settings.detector_distance:.2f}\n")
 
-                out.write("END SWEEP %s\n" % name)
+                out.write(f"END SWEEP {name}\n")
 
                 out.write("\n")
 
-    out.write("END CRYSTAL %s\n" % crystal)
-    out.write("END PROJECT %s\n" % project)
+    out.write(f"END CRYSTAL {crystal}\n")
+    out.write(f"END PROJECT {project}\n")
 
 
 def _get_sweeps(templates):
@@ -540,7 +540,7 @@ def _get_sweeps(templates):
         # FIXME xia2 is now a proper cctbx module ;o)
 
         python_path = 'PYTHONPATH="%s"' % ":".join(sys.path)
-        qsub_command = "qsub -v %s -V" % python_path
+        qsub_command = f"qsub -v {python_path} -V"
 
         args = [(template,) for template in templates]
         results_list = easy_mp.parallel_map(

@@ -158,8 +158,8 @@ def test_assign_identifiers(helper_directory):
     experiments = []
     reflections = []
     for i in range(0, 3):
-        refl_path = tmpdir.join("test_%s.refl" % i).strpath
-        exp_path = tmpdir.join("test_%s.expt" % i).strpath
+        refl_path = tmpdir.join(f"test_{i}.refl").strpath
+        exp_path = tmpdir.join(f"test_{i}.expt").strpath
         generate_test_refl().as_file(refl_path)
         generated_exp().as_file(exp_path)
         experiments.append(exp_path)
@@ -257,8 +257,8 @@ def test_assign_and_return_datasets(helper_directory):
     sweephandler = simple_sweep_handler(n)
     for i in range(0, n):
         si = sweephandler.get_sweep_information(i)
-        refl_path = tmpdir.join("test_%s.refl" % i).strpath
-        exp_path = tmpdir.join("test_%s.expt" % i).strpath
+        refl_path = tmpdir.join(f"test_{i}.refl").strpath
+        exp_path = tmpdir.join(f"test_{i}.expt").strpath
         generate_test_refl().as_file(refl_path)
         generated_exp().as_file(exp_path)
         si.set_experiments(exp_path)
@@ -379,8 +379,8 @@ def test_dials_symmetry_indexer_jiffy(
     reflections = []
     refiners = []
     for i in range(0, n):
-        refl_path = tmpdir.join("test_%s.refl" % i).strpath
-        exp_path = tmpdir.join("test_%s.expt" % i).strpath
+        refl_path = tmpdir.join(f"test_{i}.refl").strpath
+        exp_path = tmpdir.join(f"test_{i}.expt").strpath
         generate_reflections_in_sg("P 2", id_=i, assign_id=True).as_file(refl_path)
         generated_exp(space_group="P 2", id_=i).as_file(exp_path)
         experiments.append(exp_path)

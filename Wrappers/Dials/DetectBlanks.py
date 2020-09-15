@@ -62,18 +62,18 @@ def DetectBlanks(DriverType=None):
             self.add_command_line(self._reflections_filename)
             if self._json_filename is None:
                 self._json_filename = os.path.join(
-                    self.get_working_directory(), "%s_blanks.json" % self.get_xpid()
+                    self.get_working_directory(), f"{self.get_xpid()}_blanks.json"
                 )
-            self.add_command_line("json=%s" % self._json_filename)
+            self.add_command_line(f"json={self._json_filename}")
             if self._phi_step is not None:
-                self.add_command_line("phi_step=%s" % self._phi_step)
+                self.add_command_line(f"phi_step={self._phi_step}")
             if self._counts_fractional_loss is not None:
                 self.add_command_line(
-                    "counts_fractional_loss=%s" % self._counts_fractional_loss
+                    f"counts_fractional_loss={self._counts_fractional_loss}"
                 )
             if self._misigma_fractional_loss is not None:
                 self.add_command_line(
-                    "misigma_fractional_loss=%s" % self._misigma_fractional_loss
+                    f"misigma_fractional_loss={self._misigma_fractional_loss}"
                 )
             self.start()
             self.close_wait()

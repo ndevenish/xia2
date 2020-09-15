@@ -58,10 +58,10 @@ def DialsAssignIdentifiers(DriverType=None):
                 )
 
             self.add_command_line(
-                "output.experiments=%s" % self._output_experiments_filename
+                f"output.experiments={self._output_experiments_filename}"
             )
             self.add_command_line(
-                "output.reflections=%s" % self._output_reflections_filename
+                f"output.reflections={self._output_reflections_filename}"
             )
 
             self.start()

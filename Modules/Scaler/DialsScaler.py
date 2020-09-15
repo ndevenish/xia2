@@ -316,9 +316,7 @@ class DialsScaler(Scaler):
         pointgroup_set = {pointgroups[e] for e in pointgroups}
 
         if len(pointgroup_set) > 1 and not probably_twinned:
-            raise RuntimeError(
-                "non uniform pointgroups: %s" % str(list(pointgroup_set))
-            )
+            raise RuntimeError(f"non uniform pointgroups: {str(list(pointgroup_set))}")
 
         if len(pointgroup_set) > 1:
             logger.debug(
@@ -704,10 +702,10 @@ pipeline=dials (supported for pipeline=dials-aimless).
                 exporter = ExportMtz()
                 exporter.set_working_directory(self.get_working_directory())
                 expt_name = os.path.join(
-                    self.get_working_directory(), "split_%s.expt" % nums
+                    self.get_working_directory(), f"split_{nums}.expt"
                 )
                 refl_name = os.path.join(
-                    self.get_working_directory(), "split_%s.refl" % nums
+                    self.get_working_directory(), f"split_{nums}.refl"
                 )
                 exporter.crystal_name = self._scalr_xname
                 exporter.project_name = self._scalr_pname
@@ -720,7 +718,7 @@ pipeline=dials (supported for pipeline=dials-aimless).
                 auto_logfiler(exporter)
                 mtz_filename = os.path.join(
                     self.get_working_directory(),
-                    scaled_unmerged_mtz_path.rstrip(".mtz") + "_%s.mtz" % dname,
+                    scaled_unmerged_mtz_path.rstrip(".mtz") + f"_{dname}.mtz",
                 )
                 exporter.set_mtz_filename(mtz_filename)
                 self._scalr_scaled_reflection_files["mtz_unmerged"][
@@ -747,8 +745,7 @@ pipeline=dials (supported for pipeline=dials-aimless).
                 auto_logfiler(merger)
                 mtz_filename = os.path.join(
                     self.get_working_directory(),
-                    "%s_%s_scaled_%s.mtz"
-                    % (self._scalr_pname, self._scalr_xname, dname),
+                    f"{self._scalr_pname}_{self._scalr_xname}_scaled_{dname}.mtz",
                 )
                 self._scalr_scaled_refl_files[dname] = mtz_filename
                 self._scalr_scaled_reflection_files["mtz"][dname] = mtz_filename
@@ -826,7 +823,7 @@ pipeline=dials (supported for pipeline=dials-aimless).
             sweep = si.get_integrater().get_integrater_sweep_name()
             tag = f"{pname} {xname} {dname} {sweep} INTEGRATE"
             mtz_filename = os.path.join(
-                self.get_working_directory(), "%s_integrated.mtz" % sweep
+                self.get_working_directory(), f"{sweep}_integrated.mtz"
             )
             exporter.set_mtz_filename(mtz_filename)
             exporter.run()
@@ -983,7 +980,7 @@ Scaling & analysis of unmerged intensities, absorption correction using spherica
             mmcif_out = mmCIF.get_block("xia2")
             cif_out["_computing_cell_refinement"] = mmcif_out[  # pylint: disable=E1137
                 "_computing.cell_refinement"
-            ] = ("DIALS 2theta refinement, %s" % dials.util.version.dials_version())
+            ] = f"DIALS 2theta refinement, {dials.util.version.dials_version()}"
             for key in sorted(cif_in.keys()):
                 cif_out[key] = cif_in[key]
             for key in sorted(mmcif_in.keys()):
@@ -1022,7 +1019,7 @@ Scaling & analysis of unmerged intensities, absorption correction using spherica
                     "angle_gamma",
                 ],
             ):
-                cif_out["_cell_%s" % cifname] = cell  # pylint: disable=E1137
+                cif_out[f"_cell_{cifname}"] = cell  # pylint: disable=E1137
 
         logger.debug("%7.3f %7.3f %7.3f %7.3f %7.3f %7.3f" % self._scalr_cell)
 
@@ -1087,7 +1084,7 @@ Scaling & analysis of unmerged intensities, absorption correction using spherica
 
         auto_logfiler(export, "EXPORTMTZ")
         mtz_filename = os.path.join(
-            self.get_working_directory(), "%s.mtz" % sweep_info.get_sweep_name()
+            self.get_working_directory(), f"{sweep_info.get_sweep_name()}.mtz"
         )
         export.set_mtz_filename(mtz_filename)
         export.run()
@@ -1140,10 +1137,10 @@ class DialsScalerHelper:
             si = sweep_handler.get_sweep_information(epoch)
             nums = fmt % i
             si.set_reflections(
-                os.path.join(self.get_working_directory(), "split_%s.refl" % nums)
+                os.path.join(self.get_working_directory(), f"split_{nums}.refl")
             )
             si.set_experiments(
-                os.path.join(self.get_working_directory(), "split_%s.expt" % nums)
+                os.path.join(self.get_working_directory(), f"split_{nums}.expt")
             )
         return sweep_handler
 

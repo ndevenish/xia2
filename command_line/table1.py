@@ -50,20 +50,20 @@ def table1_tex(crystal_params, merging_stats):
             independent = (1, 2)
 
         if 0 in independent:
-            cell_tmp += "a=%.5f, " % cell[0]
+            cell_tmp += f"a={cell[0]:.5f}, "
         else:
             cell_tmp += "a="
         if 1 in independent:
-            cell_tmp += "b=%.5f, " % cell[1]
+            cell_tmp += f"b={cell[1]:.5f}, "
         else:
             cell_tmp += "b="
-        cell_tmp += "c=%.5f" % cell[2]
+        cell_tmp += f"c={cell[2]:.5f}"
         if 3 in independent:
-            cell_tmp += ", \\alpha=%.5f" % cell[3]
+            cell_tmp += f", \\alpha={cell[3]:.5f}"
         if 4 in independent:
-            cell_tmp += ", \\beta=%.5f" % cell[4]
+            cell_tmp += f", \\beta={cell[4]:.5f}"
         if 5 in independent:
-            cell_tmp += ", \\gamma=%.5f" % cell[5]
+            cell_tmp += f", \\gamma={cell[5]:.5f}"
         cell_tmp += "$"
         cell_str.append(cell_tmp)
     print(" & ".join(cell_str) + " \\\\")
@@ -78,7 +78,7 @@ def table1_tex(crystal_params, merging_stats):
             low = ms[name]["Low resolution limit"]
             high = ms[name]["High resolution limit"]
             resolution_str.append(
-                "%.2f-%.2f (%.2f-%.2f)" % (low[0], high[0], low[2], high[2])
+                f"{low[0]:.2f}-{high[0]:.2f} ({low[2]:.2f}-{high[2]:.2f})"
             )
 
     print(" & ".join(resolution_str) + " \\\\")
@@ -104,7 +104,7 @@ def table1_tex(crystal_params, merging_stats):
         for ms in merging_stats:
             for name in ms:
                 data = ms[name][p]
-                magic_str.append(("%s (%s)" % (fmt, fmt)) % (data[0] * m, data[2] * m))
+                magic_str.append(f"{fmt} ({fmt})" % (data[0] * m, data[2] * m))
 
         print(" & ".join(magic_str) + " \\\\")
 

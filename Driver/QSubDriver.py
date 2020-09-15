@@ -21,7 +21,7 @@ def get_qsub_command():
 class QSubDriver(DefaultDriver):
     def __init__(self):
         if os.name != "posix":
-            raise RuntimeError('os "%s" not supported' % os.name)
+            raise RuntimeError(f'os "{os.name}" not supported')
 
         super().__init__()
 
@@ -39,7 +39,7 @@ class QSubDriver(DefaultDriver):
 
     def set_qsub_name(self, name):
         """Set the name to something sensible."""
-        self._script_name = "J%s" % name
+        self._script_name = f"J{name}"
 
     def start(self):
         """This is pretty meaningless in terms of running things through
@@ -59,7 +59,7 @@ class QSubDriver(DefaultDriver):
         for o in sge_stderr_list:
             if "command not found" in o:
                 missing_program = o.split(":")[2].strip()
-                raise RuntimeError('executable "%s" missing' % missing_program)
+                raise RuntimeError(f'executable "{missing_program}" missing')
 
     def _input(self, record):
         self._script_standard_input.append(record)
@@ -118,7 +118,7 @@ class QSubDriver(DefaultDriver):
                     "-pe",
                     "smp",
                     "%d" % self._cpu_threads,
-                    "%s.sh" % script_name,
+                    f"{script_name}.sh",
                 ],
                 cwd=self._working_directory,
                 stdout=subprocess.PIPE,
@@ -126,7 +126,7 @@ class QSubDriver(DefaultDriver):
             )
         else:
             pipe = subprocess.Popen(
-                qsub_command + ["-V", "-cwd", "%s.sh" % script_name],
+                qsub_command + ["-V", "-cwd", f"{script_name}.sh"],
                 cwd=self._working_directory,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
@@ -156,7 +156,7 @@ class QSubDriver(DefaultDriver):
 
         while True:
             pipe = subprocess.Popen(
-                ["qstat", "-j", "%s" % job_id],
+                ["qstat", "-j", f"{job_id}"],
                 cwd=self._working_directory,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
@@ -208,7 +208,7 @@ class QSubDriver(DefaultDriver):
 
         # set this up for reading the "standard output" of the job.
         self._output_file = open(
-            os.path.join(self._working_directory, "%s.xout" % script_name)
+            os.path.join(self._working_directory, f"{script_name}.xout")
         )
 
         # at this stage I should delete the sge specific files defined

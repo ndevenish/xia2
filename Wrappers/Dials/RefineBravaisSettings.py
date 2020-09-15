@@ -62,13 +62,13 @@ def RefineBravaisSettings(DriverType=None):
             self.add_command_line("best_monoclinic_beta=False")
             # self.add_command_line('reflections_per_degree=10')
             if self._detector_fix:
-                self.add_command_line("detector.fix=%s" % self._detector_fix)
+                self.add_command_line(f"detector.fix={self._detector_fix}")
             if self._beam_fix:
-                self.add_command_line("beam.fix=%s" % self._beam_fix)
+                self.add_command_line(f"beam.fix={self._beam_fix}")
             # self.add_command_line('engine=GaussNewton')
             if self._close_to_spindle_cutoff is not None:
                 self.add_command_line(
-                    "close_to_spindle_cutoff=%f" % self._close_to_spindle_cutoff
+                    f"close_to_spindle_cutoff={self._close_to_spindle_cutoff:f}"
                 )
 
             self.start()

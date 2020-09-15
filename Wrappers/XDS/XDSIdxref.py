@@ -268,11 +268,11 @@ def XDSIdxref(DriverType=None, params=None):
             if "AXIS" in refine_params and (max_frame - min_frame) * phi_width < 5.0:
                 refine_params.remove("AXIS")
 
-            xds_inp.write("REFINE(IDXREF)=%s\n" % " ".join(refine_params))
+            xds_inp.write(f"REFINE(IDXREF)={' '.join(refine_params)}\n")
 
             if self._starting_frame and self._starting_angle:
                 xds_inp.write("STARTING_FRAME=%d\n" % self._starting_frame)
-                xds_inp.write("STARTING_ANGLE=%f\n" % self._starting_angle)
+                xds_inp.write(f"STARTING_ANGLE={self._starting_angle:f}\n")
 
             # FIXME this looks like a potential bug - what will
             # happen if the input lattice has not been set??
@@ -284,7 +284,7 @@ def XDSIdxref(DriverType=None, params=None):
             if self._cell:
                 xds_inp.write("SPACE_GROUP_NUMBER=%d\n" % self._symm)
                 cell_format = "%6.2f %6.2f %6.2f %6.2f %6.2f %6.2f"
-                xds_inp.write("UNIT_CELL_CONSTANTS=%s\n" % cell_format % self._cell)
+                xds_inp.write(f"UNIT_CELL_CONSTANTS={cell_format}\n" % self._cell)
 
             if self._a_axis:
                 xds_inp.write("UNIT_CELL_A-AXIS=%.2f %.2f %.2f\n" % tuple(self._a_axis))
@@ -296,13 +296,13 @@ def XDSIdxref(DriverType=None, params=None):
                 xds_inp.write("UNIT_CELL_C-AXIS=%.2f %.2f %.2f\n" % tuple(self._c_axis))
 
             for record in header:
-                xds_inp.write("%s\n" % record)
+                xds_inp.write(f"{record}\n")
 
             name_template = template_to_xds(
                 os.path.join(self.get_directory(), self.get_template())
             )
 
-            record = "NAME_TEMPLATE_OF_DATA_FRAMES=%s\n" % name_template
+            record = f"NAME_TEMPLATE_OF_DATA_FRAMES={name_template}\n"
 
             xds_inp.write(record)
 
@@ -442,7 +442,7 @@ def XDSIdxref(DriverType=None, params=None):
                         if self._symm:
                             if lattice_to_spacegroup_number(lattice) > self._symm:
                                 logger.debug(
-                                    "Ignoring solution with lattice %s" % lattice
+                                    f"Ignoring solution with lattice {lattice}"
                                 )
                                 continue
 
@@ -462,10 +462,7 @@ def XDSIdxref(DriverType=None, params=None):
             if self._symm:
                 assert (
                     self._indexing_solutions
-                ), "No remaining indexing solutions (%s, %s)" % (
-                    s2l(self._symm),
-                    self._symm,
-                )
+                ), f"No remaining indexing solutions ({s2l(self._symm)}, {self._symm})"
             else:
                 assert self._indexing_solutions, "No remaining indexing solutions"
 
@@ -476,7 +473,7 @@ def XDSIdxref(DriverType=None, params=None):
                     if self._indexing_solutions[lattice]["goodness"] > max_p:
                         to_remove.append(lattice)
                 for lattice in to_remove:
-                    logger.debug("Ignoring solution with lattice %s" % lattice)
+                    logger.debug(f"Ignoring solution with lattice {lattice}")
                     del self._indexing_solutions[lattice]
 
             # get the highest symmetry "acceptable" solution
@@ -507,7 +504,7 @@ def XDSIdxref(DriverType=None, params=None):
                         cell = l[1]
 
                         cell_str = "%.2f %.2f %.2f %.2f %.2f %.2f" % cell
-                        logger.debug("Chosen unit cell: %s" % cell_str)
+                        logger.debug(f"Chosen unit cell: {cell_str}")
 
                         self._indxr_lattice = l[0]
                         self._indxr_cell = l[1]

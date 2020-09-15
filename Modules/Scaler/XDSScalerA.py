@@ -120,7 +120,7 @@ class XDSScalerA(Scaler):
                 break
             if record.startswith("!DATA_RANGE"):
                 return list(map(int, record.split()[-2:]))
-        raise RuntimeError("BATCH range not found in %s" % xdsin)
+        raise RuntimeError(f"BATCH range not found in {xdsin}")
 
     def _hklin_to_batch_range(self, hklin):
         from iotbx import mtz
@@ -744,7 +744,7 @@ class XDSScalerA(Scaler):
             sname = intgr.get_integrater_sweep_name()
 
             hklout = os.path.join(
-                self.get_working_directory(), "%s-pointless.mtz" % sname
+                self.get_working_directory(), f"{sname}-pointless.mtz"
             )
             FileHandler.record_temporary_file(hklout)
 
@@ -1070,7 +1070,7 @@ class XDSScalerA(Scaler):
             sname = self._sweep_information[epoch]["sname"]
 
             hkl_copy = os.path.join(
-                self.get_working_directory(), "R_%s" % os.path.split(hklin)[-1]
+                self.get_working_directory(), f"R_{os.path.split(hklin)[-1]}"
             )
 
             if not os.path.exists(hkl_copy):
@@ -1099,7 +1099,7 @@ class XDSScalerA(Scaler):
 
             reasoning_str = ""
             if reasoning:
-                reasoning_str = " (%s)" % reasoning
+                reasoning_str = f" ({reasoning})"
             logger.info(
                 "Resolution for sweep %s/%s: %.2f%s",
                 dname,
@@ -1149,7 +1149,7 @@ class XDSScalerA(Scaler):
 
         sc.set_resolution(highest_resolution)
         sc.set_hklin(self._prepared_reflections)
-        sc.set_new_scales_file("%s_final.scales" % self._scalr_xname)
+        sc.set_new_scales_file(f"{self._scalr_xname}_final.scales")
 
         if sdadd_full == 0.0 and sdb_full == 0.0:
             pass
@@ -1281,13 +1281,13 @@ class XDSScalerA(Scaler):
         self._scalr_scaled_reflection_files["hkl"] = {}
 
         for key, f in self._scalr_scaled_refl_files.items():
-            scaout = "%s.sca" % f[:-4]
+            scaout = f"{f[:-4]}.sca"
 
             self._scalr_scaled_reflection_files["sca"][key] = scaout
             FileHandler.record_data_file(scaout)
 
             if PhilIndex.params.xia2.settings.small_molecule:
-                hklout = "%s.hkl" % f[:-4]
+                hklout = f"{f[:-4]}.hkl"
 
                 m2v = self._factory.Mtz2various()
                 m2v.set_hklin(f)

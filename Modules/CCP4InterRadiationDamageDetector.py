@@ -60,7 +60,7 @@ class CCP4InterRadiationDamageDetector:
         if self._hklin is None:
             raise RuntimeError("hklin not defined")
         if not os.path.exists(self._hklin):
-            raise RuntimeError("hklin %s does not exist" % self._hklin)
+            raise RuntimeError(f"hklin {self._hklin} does not exist")
 
     def set_hklout(self, hklout):
         self._hklout = hklout

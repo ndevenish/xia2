@@ -89,7 +89,7 @@ class XDSIndexerII(XDSIndexer):
         return wedges
 
     def _index_prepare(self):
-        logger.notice(banner("Spotfinding %s" % self.get_indexer_sweep_name()))
+        logger.notice(banner(f"Spotfinding {self.get_indexer_sweep_name()}"))
         super()._index_prepare()
 
         reflections_file = spot_xds_to_reflection_file(
@@ -236,7 +236,7 @@ class XDSIndexerII(XDSIndexer):
                     raise e
 
         FileHandler.record_log_file(
-            "%s INDEX" % self.get_indexer_full_name(),
+            f"{self.get_indexer_full_name()} INDEX",
             os.path.join(self.get_working_directory(), "IDXREF.LP"),
         )
 

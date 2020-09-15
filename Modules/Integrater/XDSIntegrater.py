@@ -204,8 +204,8 @@ class XDSIntegrater(Integrater):
             )
 
         logger.debug("XDS INTEGRATE PREPARE:")
-        logger.debug("Wavelength: %.6f" % self.get_wavelength())
-        logger.debug("Distance: %.2f" % self.get_distance())
+        logger.debug(f"Wavelength: {self.get_wavelength():.6f}")
+        logger.debug(f"Distance: {self.get_distance():.2f}")
 
         idxr = self._intgr_refiner.get_refiner_indexer(self.get_integrater_epoch())
 
@@ -250,7 +250,7 @@ class XDSIntegrater(Integrater):
 
         logger.debug("Files available at the end of XDS integrate prepare:")
         for f in self._xds_data_files:
-            logger.debug("%s" % f)
+            logger.debug(f"{f}")
 
         experiment = self._intgr_refiner.get_refined_experiment_list(
             self.get_integrater_epoch()
@@ -275,7 +275,7 @@ class XDSIntegrater(Integrater):
             self.set_integrater_low_resolution(dmax)
 
             logger.debug(
-                "Low resolution set to: %s" % self.get_integrater_low_resolution()
+                f"Low resolution set to: {self.get_integrater_low_resolution()}"
             )
 
         # delete things we should not know e.g. the postrefined cell from
@@ -390,12 +390,12 @@ class XDSIntegrater(Integrater):
 
         lattice = self._intgr_refiner.get_refiner_lattice()
         if not os.path.exists(
-            os.path.join(self.get_working_directory(), "INTEGRATE-%s.HKL" % lattice)
+            os.path.join(self.get_working_directory(), f"INTEGRATE-{lattice}.HKL")
         ):
             here = self.get_working_directory()
             shutil.copyfile(
                 os.path.join(here, "INTEGRATE.HKL"),
-                os.path.join(here, "INTEGRATE-%s.HKL" % lattice),
+                os.path.join(here, f"INTEGRATE-{lattice}.HKL"),
             )
 
         # record INTEGRATE.HKL
@@ -536,7 +536,7 @@ class XDSIntegrater(Integrater):
                             file=f,
                         )
                 t2 = time.time()
-                logger.debug("Written FILTER.HKL in %.1f seconds" % (t2 - t1))
+                logger.debug(f"Written FILTER.HKL in {t2 - t1:.1f} seconds")
 
         correct = self.Correct()
 
@@ -599,7 +599,7 @@ class XDSIntegrater(Integrater):
             elif lattice[1] == "F":
                 mult = 4
             else:
-                raise RuntimeError("unknown multiplier for lattice %s" % lattice)
+                raise RuntimeError(f"unknown multiplier for lattice {lattice}")
 
             logger.debug("REIDX multiplier for lattice %s: %d" % (lattice, mult))
 
@@ -729,7 +729,7 @@ class XDSIntegrater(Integrater):
 
         angle = rtod * math.fabs(0.5 * math.pi - math.acos(dot / (r * b)))
 
-        logger.debug("Axis misalignment %.2f degrees" % angle)
+        logger.debug(f"Axis misalignment {angle:.2f} degrees")
 
         correct_deviations = (
             correct.get_result("rmsd_pixel"),
@@ -744,8 +744,8 @@ class XDSIntegrater(Integrater):
             phi = math.sqrt(0.05 * 0.05 + p1_deviations[1] * p1_deviations[1])
 
             threshold = PhilIndex.params.xia2.settings.lattice_rejection_threshold
-            logger.debug("RMSD ratio: %.2f" % (correct_deviations[0] / pixel))
-            logger.debug("RMSPhi ratio: %.2f" % (correct_deviations[1] / phi))
+            logger.debug(f"RMSD ratio: {correct_deviations[0] / pixel:.2f}")
+            logger.debug(f"RMSPhi ratio: {correct_deviations[1] / phi:.2f}")
 
             if (
                 correct_deviations[0] / pixel > threshold
@@ -871,7 +871,7 @@ class XDSIntegrater(Integrater):
             if self.get_integrater_spacegroup_number():
                 reindex.set_spacegroup(self.get_integrater_spacegroup_number())
 
-            hklout = "%s_reindex.mtz" % os.path.splitext(integrate_mtz)[0]
+            hklout = f"{os.path.splitext(integrate_mtz)[0]}_reindex.mtz"
 
             reindex.set_hklin(integrate_mtz)
             reindex.set_hklout(hklout)

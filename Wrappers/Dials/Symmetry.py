@@ -120,7 +120,7 @@ def DialsSymmetry(DriverType=None):
                 raise RuntimeError("no lattice to lauegroup mapping")
 
             if lattice not in self._lattice_to_laue:
-                raise RuntimeError("lattice %s not possible" % lattice)
+                raise RuntimeError(f"lattice {lattice} not possible")
             self._input_laue_group = self._lattice_to_laue[lattice]
 
             with open(self._json, "rb") as f:
@@ -171,20 +171,20 @@ def DialsSymmetry(DriverType=None):
                     )
 
                 self.add_command_line(
-                    "output.experiments=%s" % self._output_experiments_filename
+                    f"output.experiments={self._output_experiments_filename}"
                 )
                 self.add_command_line(
-                    "output.reflections=%s" % self._output_reflections_filename
+                    f"output.reflections={self._output_reflections_filename}"
                 )
             if self._laue_group is None:
                 self.add_command_line("laue_group=None")
             if not self._sys_abs_check:
                 self.add_command_line("systematic_absences.check=False")
             self.add_command_line(
-                "relative_length_tolerance=%s" % self._relative_length_tolerance
+                f"relative_length_tolerance={self._relative_length_tolerance}"
             )
             self.add_command_line(
-                "absolute_angle_tolerance=%s" % self._absolute_angle_tolerance
+                f"absolute_angle_tolerance={self._absolute_angle_tolerance}"
             )
             self.add_command_line("best_monoclinic_beta=False")
             if not self._json:
@@ -193,10 +193,10 @@ def DialsSymmetry(DriverType=None):
                     "%d_dials_symmetry.json" % self.get_xpid(),
                 )
 
-            self.add_command_line("output.json=%s" % self._json)
+            self.add_command_line(f"output.json={self._json}")
 
             if self._input_laue_group:
-                self.add_command_line("lattice_group=%s" % self._input_laue_group)
+                self.add_command_line(f"lattice_group={self._input_laue_group}")
 
             self.start()
 

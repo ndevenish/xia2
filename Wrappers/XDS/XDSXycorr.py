@@ -102,17 +102,17 @@ def XDSXycorr(DriverType=None):
             xds_inp.write("JOB=XYCORR\n")
 
             for record in header:
-                xds_inp.write("%s\n" % record)
+                xds_inp.write(f"{record}\n")
 
             if xds_params.geometry_x and xds_params.geometry_y:
-                xds_inp.write("X-GEO_CORR=%s\n" % xds_params.geometry_x)
-                xds_inp.write("Y-GEO_CORR=%s\n" % xds_params.geometry_y)
+                xds_inp.write(f"X-GEO_CORR={xds_params.geometry_x}\n")
+                xds_inp.write(f"Y-GEO_CORR={xds_params.geometry_y}\n")
 
             name_template = template_to_xds(
                 os.path.join(self.get_directory(), self.get_template())
             )
 
-            record = "NAME_TEMPLATE_OF_DATA_FRAMES=%s\n" % name_template
+            record = f"NAME_TEMPLATE_OF_DATA_FRAMES={name_template}\n"
 
             xds_inp.write(record)
 

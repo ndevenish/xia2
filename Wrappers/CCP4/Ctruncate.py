@@ -179,7 +179,7 @@ def Ctruncate(DriverType=None):
                     self._loggraph[current]["columns"] = tokens[1].split()
 
                     if len(tokens) < 4:
-                        raise RuntimeError('loggraph "%s" broken' % current)
+                        raise RuntimeError(f'loggraph "{current}" broken')
 
                     data = tokens[3].split("\n")
 

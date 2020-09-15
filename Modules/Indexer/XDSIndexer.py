@@ -180,7 +180,7 @@ class XDSIndexer(IndexerSingleSweep):
                     break
 
             if not remove:
-                spot_xds.append("%s" % record)
+                spot_xds.append(f"{record}")
 
         logger.debug("Removed %d peaks from SPOT.XDS", removed)
         masked_spot_xds = (
@@ -287,7 +287,7 @@ class XDSIndexer(IndexerSingleSweep):
 
         if self._indxr_images == []:
             _select_images_function = getattr(
-                self, "_index_select_images_%s" % self._index_select_images
+                self, f"_index_select_images_{self._index_select_images}"
             )
             wedges = _select_images_function()
             for wedge in wedges:
@@ -340,7 +340,7 @@ class XDSIndexer(IndexerSingleSweep):
             imageset = self._indxr_imagesets[0]
             xsweep = self._indxr_sweeps[0]
             sweep_filename = os.path.join(
-                self.get_working_directory(), "%s_indexed.expt" % xsweep.get_name()
+                self.get_working_directory(), f"{xsweep.get_name()}_indexed.expt"
             )
             ExperimentListFactory.from_imageset_and_crystal(imageset, None).as_file(
                 sweep_filename
@@ -355,7 +355,7 @@ class XDSIndexer(IndexerSingleSweep):
             shadow_plot.set_json_filename(
                 os.path.join(
                     self.get_working_directory(),
-                    "%s_shadow_plot.json" % shadow_plot.get_xpid(),
+                    f"{shadow_plot.get_xpid()}_shadow_plot.json",
                 )
             )
             shadow_plot.run()
@@ -602,7 +602,7 @@ class XDSIndexer(IndexerSingleSweep):
                     raise e
 
         FileHandler.record_log_file(
-            "%s INDEX" % self.get_indexer_full_name(),
+            f"{self.get_indexer_full_name()} INDEX",
             os.path.join(self.get_working_directory(), "IDXREF.LP"),
         )
 
@@ -678,7 +678,7 @@ class XDSIndexer(IndexerSingleSweep):
 
                 logger.debug("Detected pseudocentred lattice")
                 logger.debug(
-                    "Inserting solution: %s " % lattice2
+                    f"Inserting solution: {lattice2} "
                     + "%6.2f %6.2f %6.2f %6.2f %6.2f %6.2f" % cell2
                 )
 

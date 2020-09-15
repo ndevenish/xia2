@@ -114,7 +114,7 @@ class XProject:
         return cls.from_dict(obj, base_path=base_path)
 
     def get_output(self):
-        result = "Project: %s\n" % self._name
+        result = f"Project: {self._name}\n"
 
         for crystal in self._crystals:
             result += self._crystals[crystal].get_output()
@@ -123,7 +123,7 @@ class XProject:
     def summarise(self):
         """Produce summary information."""
 
-        summary = ["Project: %s" % self._name]
+        summary = [f"Project: {self._name}"]
         for crystal in self._crystals:
             for record in self._crystals[crystal].summarise():
                 summary.append(record)
@@ -141,7 +141,7 @@ class XProject:
 
         if xcrystal.get_name() in self._crystals:
             raise RuntimeError(
-                "XCrystal with name %s already exists" % xcrystal.get_name()
+                f"XCrystal with name {xcrystal.get_name()} already exists"
             )
 
         self._crystals[xcrystal.get_name()] = xcrystal
@@ -283,7 +283,7 @@ class XProject:
                             sample_name = list(crystals[crystal]["samples"])[0]
                         else:
                             raise RuntimeError(
-                                "No sample given for sweep %s" % sweep_name
+                                f"No sample given for sweep {sweep_name}"
                             )
 
                     xsample = xc.get_xsample(sample_name)
@@ -300,9 +300,7 @@ class XProject:
                             dmin = min(values)
                             dmax = max(values)
                         else:
-                            raise RuntimeError(
-                                "bad resolution for sweep %s" % sweep_name
-                            )
+                            raise RuntimeError(f"bad resolution for sweep {sweep_name}")
 
                     if sweep_info["wavelength"] == wavelength:
                         frames_to_process = sweep_info.get("start_end")

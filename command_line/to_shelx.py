@@ -72,7 +72,7 @@ Winter, G. (2010) Journal of Applied Crystallography 43
                 "volume",
             ],
         ):
-            block["_cell_%s" % cifname] = format_value_with_esd(
+            block[f"_cell_{cifname}"] = format_value_with_esd(
                 unit_cell_data["solution_constrained"][parameter]["mean"],
                 unit_cell_data["solution_constrained"][parameter][
                     "population_standard_deviation"
@@ -137,7 +137,7 @@ Winter, G. (2010) Journal of Applied Crystallography 43
 
     cif = iotbx.cif.model.cif()
     cif[prefix] = block
-    with open("%s.cif_xia2" % prefix, "w") as fh:
+    with open(f"{prefix}.cif_xia2", "w") as fh:
         cif.show(out=fh)
 
 
@@ -161,7 +161,7 @@ def to_shelx(hklin, prefix, compound="", options=None):
     indices = reader.file_content().extract_original_index_miller_indices()
     intensities = intensities.customized_copy(indices=indices, info=intensities.info())
 
-    with open("%s.hkl" % prefix, "w") as hkl_file_handle:
+    with open(f"{prefix}.hkl", "w") as hkl_file_handle:
         # limit values to 4 digits (before decimal point), as this is what shelxt
         # writes in its output files, and shelxl seems to read. ShelXL apparently
         # does not read values >9999 properly
@@ -180,7 +180,7 @@ def to_shelx(hklin, prefix, compound="", options=None):
     if wavelength is None:
         mtz_crystals = mtz_object.crystals()
         wavelength = mtz_crystals[1].datasets()[0].wavelength()
-    print("Experimental wavelength: %.3f Angstroms" % wavelength)
+    print(f"Experimental wavelength: {wavelength:.3f} Angstroms")
 
     unit_cell_dims = None
     unit_cell_esds = None
@@ -248,7 +248,7 @@ def to_shelx(hklin, prefix, compound="", options=None):
     cb_op = crystal_symm.change_of_basis_op_to_reference_setting()
 
     if cb_op.c().r().as_hkl() == "h,k,l":
-        print("Change of basis to reference setting: %s" % cb_op)
+        print(f"Change of basis to reference setting: {cb_op}")
         crystal_symm = crystal_symm.change_basis(cb_op)
         if str(cb_op) != "a,b,c":
             unit_cell_dims = None
@@ -263,7 +263,7 @@ def to_shelx(hklin, prefix, compound="", options=None):
             xray_structure.add_scatterer(
                 scatterer(label=element, occupancy=result[element])
             )
-    open("%s.ins" % prefix, "w").write(
+    open(f"{prefix}.ins", "w").write(
         "".join(
             writer.generator(
                 xray_structure,
@@ -307,7 +307,7 @@ if __name__ == "__main__":
     options, args = parser.parse_args()
     if len(args) > 2:
         atoms = "".join(args[2:])
-        print("Atoms: %s" % atoms)
+        print(f"Atoms: {atoms}")
         to_shelx(args[0], args[1], atoms, options)
     elif len(args) == 2:
         print(options)

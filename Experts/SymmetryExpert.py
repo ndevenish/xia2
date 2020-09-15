@@ -55,6 +55,6 @@ def lattice_to_spacegroup_number(lattice):
     possible for a given Bravais lattice."""
 
     if lattice not in lattice_to_spacegroup:
-        raise RuntimeError("lattice %s unknown" % lattice)
+        raise RuntimeError(f"lattice {lattice} unknown")
 
     return lattice_to_spacegroup[lattice]

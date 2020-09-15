@@ -41,9 +41,9 @@ def check_environment():
     for k in ccp4_keys:
         v = os.getenv(k)
         if not v:
-            raise RuntimeError("%s not defined - is CCP4 set up?" % k)
+            raise RuntimeError(f"{k} not defined - is CCP4 set up?")
         if not v == v.strip():
-            raise RuntimeError('spaces around "%s"' % v)
+            raise RuntimeError(f'spaces around "{v}"')
         logger.info(f"{k} => {v}")
 
     from xia2.Handlers.Flags import Flags
@@ -151,7 +151,7 @@ def get_command_line():
 
 def write_citations():
     # tell the user which programs were used...
-    logger.info("XIA2 used... %s" % ", ".join(Citations.get_programs()))
+    logger.info(f"XIA2 used... {', '.join(Citations.get_programs())}")
     logger.info("Here are the appropriate citations (BIBTeX in xia2-citations.bib.)")
 
     for citation in Citations.get_citations_acta():
@@ -161,7 +161,7 @@ def write_citations():
     out = open("xia2-citations.bib", "w")
 
     for citation in Citations.get_citations():
-        out.write("%s\n" % citation)
+        out.write(f"{citation}\n")
 
     out.close()
 
@@ -169,7 +169,7 @@ def write_citations():
 def help():
     """Print out some help for xia2."""
 
-    sys.stdout.write("%s\n" % Version)
+    sys.stdout.write(f"{Version}\n")
 
     # FIXME also needs to make reference to Phil input
     # FIXME ideally should move all command-line functionality over to Phil...

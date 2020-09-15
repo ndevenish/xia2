@@ -77,7 +77,7 @@ def visualise_db(timing_db):
     relative_start_time = ordered_by_start[0][0]
     total_runtime = ordered_by_end[-1][0] - relative_start_time
     index_width = len(str(len(timing_db))) + 1
-    time_width = len("%.1f" % total_runtime)
+    time_width = len(f"{total_runtime:.1f}")
     output = []
     running_tasks = []
 
@@ -88,9 +88,9 @@ def visualise_db(timing_db):
         t["runtime"] = t["time_end"] - t["time_start"]
         t["short_command"] = t["command"].split(" ")[0]
         if t["runtime"] <= 90:
-            t["runtime_readable"] = "%.1fs" % t["runtime"]
+            t["runtime_readable"] = f"{t['runtime']:.1f}s"
         else:
-            t["runtime_readable"] = "%.1fm" % (t["runtime"] / 60)
+            t["runtime_readable"] = f"{t['runtime'] / 60:.1f}m"
 
     # highlight any significant unaccounted periods which either take more
     # than 0.5% of the total runtime or would be featured in the top 10
@@ -166,9 +166,9 @@ def visualise_db(timing_db):
                     "index_readable": "T%d " % (len(thinking_breaks) + 1),
                 }
                 if tbreak["runtime"] <= 90:
-                    tbreak["runtime_readable"] = "%.1fs" % tbreak["runtime"]
+                    tbreak["runtime_readable"] = f"{tbreak['runtime']:.1f}s"
                 else:
-                    tbreak["runtime_readable"] = "%.1fm" % (tbreak["runtime"] / 60)
+                    tbreak["runtime_readable"] = f"{tbreak['runtime'] / 60:.1f}m"
                 tbreak[
                     "command"
                 ] = "xia2 thinking time ({tbreak[runtime_readable]})".format(

@@ -57,7 +57,7 @@ def template_regex(filename):
         break
 
     if not template:
-        raise RuntimeError("template not recognised for %s" % filename)
+        raise RuntimeError(f"template not recognised for {filename}")
 
     return template, int(digits)
 
@@ -191,7 +191,7 @@ def ensure_no_batches_numbered_zero(template, images, offset):
 
     while min(images) == 0:
         if not prefix[-1] in string.digits:
-            raise RuntimeError("image 0 found matching %s" % template)
+            raise RuntimeError(f"image 0 found matching {template}")
 
         add = int(prefix[-1]) * int(math.pow(10, hashes))
         offset -= add
@@ -199,7 +199,7 @@ def ensure_no_batches_numbered_zero(template, images, offset):
         prefix = prefix[:-1]
         images = [add + i for i in images]
 
-    template = "%s%s%s" % (prefix, "#" * hashes, suffix)
+    template = f"{prefix}{'#' * hashes}{suffix}"
 
     return template, images, offset
 

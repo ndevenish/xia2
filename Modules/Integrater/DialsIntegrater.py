@@ -173,8 +173,8 @@ class DialsIntegrater(Integrater):
             self.set_integrater_wedge(min(images), max(images))
 
         logger.debug("DIALS INTEGRATE PREPARE:")
-        logger.debug("Wavelength: %.6f" % self.get_wavelength())
-        logger.debug("Distance: %.2f" % self.get_distance())
+        logger.debug(f"Wavelength: {self.get_wavelength():.6f}")
+        logger.debug(f"Distance: {self.get_distance():.2f}")
 
         if not self.get_integrater_low_resolution():
 
@@ -184,7 +184,7 @@ class DialsIntegrater(Integrater):
             self.set_integrater_low_resolution(dmax)
 
             logger.debug(
-                "Low resolution set to: %s" % self.get_integrater_low_resolution()
+                f"Low resolution set to: {self.get_integrater_low_resolution()}"
             )
 
         ## copy the data across
@@ -213,7 +213,7 @@ class DialsIntegrater(Integrater):
 
         logger.debug("Files available at the end of DIALS integrate prepare:")
         for f in self._data_files:
-            logger.debug("%s" % f)
+            logger.debug(f"{f}")
 
         self.set_detector(experiment.detector)
         self.set_beam_obj(experiment.beam)
@@ -340,7 +340,7 @@ class DialsIntegrater(Integrater):
             exporter = self.ExportMtz()
             exporter.set_reflections_filename(self._intgr_integrated_reflections)
             mtz_filename = os.path.join(
-                self.get_working_directory(), "%s_integrated.mtz" % "dials"
+                self.get_working_directory(), f"{'dials'}_integrated.mtz"
             )
             exporter.set_mtz_filename(mtz_filename)
             exporter.run()
@@ -422,7 +422,7 @@ class DialsIntegrater(Integrater):
                     )
                 )
 
-            hklout = "%s_reindex.mtz" % hklin[:-4]
+            hklout = f"{hklin[:-4]}_reindex.mtz"
             reindex.set_hklin(hklin)
             reindex.set_hklout(hklout)
             reindex.reindex()

@@ -67,7 +67,7 @@ def Reindex(DriverType=None):
             sg_t = space_group(space_group_symbols(str(self._spacegroup))).type()
 
             if self._operator:
-                self.input("reindex %s" % str(self._operator))
+                self.input(f"reindex {str(self._operator)}")
             if self._spacegroup:
                 self.input("symmetry %d" % sg_t.number())
             self.close_wait()
@@ -134,11 +134,11 @@ def Reindex(DriverType=None):
                 else:
                     spacegroup = self._spacegroup
 
-                self.input("spacegroup '%s'" % spacegroup)
+                self.input(f"spacegroup '{spacegroup}'")
 
             if self._operator:
                 # likewise
-                self.input("reindex '%s'" % self._operator)
+                self.input(f"reindex '{self._operator}'")
             else:
                 self.input("reindex 'h,k,l'")
 

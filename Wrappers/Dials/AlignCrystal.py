@@ -34,8 +34,8 @@ def AlignCrystal(DriverType=None):
             logger.debug("Running dials.align_crystal")
 
             self.clear_command_line()
-            self.add_command_line("experiments=%s" % self._experiments_filename)
-            self.add_command_line("output.json=%s" % self._json_filename)
+            self.add_command_line(f"experiments={self._experiments_filename}")
+            self.add_command_line(f"output.json={self._json_filename}")
             self.start()
             self.close_wait()
             self.check_for_errors()

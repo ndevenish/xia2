@@ -70,7 +70,7 @@ def xds_check_version_supported(xds_output_list):
 
     for record in xds_output_list:
         if "Sorry, license expired" in record:
-            raise RuntimeError("installed XDS expired on %s" % record.split()[-1])
+            raise RuntimeError(f"installed XDS expired on {record.split()[-1]}")
 
 
 xds_error_database = {
@@ -87,7 +87,7 @@ def xds_check_error(xds_output_list):
             message = line.split("!!!")[2].strip().lower()
             if message in xds_error_database:
                 message = xds_error_database[message]
-            error = "[XDS] %s" % message
+            error = f"[XDS] {message}"
             raise XDSException(error)
 
 
@@ -242,7 +242,7 @@ def imageset_to_xds(
     if hasattr(beam, "get_polarization_fraction"):
         R = converter.imagecif_to_xds_transformation_matrix
         result.append(
-            "FRACTION_OF_POLARIZATION= %.3f" % beam.get_polarization_fraction()
+            f"FRACTION_OF_POLARIZATION= {beam.get_polarization_fraction():.3f}"
         )
         result.append(
             "POLARIZATION_PLANE_NORMAL= %.3f %.3f %.3f"
@@ -266,7 +266,7 @@ def imageset_to_xds(
             logger.debug(
                 "Error occured during sensor thickness determination. Assuming default PILATUS 0.32mm"
             )
-        result.append("SENSOR_THICKNESS=%f" % thickness)
+        result.append(f"SENSOR_THICKNESS={thickness:f}")
 
     #  FIXME: Sensor absorption coefficient calculation probably requires a more general solution
     #  if converter.get_detector()[0].get_material() == 'CdTe':
@@ -288,7 +288,7 @@ def imageset_to_xds(
                 "DIRECTION_OF_SEGMENT_Y-AXIS= %.3f %.3f %.3f"
                 % converter.panel_y_axis[panel_id]
             )
-            result.append("SEGMENT_DISTANCE= %.3f" % converter.panel_distance[panel_id])
+            result.append(f"SEGMENT_DISTANCE= {converter.panel_distance[panel_id]:.3f}")
             result.append(
                 "SEGMENT_ORGX= %.1f SEGMENT_ORGY= %.1f"
                 % converter.panel_origin[panel_id]
@@ -480,13 +480,13 @@ def find_hdf5_lib(template=None):
 
     if os.path.isabs(plugin_name):
         if not os.path.exists(plugin_name):
-            raise Sorry("Cannot find plugin %s" % plugin_name)
-        __hdf5_lib = "LIB=%s\n" % plugin_name
+            raise Sorry(f"Cannot find plugin {plugin_name}")
+        __hdf5_lib = f"LIB={plugin_name}\n"
         return __hdf5_lib
 
     for d in os.environ["PATH"].split(os.pathsep):
         if os.path.exists(os.path.join(d, plugin_name)):
-            __hdf5_lib = "LIB=%s\n" % os.path.join(d, plugin_name)
+            __hdf5_lib = f"LIB={os.path.join(d, plugin_name)}\n"
             return __hdf5_lib
     return ""
 

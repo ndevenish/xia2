@@ -63,23 +63,23 @@ class ISPyBXmlHandler:
     def write_cell(fout, cell):
         """Write out a UNIT CELL as XML..."""
 
-        fout.write("<cell_a>%f</cell_a>" % cell[0])
-        fout.write("<cell_b>%f</cell_b>" % cell[1])
-        fout.write("<cell_c>%f</cell_c>" % cell[2])
-        fout.write("<cell_alpha>%f</cell_alpha>" % cell[3])
-        fout.write("<cell_beta>%f</cell_beta>" % cell[4])
-        fout.write("<cell_gamma>%f</cell_gamma>" % cell[5])
+        fout.write(f"<cell_a>{cell[0]:f}</cell_a>")
+        fout.write(f"<cell_b>{cell[1]:f}</cell_b>")
+        fout.write(f"<cell_c>{cell[2]:f}</cell_c>")
+        fout.write(f"<cell_alpha>{cell[3]:f}</cell_alpha>")
+        fout.write(f"<cell_beta>{cell[4]:f}</cell_beta>")
+        fout.write(f"<cell_gamma>{cell[5]:f}</cell_gamma>")
 
     @staticmethod
     def write_refined_cell(fout, cell):
         """Write out a REFINED UNIT CELL as XML..."""
 
-        fout.write("<refinedCell_a>%f</refinedCell_a>" % cell[0])
-        fout.write("<refinedCell_b>%f</refinedCell_b>" % cell[1])
-        fout.write("<refinedCell_c>%f</refinedCell_c>" % cell[2])
-        fout.write("<refinedCell_alpha>%f</refinedCell_alpha>" % cell[3])
-        fout.write("<refinedCell_beta>%f</refinedCell_beta>" % cell[4])
-        fout.write("<refinedCell_gamma>%f</refinedCell_gamma>" % cell[5])
+        fout.write(f"<refinedCell_a>{cell[0]:f}</refinedCell_a>")
+        fout.write(f"<refinedCell_b>{cell[1]:f}</refinedCell_b>")
+        fout.write(f"<refinedCell_c>{cell[2]:f}</refinedCell_c>")
+        fout.write(f"<refinedCell_alpha>{cell[3]:f}</refinedCell_alpha>")
+        fout.write(f"<refinedCell_beta>{cell[4]:f}</refinedCell_beta>")
+        fout.write(f"<refinedCell_gamma>{cell[5]:f}</refinedCell_gamma>")
 
     def write_scaling_statistics(self, fout, scaling_stats_type, stats_dict):
         """Write out the SCALING STATISTICS block..."""
@@ -87,7 +87,7 @@ class ISPyBXmlHandler:
         fout.write("<AutoProcScalingStatistics>\n")
 
         fout.write(
-            "<scalingStatisticsType>%s</scalingStatisticsType>\n" % scaling_stats_type
+            f"<scalingStatisticsType>{scaling_stats_type}</scalingStatisticsType>\n"
         )
 
         for name in stats_dict:
@@ -99,7 +99,7 @@ class ISPyBXmlHandler:
             if out_name in ["nTotalObservations", "nTotalUniqueObservations"]:
                 fout.write("<%s>%d</%s>" % (out_name, int(stats_dict[name]), out_name))
             else:
-                fout.write("<%s>%s</%s>" % (out_name, stats_dict[name], out_name))
+                fout.write(f"<{out_name}>{stats_dict[name]}</{out_name}>")
 
         fout.write("</AutoProcScalingStatistics>\n")
 
@@ -119,7 +119,7 @@ class ISPyBXmlHandler:
             cell = xcrystal.get_cell()
             spacegroup = xcrystal.get_likely_spacegroups()[0]
 
-            fout.write("<AutoProc><spaceGroup>%s</spaceGroup>" % spacegroup)
+            fout.write(f"<AutoProc><spaceGroup>{spacegroup}</spaceGroup>")
             self.write_refined_cell(fout, cell)
             fout.write("</AutoProc>")
 
@@ -183,7 +183,7 @@ class ISPyBXmlHandler:
                             sweep.get_directory(), sweep.get_template()
                         )
                     fout.write(
-                        "<Image><fileName>%s</fileName>" % os.path.split(image_name)[-1]
+                        f"<Image><fileName>{os.path.split(image_name)[-1]}</fileName>"
                     )
                     fout.write(
                         "<fileLocation>%s</fileLocation></Image>"
@@ -212,8 +212,8 @@ class ISPyBXmlHandler:
 
                     beam = indxr.get_indexer_beam_centre_raw_image()
 
-                    fout.write("<refinedXBeam>%f</refinedXBeam>" % beam[0])
-                    fout.write("<refinedYBeam>%f</refinedYBeam>" % beam[1])
+                    fout.write(f"<refinedXBeam>{beam[0]:f}</refinedXBeam>")
+                    fout.write(f"<refinedYBeam>{beam[1]:f}</refinedYBeam>")
 
                     fout.write("</AutoProcIntegration>\n")
                     fout.write("</AutoProcIntegrationContainer>\n")
@@ -233,7 +233,7 @@ class ISPyBXmlHandler:
                 "<processingCommandLine>%s</processingCommandLine>"
                 % sanitize(command_line)
             )
-            fout.write("<processingPrograms>xia2 %s</processingPrograms>" % pipeline)
+            fout.write(f"<processingPrograms>xia2 {pipeline}</processingPrograms>")
             fout.write("</AutoProcProgram>")
 
             data_directory = self._project.path / "DataFiles"
@@ -272,14 +272,14 @@ class ISPyBXmlHandler:
                     "</fileType><fileName>%s</fileName>"
                     % os.path.split(str(merging_stats_json))[-1]
                 )
-                fout.write("<filePath>%s</filePath>" % sanitize(str(log_directory)))
+                fout.write(f"<filePath>{sanitize(str(log_directory))}</filePath>")
                 fout.write("</AutoProcProgramAttachment>\n")
 
             # add the xia2.txt file...
 
             fout.write("<AutoProcProgramAttachment><fileType>Log")
             fout.write("</fileType><fileName>xia2.txt</fileName>")
-            fout.write("<filePath>%s</filePath>" % sanitize(os.getcwd()))
+            fout.write(f"<filePath>{sanitize(os.getcwd())}</filePath>")
             fout.write("</AutoProcProgramAttachment>\n")
 
             fout.write("</AutoProcProgramContainer>")
@@ -302,7 +302,7 @@ class ISPyBXmlHandler:
 
             tmp["spaceGroup"] = spacegroup
             for name, value in zip(["a", "b", "c", "alpha", "beta", "gamma"], cell):
-                tmp["refinedCell_%s" % name] = value
+                tmp[f"refinedCell_{name}"] = value
 
             result["AutoProcScalingContainer"] = {}
             tmp = result["AutoProcScalingContainer"]
@@ -377,7 +377,7 @@ class ISPyBXmlHandler:
                     for name, value in zip(
                         ["a", "b", "c", "alpha", "beta", "gamma"], cell
                     ):
-                        intgr_tmp["cell_%s" % name] = value
+                        intgr_tmp[f"cell_{name}"] = value
 
                     # FIXME this is naughty
                     indxr = sweep._get_indexer()

@@ -57,7 +57,7 @@ def rebatch(
                     batch_column = column
 
     if not batch_column:
-        raise RuntimeError("no BATCH column found in %s" % hklin)
+        raise RuntimeError(f"no BATCH column found in {hklin}")
 
     batches = [b.num() for b in mtz_obj.batches()]
     batch_column_values = batch_column.extract_values(not_a_number_substitute=-1)

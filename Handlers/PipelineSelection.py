@@ -26,24 +26,24 @@ def check(key, value):
 
     if key == "indexer":
         if value not in allowed_indexers:
-            raise RuntimeError("indexer %s unknown" % value)
+            raise RuntimeError(f"indexer {value} unknown")
         return value
 
     if key == "refiner":
         if value not in allowed_refiners:
-            raise RuntimeError("refiner %s unknown" % value)
+            raise RuntimeError(f"refiner {value} unknown")
         return value
 
     if key == "integrater":
         if value not in allowed_integraters:
-            raise RuntimeError("integrater %s unknown" % value)
+            raise RuntimeError(f"integrater {value} unknown")
         if value == "xds":
             return "xdsr"
         return value
 
     if key == "scaler":
         if value not in allowed_scalers:
-            raise RuntimeError("scaler %s unknown" % value)
+            raise RuntimeError(f"scaler {value} unknown")
         return value
 
 
@@ -68,9 +68,7 @@ def add_preference(key, value):
 
     if key in preferences:
         if preferences[key] != value:
-            raise RuntimeError(
-                "setting %s to %s: already %s" % (key, value, preferences[key])
-            )
+            raise RuntimeError(f"setting {key} to {value}: already {preferences[key]}")
 
     preferences[key] = value
 

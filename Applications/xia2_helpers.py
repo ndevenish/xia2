@@ -44,7 +44,7 @@ def process_one_sweep(args):
     xia2_integrate.set_working_directory(tmpdir)
     xia2_integrate.add_command_line_args(args.command_line_args)
     xia2_integrate.set_phil_file(os.path.join(curdir, "xia2-working.phil"))
-    xia2_integrate.add_command_line_args(["sweep.id=%s" % sweep_id])
+    xia2_integrate.add_command_line_args([f"sweep.id={sweep_id}"])
     xia2_integrate.set_nproc(nproc)
     xia2_integrate.set_njob(1)
     xia2_integrate.set_mp_mode("serial")
@@ -81,7 +81,7 @@ def process_one_sweep(args):
             print(line)
 
         if os.path.exists(xia2_json):
-            new_json = os.path.join(curdir, "xia2-%s.json" % sweep_id)
+            new_json = os.path.join(curdir, f"xia2-{sweep_id}.json")
 
             shutil.copyfile(xia2_json, new_json)
 

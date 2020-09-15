@@ -17,7 +17,7 @@ class _DecoratorFactory:
         if decorator_type == "ccp4":
             return CCP4DecoratorFactory(DriverInstance)
 
-        raise RuntimeError('unknown decorator class "%s"' % decorator_type)
+        raise RuntimeError(f'unknown decorator class "{decorator_type}"')
 
 
 DecoratorFactory = _DecoratorFactory()

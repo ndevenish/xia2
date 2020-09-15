@@ -146,7 +146,7 @@ def Indexer(preselection=None):
                 logger.debug("Using %s", idxdisplayname)
             except NotAvailableError:
                 if preselection:
-                    raise RuntimeError("preselected indexer %s not available" % idxname)
+                    raise RuntimeError(f"preselected indexer {idxname} not available")
 
     if not indexer:
         raise RuntimeError("no indexer implementations found")

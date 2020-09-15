@@ -38,7 +38,7 @@ def Report(DriverType=None):
             self.add_command_line(self._mtz_filename)
             if self._chef_min_completeness is not None:
                 self.add_command_line(
-                    "chef_min_completeness=%s" % self._chef_min_completeness
+                    f"chef_min_completeness={self._chef_min_completeness}"
                 )
             self.start()
             self.close_wait()

@@ -67,20 +67,20 @@ def table1_tex(merging_stats):
             independent = (1, 2)
 
         if 0 in independent:
-            cell_tmp += "a=%.5f, " % cell[0]
+            cell_tmp += f"a={cell[0]:.5f}, "
         else:
             cell_tmp += "a="
         if 1 in independent:
-            cell_tmp += "b=%.5f, " % cell[1]
+            cell_tmp += f"b={cell[1]:.5f}, "
         else:
             cell_tmp += "b="
-        cell_tmp += "c=%.5f" % cell[2]
+        cell_tmp += f"c={cell[2]:.5f}"
         if 3 in independent:
-            cell_tmp += ", \\alpha=%.5f" % cell[3]
+            cell_tmp += f", \\alpha={cell[3]:.5f}"
         if 4 in independent:
-            cell_tmp += ", \\beta=%.5f" % cell[4]
+            cell_tmp += f", \\beta={cell[4]:.5f}"
         if 5 in independent:
-            cell_tmp += ", \\gamma=%.5f" % cell[5]
+            cell_tmp += f", \\gamma={cell[5]:.5f}"
         cell_tmp += "$"
         cell_str.append(cell_tmp)
     print(" & ".join(cell_str) + " \\\\")
@@ -94,7 +94,7 @@ def table1_tex(merging_stats):
         low = (ms.bins[0].d_max, ms.bins[0].d_min)
         high = (ms.bins[-1].d_max, ms.bins[-1].d_min)
         resolution_str.append(
-            "%.2f-%.2f (%.2f-%.2f)" % (low[0], high[1], high[0], high[1])
+            f"{low[0]:.2f}-{high[1]:.2f} ({high[0]:.2f}-{high[1]:.2f})"
         )
 
     print(" & ".join(resolution_str) + " \\\\")
@@ -120,7 +120,7 @@ def table1_tex(merging_stats):
         for ms in merging_stats:
             ms_d = ms.as_dict()
             magic_str.append(
-                ("%s (%s)" % (fmt, fmt)) % (ms_d["overall"][p] * m, ms_d[p][-1] * m)
+                f"{fmt} ({fmt})" % (ms_d["overall"][p] * m, ms_d[p][-1] * m)
             )
 
         print(" & ".join(magic_str) + " \\\\")

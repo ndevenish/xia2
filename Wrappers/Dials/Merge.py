@@ -70,20 +70,20 @@ def DialsMerge(DriverType=None):
             self.add_command_line(self._reflections_filename)
             self.add_command_line(self._experiments_filename)
 
-            self.add_command_line("truncate=%s" % self._truncate)
+            self.add_command_line(f"truncate={self._truncate}")
 
             if self._mtz_filename:
-                self.add_command_line("output.mtz=%s" % self._mtz_filename)
+                self.add_command_line(f"output.mtz={self._mtz_filename}")
 
             if self._project_name:
-                self.add_command_line("output.project_name=%s" % self._project_name)
+                self.add_command_line(f"output.project_name={self._project_name}")
             if self._crystal_names:
-                self.add_command_line("output.crystal_names=%s" % self._crystal_names)
+                self.add_command_line(f"output.crystal_names={self._crystal_names}")
             if self._dataset_names:
-                self.add_command_line("output.dataset_names=%s" % self._dataset_names)
+                self.add_command_line(f"output.dataset_names={self._dataset_names}")
             if self._partiality_threshold:
                 self.add_command_line(
-                    "partiality_threshold=%s" % self._partiality_threshold
+                    f"partiality_threshold={self._partiality_threshold}"
                 )
 
             self.start()

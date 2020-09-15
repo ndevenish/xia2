@@ -8,7 +8,7 @@ from cctbx.xray import observation_types
 
 
 def read_input_data(lb, params, update_params=True):
-    print("Reading data from %s" % params[lb])
+    print(f"Reading data from {params[lb]}")
     reader = any_reflection_file(params[lb])
     file_content = reader.file_content()
     is_merged = False if file_content.n_batches() > 0 else True
@@ -19,7 +19,7 @@ def read_input_data(lb, params, update_params=True):
         and (m.anomalous_flag() if is_merged else True)
     ]
     if not data:
-        raise ValueError("Intensity data not found in %s" % params[lb])
+        raise ValueError(f"Intensity data not found in {params[lb]}")
     try:
         indices = file_content.extract_original_index_miller_indices()
         intensities = [
@@ -39,9 +39,9 @@ def export_native_hkl(params):
     data = read_input_data("nat", params, False)
     if len(data) > 1:
         raise ValueError(
-            "Multiple datasets found in the input native data file %s" % params["nat"]
+            f"Multiple datasets found in the input native data file {params['nat']}"
         )
-    hkl_filename = "%s_nat.hkl" % params["prefix"]
+    hkl_filename = f"{params['prefix']}_nat.hkl"
     print(
         "Exporting data from columns %s to %s"
         % (pformat(data[0].info().labels), hkl_filename)
@@ -64,7 +64,7 @@ def export_sad_hkl(params):
             )
         except StopIteration:
             raise ValueError(
-                "Dataset matching column label %s not found" % params["label"]
+                f"Dataset matching column label {params['label']} not found"
             )
     else:
         sel_data = data[0]
@@ -75,7 +75,7 @@ def export_sad_hkl(params):
                     "Selected dataset colum label doesn't match --label %s"
                     % params["label"]
                 )
-    hkl_filename = "%s.hkl" % params["prefix"]
+    hkl_filename = f"{params['prefix']}.hkl"
     print(
         "Exporting data from columns %s to %s"
         % (pformat(sel_data.info().labels), hkl_filename)
@@ -91,8 +91,8 @@ def export_mad_hkl(params):
         if lb in params:
             data = read_input_data(lb, params)
             if len(data) > 1:
-                raise ValueError("Multiple datasets found in %s" % params[lb])
-            hkl_filename = "%s_%s.hkl" % (params["prefix"], lb)
+                raise ValueError(f"Multiple datasets found in {params[lb]}")
+            hkl_filename = f"{params['prefix']}_{lb}.hkl"
             with open(hkl_filename, "w") as fp:
                 miller_array_export_as_shelx_hklf(data[0], fp)
             res[lb] = hkl_filename
@@ -116,7 +116,7 @@ def export_single_mad_hkl(params):
         for dt_name in dt_labels:
             if dt_name in "".join(dt.info().labels):
                 dt_label = dt_labels[dt_name]
-                hkl_filename = "%s_%s.hkl" % (params["prefix"], dt_label)
+                hkl_filename = f"{params['prefix']}_{dt_label}.hkl"
                 print(
                     "Exporting data from columns %s to %s"
                     % (pformat(dt.info().labels), hkl_filename)
@@ -139,8 +139,8 @@ def write_shelxc_script(hkl_files, params):
 
     if "sites" in params:
         datasets += ["find %d" % params["sites"]]
-    script_file = "%s.sh" % params["prefix"]
-    print("Writing %s script for running SHELXC" % script_file)
+    script_file = f"{params['prefix']}.sh"
+    print(f"Writing {script_file} script for running SHELXC")
     with open(script_file, "w") as fh:
         fh.write(
             "\n".join(

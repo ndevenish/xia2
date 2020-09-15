@@ -38,9 +38,9 @@ def ExportBest(DriverType=None):
             logger.debug("Running dials.export_best")
 
             self.clear_command_line()
-            self.add_command_line("experiments=%s" % self._experiments_filename)
-            self.add_command_line("reflections=%s" % self._reflections_filename)
-            self.add_command_line("output.prefix=%s" % self._prefix)
+            self.add_command_line(f"experiments={self._experiments_filename}")
+            self.add_command_line(f"reflections={self._reflections_filename}")
+            self.add_command_line(f"output.prefix={self._prefix}")
             self.start()
             self.close_wait()
             self.check_for_errors()

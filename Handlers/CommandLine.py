@@ -73,7 +73,7 @@ def unroll_datasets(datasets):
         tokens = dataset.split(":")
         if len(tokens[0]) == 1:
             # because windows
-            tokens = ["%s:%s" % (tokens[0], tokens[1])] + tokens[2:]
+            tokens = [f"{tokens[0]}:{tokens[1]}"] + tokens[2:]
         if tokens[0].endswith(".h5") and len(tokens) != 4:
             # check if we need to auto-discover the unrolling parameters
             # for multiple trigger data sets
@@ -147,8 +147,8 @@ class _CommandLine:
 
         for arg in sys.argv[1:]:
             if " " in arg:
-                arg = '"%s"' % arg
-            cl += " %s" % arg
+                arg = f'"{arg}"'
+            cl += f" {arg}"
 
         return cl
 
@@ -220,8 +220,8 @@ class _CommandLine:
         ):
             validate_project_crystal_name(parameter, value)
 
-        logger.debug("Project: %s" % params.xia2.settings.project)
-        logger.debug("Crystal: %s" % params.xia2.settings.crystal)
+        logger.debug(f"Project: {params.xia2.settings.project}")
+        logger.debug(f"Crystal: {params.xia2.settings.crystal}")
 
         # FIXME add some consistency checks in here e.g. that there are
         # images assigned, there is a lattice assigned if cell constants
@@ -336,7 +336,7 @@ class _CommandLine:
         params = PhilIndex.get_python_object()
         if params.xia2.settings.input.xinfo is not None:
             xinfo_file = os.path.abspath(params.xia2.settings.input.xinfo)
-            PhilIndex.update("xia2.settings.input.xinfo=%s" % xinfo_file)
+            PhilIndex.update(f"xia2.settings.input.xinfo={xinfo_file}")
             params = PhilIndex.get_python_object()
             self.set_xinfo(xinfo_file)
 
@@ -347,11 +347,11 @@ class _CommandLine:
                 crystals = self._xinfo.get_crystals()
                 for xname in crystals:
                     xtal = crystals[xname]
-                    logger.debug("Setting anomalous for crystal %s" % xname)
+                    logger.debug(f"Setting anomalous for crystal {xname}")
                     xtal.set_anomalous(True)
         else:
-            xinfo_file = "%s/automatic.xinfo" % os.path.abspath(os.curdir)
-            PhilIndex.update("xia2.settings.input.xinfo=%s" % xinfo_file)
+            xinfo_file = f"{os.path.abspath(os.curdir)}/automatic.xinfo"
+            PhilIndex.update(f"xia2.settings.input.xinfo={xinfo_file}")
             params = PhilIndex.get_python_object()
 
         if params.dials.find_spots.phil_file is not None:
@@ -361,8 +361,7 @@ class _CommandLine:
             )
         if params.dials.index.phil_file is not None:
             PhilIndex.update(
-                "dials.index.phil_file=%s"
-                % os.path.abspath(params.dials.index.phil_file)
+                f"dials.index.phil_file={os.path.abspath(params.dials.index.phil_file)}"
             )
         if params.dials.refine.phil_file is not None:
             PhilIndex.update(
@@ -382,19 +381,19 @@ class _CommandLine:
         if params.xia2.settings.scale.freer_file is not None:
             freer_file = os.path.abspath(params.xia2.settings.scale.freer_file)
             if not os.path.exists(freer_file):
-                raise RuntimeError("%s does not exist" % freer_file)
+                raise RuntimeError(f"{freer_file} does not exist")
             from xia2.Modules.FindFreeFlag import FindFreeFlag
 
             column = FindFreeFlag(freer_file)
             logger.debug(f"FreeR_flag column in {freer_file} found: {column}")
-            PhilIndex.update("xia2.settings.scale.freer_file=%s" % freer_file)
+            PhilIndex.update(f"xia2.settings.scale.freer_file={freer_file}")
 
         if params.xia2.settings.scale.reference_reflection_file is not None:
             reference_reflection_file = os.path.abspath(
                 params.xia2.settings.scale.reference_reflection_file
             )
             if not os.path.exists(reference_reflection_file):
-                raise RuntimeError("%s does not exist" % reference_reflection_file)
+                raise RuntimeError(f"{reference_reflection_file} does not exist")
             PhilIndex.update(
                 "xia2.settings.scale.reference_reflection_file=%s"
                 % reference_reflection_file
@@ -413,7 +412,7 @@ class _CommandLine:
                 tokens = dataset.split(":")
                 # cope with windows drives i.e. C:\data\blah\thing_0001.cbf:1:100
                 if len(tokens[0]) == 1:
-                    tokens = ["%s:%s" % (tokens[0], tokens[1])] + tokens[2:]
+                    tokens = [f"{tokens[0]}:{tokens[1]}"] + tokens[2:]
                 if len(tokens) != 3:
                     raise RuntimeError("/path/to/image_0001.cbf:start:end")
 
@@ -433,9 +432,7 @@ class _CommandLine:
                         found = True
                         break
                 if not found:
-                    raise Sorry(
-                        "Could not find %s in %s" % (dataset, " ".join(directories))
-                    )
+                    raise Sorry(f"Could not find {dataset} in {' '.join(directories)}")
 
             if is_hdf5_name(dataset):
                 self._hdf5_master_files.append(dataset)
@@ -453,9 +450,9 @@ class _CommandLine:
                 self._default_template.append(os.path.join(directory, template))
                 self._default_directory.append(directory)
 
-                logger.debug("Interpreted from image %s:" % dataset)
-                logger.debug("Template %s" % template)
-                logger.debug("Directory %s" % directory)
+                logger.debug(f"Interpreted from image {dataset}:")
+                logger.debug(f"Template {template}")
+                logger.debug(f"Directory {directory}")
 
                 if start_end:
                     logger.debug("Image range: %d %d" % start_end)
@@ -495,7 +492,7 @@ class _CommandLine:
             if argv[0] != "-" and "=" not in argv:
                 continue
             if j not in self._understood:
-                nonsense += " %s" % argv
+                nonsense += f" {argv}"
                 was_nonsense = True
 
         if was_nonsense:
@@ -505,7 +502,7 @@ class _CommandLine:
 
     def set_xinfo(self, xinfo):
         logger.debug(60 * "-")
-        logger.debug("XINFO file: %s" % xinfo)
+        logger.debug(f"XINFO file: {xinfo}")
         with open(xinfo) as fh:
             logger.debug(fh.read().strip())
         logger.debug(60 * "-")
@@ -551,13 +548,13 @@ class _CommandLine:
             indexer, refiner, integrater, scaler = "dials", "dials", "dials", "ccp4a"
 
         if indexer is not None and settings.indexer is None:
-            PhilIndex.update("xia2.settings.indexer=%s" % indexer)
+            PhilIndex.update(f"xia2.settings.indexer={indexer}")
         if refiner is not None and settings.refiner is None:
-            PhilIndex.update("xia2.settings.refiner=%s" % refiner)
+            PhilIndex.update(f"xia2.settings.refiner={refiner}")
         if integrater is not None and settings.integrater is None:
-            PhilIndex.update("xia2.settings.integrater=%s" % integrater)
+            PhilIndex.update(f"xia2.settings.integrater={integrater}")
         if scaler is not None and settings.scaler is None:
-            PhilIndex.update("xia2.settings.scaler=%s" % scaler)
+            PhilIndex.update(f"xia2.settings.scaler={scaler}")
 
         if settings.scaler is not None:
             if settings.pipeline.startswith("2d"):

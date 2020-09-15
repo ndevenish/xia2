@@ -58,7 +58,7 @@ def Matthews_coef(DriverType=None):
 
             # cannot cope with spaces in the spacegroup!
 
-            self.input("symmetry %s" % self._spacegroup.replace(" ", ""))
+            self.input(f"symmetry {self._spacegroup.replace(' ', '')}")
             self.input("nres %d" % self._nres)
             self.input("nmol %d" % self._nmol)
 

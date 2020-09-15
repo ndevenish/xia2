@@ -323,10 +323,10 @@ any systematic grouping of points may suggest a preferential crystal orientation
             }
         json_data["comparison"] = comparison_graphs
 
-        with open("%s.json" % self.params.prefix, "w") as f:
+        with open(f"{self.params.prefix}.json", "w") as f:
             json.dump(json_data, f)
 
-        with open("%s.html" % self.params.prefix, "wb") as f:
+        with open(f"{self.params.prefix}.html", "wb") as f:
             f.write(html.encode("utf-8", "xmlcharrefreplace"))
 
     def make_scale_and_filter_plots(self, filtering_results):

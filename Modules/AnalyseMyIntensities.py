@@ -66,7 +66,7 @@ class AnalyseMyIntensities:
             datasets = mtzdump.get_datasets()
             reflections = mtzdump.get_reflections()
             if len(datasets) > 1:
-                raise RuntimeError("more than one dataset in %s" % hklin)
+                raise RuntimeError(f"more than one dataset in {hklin}")
             info = mtzdump.get_dataset_info(datasets[0])
 
             if not sg:

@@ -106,21 +106,19 @@ def EstimateResolution(DriverType=None):
                 cl = [self._hklin]
             else:
                 cl = [self._experiments, self._reflections]
-            cl.append("nbins=%s" % self._nbins)
-            cl.append("rmerge=%s" % self._limit_rmerge)
-            cl.append("completeness=%s" % self._limit_completeness)
-            cl.append("cc_half=%s" % self._limit_cc_half)
+            cl.append(f"nbins={self._nbins}")
+            cl.append(f"rmerge={self._limit_rmerge}")
+            cl.append(f"completeness={self._limit_completeness}")
+            cl.append(f"cc_half={self._limit_cc_half}")
             if self._cc_half_fit is not None:
-                cl.append("cc_half_fit=%s" % self._cc_half_fit)
-            cl.append(
-                "cc_half_significance_level=%s" % self._cc_half_significance_level
-            )
-            cl.append("isigma=%s" % self._limit_isigma)
-            cl.append("misigma=%s" % self._limit_misigma)
+                cl.append(f"cc_half_fit={self._cc_half_fit}")
+            cl.append(f"cc_half_significance_level={self._cc_half_significance_level}")
+            cl.append(f"isigma={self._limit_isigma}")
+            cl.append(f"misigma={self._limit_misigma}")
             if self._batch_range is not None:
                 cl.append("batch_range=%i,%i" % self._batch_range)
             if self._labels is not None:
-                cl.append("labels=%s" % self._labels)
+                cl.append(f"labels={self._labels}")
             for c in cl:
                 self.add_command_line(c)
             logger.debug("Resolution analysis: %s", " ".join(cl))
@@ -129,13 +127,13 @@ def EstimateResolution(DriverType=None):
                 self.get_working_directory(),
                 "%d_dials.estimate_resolution.html" % self.get_xpid(),
             )
-            self.add_command_line("output.html=%s" % self._html)
+            self.add_command_line(f"output.html={self._html}")
 
             self._json = os.path.join(
                 self.get_working_directory(),
                 "%d_dials.estimate_resolution.json" % self.get_xpid(),
             )
-            self.add_command_line("output.json=%s" % self._json)
+            self.add_command_line(f"output.json={self._json}")
 
             self.start()
             self.close_wait()

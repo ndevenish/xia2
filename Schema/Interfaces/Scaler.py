@@ -357,12 +357,12 @@ class Scaler:
             while not self.get_scaler_done():
                 while not self.get_scaler_prepare_done():
 
-                    logger.notice(banner("Preparing %s" % xname))
+                    logger.notice(banner(f"Preparing {xname}"))
 
                     self._scalr_prepare_done = True
                     self._scale_prepare()
 
-                logger.notice(banner("Scaling %s" % xname))
+                logger.notice(banner(f"Scaling {xname}"))
 
                 self._scalr_done = True
                 self._scalr_result = self._scale()
@@ -377,14 +377,14 @@ class Scaler:
         trigger transmogrification of files."""
 
         if format not in ("mtz", "sca", "mtz_unmerged", "sca_unmerged"):
-            raise RuntimeError("format %s unknown" % format)
+            raise RuntimeError(f"format {format} unknown")
 
         self.scale()
 
         if format in self._scalr_scaled_reflection_files:
             return self._scalr_scaled_reflection_files[format]
 
-        raise RuntimeError("unknown format %s" % format)
+        raise RuntimeError(f"unknown format {format}")
 
     def get_scaled_merged_reflections(self):
         """Return the reflection files and so on."""

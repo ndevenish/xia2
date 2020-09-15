@@ -219,12 +219,12 @@ class XSweep:
                         continue
                     image_name = self.get_imageset().get_path(j - start)
                     if not os.access(image_name, os.R_OK):
-                        logger.debug("image %s unreadable" % image_name)
+                        logger.debug(f"image {image_name} unreadable")
                         error = True
                         continue
 
                 if error:
-                    raise RuntimeError("problem with sweep %s" % self._name)
+                    raise RuntimeError(f"problem with sweep {self._name}")
 
             beam_ = self._imageset.get_beam()
             scan = self._imageset.get_scan()
@@ -322,7 +322,7 @@ class XSweep:
                     beam,
                 )
             except AssertionError as e:
-                logger.debug("Error setting mosflm beam centre: %s" % e)
+                logger.debug(f"Error setting mosflm beam centre: {e}")
 
         self._beam_centre = beam
         self._distance = distance
@@ -466,19 +466,19 @@ class XSweep:
                 self.get_wavelength().get_name(),
             )
         else:
-            text = "SWEEP %s [WAVELENGTH UNDEFINED]\n" % self._name
+            text = f"SWEEP {self._name} [WAVELENGTH UNDEFINED]\n"
 
         if self._template:
-            text += "TEMPLATE %s\n" % self._template
+            text += f"TEMPLATE {self._template}\n"
         if self._directory:
-            text += "DIRECTORY %s\n" % self._directory
+            text += f"DIRECTORY {self._directory}\n"
 
         if self._header:
             # print some header information
             if "detector" in self._header:
-                text += "DETECTOR %s\n" % self._header["detector"]
+                text += f"DETECTOR {self._header['detector']}\n"
             if "exposure_time" in self._header:
-                text += "EXPOSURE TIME %f\n" % self._header["exposure_time"]
+                text += f"EXPOSURE TIME {self._header['exposure_time']:f}\n"
             if "phi_start" in self._header:
                 text += "PHI WIDTH %.2f\n" % (
                     self._header["phi_end"] - self._header["phi_start"]
@@ -495,15 +495,15 @@ class XSweep:
 
         # add some stuff to implement the actual processing implicitly
 
-        text += "MTZ file: %s\n" % self.get_integrater_intensities()
+        text += f"MTZ file: {self.get_integrater_intensities()}\n"
 
         return text
 
     def summarise(self):
-        summary = ["Sweep: %s" % self._name]
+        summary = [f"Sweep: {self._name}"]
 
         if self._template and self._directory:
-            summary.append("Files %s" % os.path.join(self._directory, self._template))
+            summary.append(f"Files {os.path.join(self._directory, self._template)}")
 
         if self._frames_to_process:
             summary.append("Images: %d to %d" % tuple(self._frames_to_process))
@@ -544,8 +544,7 @@ class XSweep:
                 summary.append(f"Distance {hdist:.2f} => {idist:.2f}")
 
             summary.append(
-                "Date: %s"
-                % time.asctime(time.gmtime(imgset.get_scan().get_epochs()[0]))
+                f"Date: {time.asctime(time.gmtime(imgset.get_scan().get_epochs()[0]))}"
             )
 
         return summary
@@ -766,7 +765,7 @@ class XSweep:
             # we can set...
 
             if global_integration_parameters.get_parameters(crystal_id):
-                logger.debug("Using integration parameters for crystal %s" % crystal_id)
+                logger.debug(f"Using integration parameters for crystal {crystal_id}")
                 self._integrater.set_integrater_parameters(
                     global_integration_parameters.get_parameters(crystal_id)
                 )
@@ -835,9 +834,7 @@ class XSweep:
                 global_integration_parameters.set_parameters(
                     crystal_id, self._integrater.get_integrater_export_parameters()
                 )
-                logger.debug(
-                    "Stored integration parameters for crystal %s" % crystal_id
-                )
+                logger.debug(f"Stored integration parameters for crystal {crystal_id}")
 
         except Exception:
             # logger.error('Error storing parameters for crystal %s', crystal_id)
@@ -876,7 +873,7 @@ class XSweep:
         if not detector_id and self.get_imageset():
             detector_id = self.get_imageset().get_detector()[0].get_identifier()
         if detector_id:
-            logger.debug("Detector identified as %s" % detector_id)
+            logger.debug(f"Detector identified as {detector_id}")
             return detector_id
         else:
             logger.debug("Detector could not be identified")
@@ -889,8 +886,7 @@ class XSweep:
 
             bl_info = ddb.get_beamline_definition(detector_id)
             logger.debug(
-                "Beamline information available for %s: %s"
-                % (detector_id, str(bl_info))
+                f"Beamline information available for {detector_id}: {str(bl_info)}"
             )
             if bl_info:
                 from xia2.Handlers.CIF import CIF, mmCIF

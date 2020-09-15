@@ -62,13 +62,13 @@ def anvil_correction(driver_type=None):
             self.add_command_line(self.reflections_filenames)
             if self.output_experiments_filename:
                 self.add_command_line(
-                    "output.experiments=%s" % self.output_experiments_filename
+                    f"output.experiments={self.output_experiments_filename}"
                 )
             self.add_command_line(
-                "output.reflections=%s" % self.output_reflections_filename
+                f"output.reflections={self.output_reflections_filename}"
             )
-            self.add_command_line("anvil.density=%s" % self.density)
-            self.add_command_line("anvil.thickness=%s" % self.thickness)
+            self.add_command_line(f"anvil.density={self.density}")
+            self.add_command_line(f"anvil.thickness={self.thickness}")
             self.add_command_line("anvil.normal=%s,%s,%s" % tuple(self.normal))
 
             self.start()

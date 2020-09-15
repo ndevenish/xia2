@@ -39,7 +39,7 @@ def Aimless(DriverType=None, absorption_correction=None, decay_correction=None):
             if not version:
                 raise RuntimeError("version not found")
 
-            logger.debug("Using version: %s" % version)
+            logger.debug(f"Using version: {version}")
 
             # clear all the header junk
             self.reset()
@@ -150,7 +150,7 @@ def Aimless(DriverType=None, absorption_correction=None, decay_correction=None):
             # it....
 
             tmp_scales_file = os.path.join(
-                self.get_working_directory(), "%s.tmp" % os.path.split(scales_file)[-1]
+                self.get_working_directory(), f"{os.path.split(scales_file)[-1]}.tmp"
             )
 
             open(tmp_scales_file, "w").write(
@@ -207,7 +207,7 @@ def Aimless(DriverType=None, absorption_correction=None, decay_correction=None):
 
         def set_mode(self, mode):
             if mode not in ("rotation", "batch"):
-                raise RuntimeError('unknown scaling mode "%s"' % mode)
+                raise RuntimeError(f'unknown scaling mode "{mode}"')
             self._mode = mode
 
         def set_spacing(self, spacing):
@@ -427,7 +427,7 @@ def Aimless(DriverType=None, absorption_correction=None, decay_correction=None):
 
                 status = self.get_ccp4_status()
                 if "Error" in status:
-                    raise RuntimeError("[AIMLESS] %s" % status)
+                    raise RuntimeError(f"[AIMLESS] {status}")
 
             except RuntimeError as e:
                 try:
@@ -481,10 +481,10 @@ def Aimless(DriverType=None, absorption_correction=None, decay_correction=None):
             self.input("xmlout %d_aimless.xml" % self.get_xpid())
             if not PhilIndex.params.xia2.settings.small_molecule:
                 self.input("bins 20")
-            self.input("intensities %s" % self._intensities)
+            self.input(f"intensities {self._intensities}")
 
             if self._new_scales_file:
-                self.input("dump %s" % self._new_scales_file)
+                self.input(f"dump {self._new_scales_file}")
 
             run_number = 0
             for run in self._runs:
@@ -518,13 +518,13 @@ def Aimless(DriverType=None, absorption_correction=None, decay_correction=None):
                 self.input("sdcorrection fixsdb")
 
             if self._secondary_lmax and self._surface_tie:
-                self.input("tie surface %.4f" % self._surface_tie)
+                self.input(f"tie surface {self._surface_tie:.4f}")
                 if not self._surface_link:
                     self.input("unlink all")
 
             # assemble the scales command
             if self._mode == "rotation":
-                scale_command = "scales rotation spacing %g" % self._spacing
+                scale_command = f"scales rotation spacing {self._spacing:g}"
 
                 if self._secondary_lmax is not None:
                     scale_command += " %s %d" % (
@@ -532,13 +532,13 @@ def Aimless(DriverType=None, absorption_correction=None, decay_correction=None):
                         int(self._secondary_lmax),
                     )
                 else:
-                    scale_command += " %s" % self._secondary
+                    scale_command += f" {self._secondary}"
 
                 if self._bfactor:
                     scale_command += " bfactor on"
 
                     if self._brotation:
-                        scale_command += " brotation %g" % self._brotation
+                        scale_command += f" brotation {self._brotation:g}"
 
                 else:
                     scale_command += " bfactor off"
@@ -553,9 +553,9 @@ def Aimless(DriverType=None, absorption_correction=None, decay_correction=None):
                     scale_command += " bfactor on"
 
                     if self._brotation:
-                        scale_command += " brotation %g" % self._brotation
+                        scale_command += f" brotation {self._brotation:g}"
                     else:
-                        scale_command += " brotation %g" % self._spacing
+                        scale_command += f" brotation {self._spacing:g}"
 
                 else:
                     scale_command += " bfactor off"
@@ -567,7 +567,7 @@ def Aimless(DriverType=None, absorption_correction=None, decay_correction=None):
             # next any 'generic' parameters
 
             if self._resolution:
-                self.input("resolution %g" % self._resolution)
+                self.input(f"resolution {self._resolution:g}")
 
             self.input("cycles %d" % self._cycles)
 
@@ -587,7 +587,7 @@ def Aimless(DriverType=None, absorption_correction=None, decay_correction=None):
 
             if self._scales_file:
                 self.input("onlymerge")
-                self.input("restore %s" % self._scales_file)
+                self.input(f"restore {self._scales_file}")
 
             self.close_wait()
 
@@ -676,10 +676,10 @@ def Aimless(DriverType=None, absorption_correction=None, decay_correction=None):
                 self.input("bins 20")
 
             if self._new_scales_file:
-                self.input("dump %s" % self._new_scales_file)
+                self.input(f"dump {self._new_scales_file}")
 
             if self._resolution:
-                self.input("resolution %g" % self._resolution)
+                self.input(f"resolution {self._resolution:g}")
 
             run_number = 0
             for run in self._runs:
@@ -721,7 +721,7 @@ def Aimless(DriverType=None, absorption_correction=None, decay_correction=None):
 
             if self._scales_file:
                 self.input("onlymerge")
-                self.input("restore %s" % self._scales_file)
+                self.input(f"restore {self._scales_file}")
 
             self.close_wait()
 

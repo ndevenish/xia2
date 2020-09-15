@@ -103,7 +103,7 @@ def load_imagesets(
                             master_file = p
 
             if master_file is None:
-                raise RuntimeError("Can't find master file for %s" % full_template_path)
+                raise RuntimeError(f"Can't find master file for {full_template_path}")
 
             unhandled = []
             experiments = ExperimentListFactory.from_filenames(
@@ -117,9 +117,7 @@ def load_imagesets(
                 format_kwargs=format_kwargs,
             )
 
-            assert len(unhandled) == 0, (
-                "unhandled image files identified: %s" % unhandled
-            )
+            assert len(unhandled) == 0, f"unhandled image files identified: {unhandled}"
 
         else:
 
@@ -143,9 +141,9 @@ def load_imagesets(
                     scan_tolerance=scan_tolerance,
                     format_kwargs=format_kwargs,
                 )
-                assert len(unhandled) == 0, (
-                    "unhandled image files identified: %s" % unhandled
-                )
+                assert (
+                    len(unhandled) == 0
+                ), f"unhandled image files identified: {unhandled}"
 
             else:
                 from xia2.Handlers.CommandLine import CommandLine

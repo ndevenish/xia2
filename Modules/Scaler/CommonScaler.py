@@ -571,13 +571,12 @@ class CommonScaler(Scaler):
                 truncate.set_anomalous(False)
 
             FileHandler.record_log_file(
-                "%s %s %s truncate"
-                % (self._scalr_pname, self._scalr_xname, wavelength),
+                f"{self._scalr_pname} {self._scalr_xname} {wavelength} truncate",
                 truncate.get_log_file(),
             )
 
             hklout = os.path.join(
-                self.get_working_directory(), "%s_truncated.mtz" % wavelength
+                self.get_working_directory(), f"{wavelength}_truncated.mtz"
             )
 
             truncate.set_hklout(hklout)
@@ -586,8 +585,7 @@ class CommonScaler(Scaler):
             xmlout = truncate.get_xmlout()
             if xmlout is not None:
                 FileHandler.record_xml_file(
-                    "%s %s %s truncate"
-                    % (self._scalr_pname, self._scalr_xname, wavelength),
+                    f"{self._scalr_pname} {self._scalr_xname} {wavelength} truncate",
                     xmlout,
                 )
 
@@ -619,7 +617,7 @@ class CommonScaler(Scaler):
                 cad.add_hklin(self._scalr_scaled_refl_files[wavelength])
                 cad.set_hklout(
                     os.path.join(
-                        self.get_working_directory(), "cad-tmp-%s.mtz" % wavelength
+                        self.get_working_directory(), f"cad-tmp-{wavelength}.mtz"
                     )
                 )
                 cad.set_new_suffix(wavelength)
@@ -686,7 +684,7 @@ class CommonScaler(Scaler):
                 indices=indices, info=intensities.info()
             )
 
-            with open("%s.hkl" % prefixpath, "w") as hkl_file_handle:
+            with open(f"{prefixpath}.hkl", "w") as hkl_file_handle:
                 # limit values to 4 digits (before decimal point), as this is what shelxt
                 # writes in its output files, and shelxl seems to read. ShelXL apparently
                 # does not read values >9999 properly
@@ -705,7 +703,7 @@ class CommonScaler(Scaler):
             cb_op = crystal_symm.change_of_basis_op_to_reference_setting()
 
             if cb_op.c().r().as_hkl() == "h,k,l":
-                print("Change of basis to reference setting: %s" % cb_op)
+                print(f"Change of basis to reference setting: {cb_op}")
                 crystal_symm = crystal_symm.change_basis(cb_op)
                 if str(cb_op) != "a,b,c":
                     unit_cell_dims = None
@@ -722,7 +720,7 @@ class CommonScaler(Scaler):
                 wavelength_name
             ).get_wavelength()
 
-            with open("%s.ins" % prefixpath, "w") as insfile:
+            with open(f"{prefixpath}.ins", "w") as insfile:
                 insfile.write(
                     "".join(
                         writer.generator(
@@ -736,8 +734,8 @@ class CommonScaler(Scaler):
                     )
                 )
 
-            FileHandler.record_data_file("%s.ins" % prefixpath)
-            FileHandler.record_data_file("%s.hkl" % prefixpath)
+            FileHandler.record_data_file(f"{prefixpath}.ins")
+            FileHandler.record_data_file(f"{prefixpath}.hkl")
 
     def _scale_finish_chunk_6_add_free_r(self):
         hklout = os.path.join(
@@ -848,7 +846,7 @@ class CommonScaler(Scaler):
 
         if status:
             logger.info("")
-            logger.notice(banner("Local Scaling %s" % self._scalr_xname))
+            logger.notice(banner(f"Local Scaling {self._scalr_xname}"))
             for s in status:
                 logger.info("%s %s" % s)
             logger.info(banner(""))
@@ -889,27 +887,27 @@ class CommonScaler(Scaler):
         if params.completeness is not None:
             r_comp = m.get_resolution_completeness()
             resolution_limits.append(r_comp)
-            reasoning.append("completeness > %s" % params.completeness)
+            reasoning.append(f"completeness > {params.completeness}")
 
         if params.cc_half is not None:
             r_cc_half = m.get_resolution_cc_half()
             resolution_limits.append(r_cc_half)
-            reasoning.append("cc_half > %s" % params.cc_half)
+            reasoning.append(f"cc_half > {params.cc_half}")
 
         if params.rmerge is not None:
             r_rm = m.get_resolution_rmerge()
             resolution_limits.append(r_rm)
-            reasoning.append("rmerge > %s" % params.rmerge)
+            reasoning.append(f"rmerge > {params.rmerge}")
 
         if params.isigma is not None:
             r_uis = m.get_resolution_isigma()
             resolution_limits.append(r_uis)
-            reasoning.append("unmerged <I/sigI> > %s" % params.isigma)
+            reasoning.append(f"unmerged <I/sigI> > {params.isigma}")
 
         if params.misigma is not None:
             r_mis = m.get_resolution_misigma()
             resolution_limits.append(r_mis)
-            reasoning.append("merged <I/sigI> > %s" % params.misigma)
+            reasoning.append(f"merged <I/sigI> > {params.misigma}")
 
         if any(resolution_limits):
             resolution = max(r for r in resolution_limits if r is not None)
@@ -1210,7 +1208,7 @@ class CommonScaler(Scaler):
             mmcif_out = mmCIF.get_block("xia2")
             cif_out["_computing_cell_refinement"] = mmcif_out[
                 "_computing.cell_refinement"
-            ] = ("DIALS 2theta refinement, %s" % dials.util.version.dials_version())
+            ] = f"DIALS 2theta refinement, {dials.util.version.dials_version()}"
             for key in sorted(cif_in.keys()):
                 cif_out[key] = cif_in[key]
             for key in sorted(mmcif_in.keys()):
@@ -1244,7 +1242,7 @@ class CommonScaler(Scaler):
                     "angle_gamma",
                 ],
             ):
-                cif_out["_cell_%s" % cifname] = cell
+                cif_out[f"_cell_{cifname}"] = cell
 
         logger.debug("%7.3f %7.3f %7.3f %7.3f %7.3f %7.3f" % self._scalr_cell)
 
@@ -1389,7 +1387,7 @@ class CommonScaler(Scaler):
             if suggested is None or limit == suggested:
                 reasoning_str = ""
                 if reasoning:
-                    reasoning_str = " (%s)" % reasoning
+                    reasoning_str = f" ({reasoning})"
                 logger.info(
                     "Resolution for sweep %s/%s: %.2f%s",
                     dname,

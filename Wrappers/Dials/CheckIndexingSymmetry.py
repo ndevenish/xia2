@@ -61,8 +61,8 @@ def CheckIndexingSymmetry(DriverType=None):
                         hkl_offsets[(h, k, l)] = cc
                         hkl_nref[(h, k, l)] = nref
 
-            logger.debug("hkl_offset scores: %s" % str(hkl_offsets))
-            logger.debug("hkl_nref scores: %s" % str(hkl_nref))
+            logger.debug(f"hkl_offset scores: {str(hkl_offsets)}")
+            logger.debug(f"hkl_nref scores: {str(hkl_nref)}")
             if len(hkl_offsets) > 1:
                 max_nref = max(hkl_nref.values())
 

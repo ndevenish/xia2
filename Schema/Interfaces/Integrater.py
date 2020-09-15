@@ -302,9 +302,7 @@ class Integrater(FrameProcessor):
         if not refiner.get_refiner_done() and self._intgr_prepare_done:
             for sweep in refiner._refinr_sweeps:
                 logger.debug(
-                    "Resetting integrater for sweep {} as refiner updated.".format(
-                        sweep._name
-                    )
+                    f"Resetting integrater for sweep {sweep._name} as refiner updated."
                 )
                 sweep._integrater._integrater_reset()
 
@@ -487,9 +485,9 @@ class Integrater(FrameProcessor):
     def set_integrater_indexer(self, indexer):
         """Set the indexer implementation to use for this integration."""
 
-        assert issubclass(indexer.__class__, xia2.Schema.Interfaces.Indexer.Indexer), (
-            "%s is not an Indexer implementation" % indexer
-        )
+        assert issubclass(
+            indexer.__class__, xia2.Schema.Interfaces.Indexer.Indexer
+        ), f"{indexer} is not an Indexer implementation"
 
         self._intgr_indexer = indexer
         self.set_integrater_prepare_done(False)
@@ -497,9 +495,9 @@ class Integrater(FrameProcessor):
     def set_integrater_refiner(self, refiner):
         """Set the refiner implementation to use for this integration."""
 
-        assert issubclass(refiner.__class__, xia2.Schema.Interfaces.Refiner.Refiner), (
-            "%s is not a Refiner implementation" % refiner
-        )
+        assert issubclass(
+            refiner.__class__, xia2.Schema.Interfaces.Refiner.Refiner
+        ), f"{refiner} is not a Refiner implementation"
 
         self._intgr_refiner = refiner
         self.set_integrater_prepare_done(False)
@@ -540,13 +538,10 @@ class Integrater(FrameProcessor):
                 if self._intgr_sweep_name:
                     if PhilIndex.params.xia2.settings.show_template:
                         logger.notice(
-                            banner(
-                                "Integrating %s (%s)"
-                                % (self._intgr_sweep_name, template)
-                            )
+                            banner(f"Integrating {self._intgr_sweep_name} ({template})")
                         )
                     else:
-                        logger.notice(banner("Integrating %s" % self._intgr_sweep_name))
+                        logger.notice(banner(f"Integrating {self._intgr_sweep_name}"))
                 try:
 
                     # 1698
@@ -570,7 +565,7 @@ class Integrater(FrameProcessor):
         return self._intgr_hklout
 
     def set_output_format(self, output_format="hkl"):
-        logger.debug("setting integrator output format to %s" % output_format)
+        logger.debug(f"setting integrator output format to {output_format}")
         assert output_format in ["hkl", "pickle"]
         self._output_format = output_format
 
@@ -656,8 +651,7 @@ class Integrater(FrameProcessor):
 
         if reason:
             logger.debug(
-                "Reindexing to %s (compose=%s) because %s"
-                % (reindex_operator, compose, reason)
+                f"Reindexing to {reindex_operator} (compose={compose}) because {reason}"
             )
 
         if self._intgr_reindex_operator is None or not compose:
@@ -797,7 +791,7 @@ class Integrater(FrameProcessor):
                         if (math.fabs(uc[j] - uc_mean[j]) / uc_mean[j]) > max_rel_dev:
                             max_rel_dev = math.fabs(uc[j] - uc_mean[j]) / uc_mean[j]
 
-                lines.append("Maximum relative deviation in cell: %.3f" % max_rel_dev)
+                lines.append(f"Maximum relative deviation in cell: {max_rel_dev:.3f}")
 
         except KeyError:
             raise RuntimeError("Refinement not performed...")

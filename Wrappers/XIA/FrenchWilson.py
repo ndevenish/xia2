@@ -67,7 +67,7 @@ def FrenchWilson(DriverType=None):
             """Actually perform the truncation procedure."""
 
             self.add_command_line(self._hklin)
-            self.add_command_line("hklout=%s" % self._hklout)
+            self.add_command_line(f"hklout={self._hklout}")
             if self._anomalous:
                 self.add_command_line("anomalous=true")
             else:

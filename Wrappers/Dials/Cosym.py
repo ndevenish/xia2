@@ -86,12 +86,12 @@ def DialsCosym(DriverType=None, decay_correction=None):
                 self.get_working_directory(), "%i_reindexed.refl" % self.get_xpid()
             )
 
-            self.add_command_line("output.experiments=%s" % self._reindexed_experiments)
-            self.add_command_line("output.reflections=%s" % self._reindexed_reflections)
-            self.add_command_line("plot_prefix=%s_" % self.get_xpid())
+            self.add_command_line(f"output.experiments={self._reindexed_experiments}")
+            self.add_command_line(f"output.reflections={self._reindexed_reflections}")
+            self.add_command_line(f"plot_prefix={self.get_xpid()}_")
             if self._space_group is not None:
                 self.add_command_line(
-                    "space_group=%s" % self._space_group.type().lookup_symbol()
+                    f"space_group={self._space_group.type().lookup_symbol()}"
                 )
 
             if not self._json:
@@ -99,17 +99,15 @@ def DialsCosym(DriverType=None, decay_correction=None):
                     self.get_working_directory(),
                     "%d_dials.cosym.json" % self.get_xpid(),
                 )
-            self.add_command_line("output.json=%s" % self._json)
+            self.add_command_line(f"output.json={self._json}")
 
             if not self._html:
                 self._html = os.path.join(
                     self.get_working_directory(),
                     "%d_dials.cosym.html" % self.get_xpid(),
                 )
-            self.add_command_line("output.html=%s" % self._html)
-            self.add_command_line(
-                "best_monoclinic_beta=%s" % self._best_monoclinic_beta
-            )
+            self.add_command_line(f"output.html={self._html}")
+            self.add_command_line(f"best_monoclinic_beta={self._best_monoclinic_beta}")
 
             self.start()
             self.close_wait()

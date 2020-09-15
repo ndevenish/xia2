@@ -41,7 +41,7 @@ def ExportXDSASCII(DriverType=None):
             self.add_command_line(self._experiments_filename)
             self.add_command_line(self._reflections_filename)
             if self._hkl_filename is not None:
-                self.add_command_line("xds_ascii.hklout=%s" % self._hkl_filename)
+                self.add_command_line(f"xds_ascii.hklout={self._hkl_filename}")
             self.add_command_line("format=xds_ascii")
             self.start()
             self.close_wait()

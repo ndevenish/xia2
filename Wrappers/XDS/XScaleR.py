@@ -153,10 +153,10 @@ def XScaleR(
                 "%6.2f %6.2f %6.2f %6.2f %6.2f %6.2f\n" % tuple(self._cell)
             )
             if self._built >= 20191015:
-                xscale_inp.write("SNRC=%.1f\n" % PhilIndex.params.xds.xscale.min_isigma)
+                xscale_inp.write(f"SNRC={PhilIndex.params.xds.xscale.min_isigma:.1f}\n")
             else:
                 xscale_inp.write(
-                    "MINIMUM_I/SIGMA=%.1f\n" % PhilIndex.params.xds.xscale.min_isigma
+                    f"MINIMUM_I/SIGMA={PhilIndex.params.xds.xscale.min_isigma:.1f}\n"
                 )
 
             if self._reindex_matrix:
@@ -169,10 +169,10 @@ def XScaleR(
             for wave in self._transposed_input_keys:
 
                 self._output_reflection_files[wave] = os.path.join(
-                    self.get_working_directory(), "%s.HKL" % wave
+                    self.get_working_directory(), f"{wave}.HKL"
                 )
 
-                xscale_inp.write("OUTPUT_FILE=%s.HKL " % wave)
+                xscale_inp.write(f"OUTPUT_FILE={wave}.HKL ")
                 if self._version == "new":
                     xscale_inp.write("\n")
                 if self._anomalous:
@@ -190,7 +190,7 @@ def XScaleR(
                     # should check that the files exists though...
 
                     resolution = self._transposed_input[wave]["resol"][j]
-                    xscale_inp.write("INPUT_FILE=%s XDS_ASCII\n" % hkl)
+                    xscale_inp.write(f"INPUT_FILE={hkl} XDS_ASCII\n")
 
                     if resolution[0]:
                         xscale_inp.write(
@@ -214,7 +214,7 @@ def XScaleR(
                     xscale_inp.write(corrections)
 
                 if self._crystal and self._zero_dose:
-                    xscale_inp.write("CRYSTAL_NAME=%s\n" % self._crystal)
+                    xscale_inp.write(f"CRYSTAL_NAME={self._crystal}\n")
 
             xscale_inp.close()
 

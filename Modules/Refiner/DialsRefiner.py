@@ -130,10 +130,10 @@ class DialsRefiner(Refiner):
 
                 # Extract and output experiment and reflections for current sweep
                 indexed_experiments = os.path.join(
-                    self.get_working_directory(), "%s_indexed.expt" % xsweep.get_name()
+                    self.get_working_directory(), f"{xsweep.get_name()}_indexed.expt"
                 )
                 indexed_reflections = os.path.join(
-                    self.get_working_directory(), "%s_indexed.refl" % xsweep.get_name()
+                    self.get_working_directory(), f"{xsweep.get_name()}_indexed.refl"
                 )
 
                 experiments.as_file(indexed_experiments)
@@ -202,7 +202,7 @@ class DialsRefiner(Refiner):
 
             if scan_static or scan_varying:
                 FileHandler.record_log_file(
-                    "%s REFINE" % idxr.get_indexer_full_name(), refiner.get_log_file()
+                    f"{idxr.get_indexer_full_name()} REFINE", refiner.get_log_file()
                 )
                 report = self.Report()
                 report.set_experiments_filename(self._refinr_experiments_filename)
@@ -214,7 +214,7 @@ class DialsRefiner(Refiner):
                 report.set_html_filename(html_filename)
                 report.run()
                 FileHandler.record_html_file(
-                    "%s REFINE" % idxr.get_indexer_full_name(), html_filename
+                    f"{idxr.get_indexer_full_name()} REFINE", html_filename
                 )
 
             experiments = ExperimentList.from_file(self._refinr_experiments_filename)

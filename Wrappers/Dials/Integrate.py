@@ -136,7 +136,7 @@ def Integrate(DriverType=None):
             logger.debug("Running dials.integrate")
 
             self.clear_command_line()
-            self.add_command_line("input.experiments=%s" % self._experiments_filename)
+            self.add_command_line(f"input.experiments={self._experiments_filename}")
             nproc = PhilIndex.params.xia2.settings.multiprocessing.nproc
             njob = PhilIndex.params.xia2.settings.multiprocessing.njob
             mp_mode = PhilIndex.params.xia2.settings.multiprocessing.mode
@@ -147,7 +147,7 @@ def Integrate(DriverType=None):
             if mp_mode == "serial" and mp_type == "qsub" and njob > 1:
                 self.add_command_line("mp.method=drmaa")
                 self.add_command_line("mp.njobs=%i" % njob)
-            self.add_command_line("input.reflections=%s" % self._reflections_filename)
+            self.add_command_line(f"input.reflections={self._reflections_filename}")
             self._integrated_reflections = os.path.join(
                 self.get_working_directory(), "%d_integrated.refl" % self.get_xpid()
             )
@@ -158,35 +158,29 @@ def Integrate(DriverType=None):
                 self.get_working_directory(),
                 "%d_integration_report.json" % self.get_xpid(),
             )
-            self.add_command_line(
-                "output.experiments=%s" % self._integrated_experiments
-            )
-            self.add_command_line(
-                "output.reflections=%s" % self._integrated_reflections
-            )
-            self.add_command_line(
-                "output.report=%s" % self._integration_report_filename
-            )
+            self.add_command_line(f"output.experiments={self._integrated_experiments}")
+            self.add_command_line(f"output.reflections={self._integrated_reflections}")
+            self.add_command_line(f"output.report={self._integration_report_filename}")
             self.add_command_line("output.include_bad_reference=True")
             self.add_command_line("debug.reference.output=True")
-            self.add_command_line("profile.fitting=%s" % self._profile_fitting)
+            self.add_command_line(f"profile.fitting={self._profile_fitting}")
             self.add_command_line(
-                "gaussian_rs.scan_varying=%s" % self._scan_varying_profile
+                f"gaussian_rs.scan_varying={self._scan_varying_profile}"
             )
             if self._new_mosaic:
                 self.add_command_line("sigma_m_algorithm=extended")
             if self._outlier_algorithm is not None:
-                self.add_command_line("outlier.algorithm=%s" % self._outlier_algorithm)
+                self.add_command_line(f"outlier.algorithm={self._outlier_algorithm}")
             if self._background_algorithm is not None:
                 self.add_command_line(
-                    "background.algorithm=%s" % self._background_algorithm
+                    f"background.algorithm={self._background_algorithm}"
                 )
             if self._phil_file is not None:
                 self.add_command_line(self._phil_file)
             if self._d_max is not None:
-                self.add_command_line("prediction.d_max=%f" % self._d_max)
+                self.add_command_line(f"prediction.d_max={self._d_max:f}")
             if self._d_min is not None and self._d_min > 0.0:
-                self.add_command_line("prediction.d_min=%f" % self._d_min)
+                self.add_command_line(f"prediction.d_min={self._d_min:f}")
             for scan_range in self._scan_range:
                 self.add_command_line("scan_range=%d,%d" % scan_range)
             if self._reflections_per_degree is not None:

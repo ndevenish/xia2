@@ -142,7 +142,7 @@ def _prepare_pointless_hklin(working_directory, hklin, phi_width):
         logger.debug("Excluding blank images")
 
         hklout = os.path.join(
-            working_directory, "%s_noblank.mtz" % (os.path.split(hklin)[-1][:-4])
+            working_directory, f"{os.path.split(hklin)[-1][:-4]}_noblank.mtz"
         )
 
         FileHandler.record_temporary_file(hklout)
@@ -163,7 +163,7 @@ def _prepare_pointless_hklin(working_directory, hklin, phi_width):
         return hklin
 
     hklout = os.path.join(
-        working_directory, "%s_prepointless.mtz" % (os.path.split(hklin)[-1][:-4])
+        working_directory, f"{os.path.split(hklin)[-1][:-4]}_prepointless.mtz"
     )
 
     pl = xia2.Wrappers.CCP4.Pointless.Pointless()
@@ -245,17 +245,17 @@ class CCP4ScalerHelper:
         for lattice in possible:
             state = refiner.set_refiner_asserted_lattice(lattice)
             if state == refiner.LATTICE_CORRECT:
-                logger.debug("Agreed lattice %s" % lattice)
+                logger.debug(f"Agreed lattice {lattice}")
                 correct_lattice = lattice
                 break
 
             elif state == refiner.LATTICE_IMPOSSIBLE:
-                logger.debug("Rejected lattice %s" % lattice)
+                logger.debug(f"Rejected lattice {lattice}")
                 rerun_pointless = True
                 continue
 
             elif state == refiner.LATTICE_POSSIBLE:
-                logger.debug("Accepted lattice %s, will reprocess" % lattice)
+                logger.debug(f"Accepted lattice {lattice}, will reprocess")
                 need_to_return = True
                 correct_lattice = lattice
                 break
@@ -270,7 +270,7 @@ class CCP4ScalerHelper:
             symmetry.set_correct_lattice(correct_lattice)
             symmetry.decide_pointgroup()
 
-        logger.debug("Pointless analysis of %s" % symmetry.get_hklin())
+        logger.debug(f"Pointless analysis of {symmetry.get_hklin()}")
 
         pointgroup = symmetry.get_pointgroup()
         reindex_op = symmetry.get_reindex_operator()
@@ -307,17 +307,17 @@ class CCP4ScalerHelper:
         for lattice in possible:
             state = refiner.set_refiner_asserted_lattice(lattice)
             if state == refiner.LATTICE_CORRECT:
-                logger.debug("Agreed lattice %s" % lattice)
+                logger.debug(f"Agreed lattice {lattice}")
                 correct_lattice = lattice
                 break
 
             elif state == refiner.LATTICE_IMPOSSIBLE:
-                logger.debug("Rejected lattice %s" % lattice)
+                logger.debug(f"Rejected lattice {lattice}")
                 rerun_pointless = True
                 continue
 
             elif state == refiner.LATTICE_POSSIBLE:
-                logger.debug("Accepted lattice %s, will reprocess" % lattice)
+                logger.debug(f"Accepted lattice {lattice}, will reprocess")
                 need_to_return = True
                 correct_lattice = lattice
                 break
@@ -343,7 +343,7 @@ class CCP4ScalerHelper:
             pointless.set_correct_lattice(correct_lattice)
             pointless.decide_pointgroup()
 
-        logger.debug("Pointless analysis of %s" % pointless.get_hklin())
+        logger.debug(f"Pointless analysis of {pointless.get_hklin()}")
 
         pointgroup = pointless.get_pointgroup()
         reindex_op = pointless.get_reindex_operator()

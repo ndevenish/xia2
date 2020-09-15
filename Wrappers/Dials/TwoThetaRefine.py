@@ -112,23 +112,23 @@ def TwoThetaRefine(DriverType=None):
 
             self._output_cif = os.path.join(
                 self.get_working_directory(),
-                "%s_dials.two_theta_refine.cif" % self.get_xpid(),
+                f"{self.get_xpid()}_dials.two_theta_refine.cif",
             )
             self._output_mmcif = os.path.join(
                 self.get_working_directory(),
-                "%s_dials.two_theta_refine.mmcif" % self.get_xpid(),
+                f"{self.get_xpid()}_dials.two_theta_refine.mmcif",
             )
             if not self._output_p4p:
                 self._output_p4p = os.path.join(
                     self.get_working_directory(),
-                    "%s_dials.two_theta_refine.p4p" % self.get_xpid(),
+                    f"{self.get_xpid()}_dials.two_theta_refine.p4p",
                 )
             self._output_correlation_plot = os.path.join(
                 self.get_working_directory(),
-                "%s_dials.two_theta_refine.png" % self.get_xpid(),
+                f"{self.get_xpid()}_dials.two_theta_refine.png",
             )
             self._output_experiments = os.path.join(
-                self.get_working_directory(), "%s_refined_cell.expt" % self.get_xpid()
+                self.get_working_directory(), f"{self.get_xpid()}_refined_cell.expt"
             )
 
             self.clear_command_line()
@@ -144,20 +144,17 @@ def TwoThetaRefine(DriverType=None):
                 for reflection_file in self._reflection_files:
                     self.add_command_line(reflection_file)
             self.add_command_line(
-                "combine_crystal_models=%s" % self._combine_crystal_models
+                f"combine_crystal_models={self._combine_crystal_models}"
             )
-            self.add_command_line("output.cif=%s" % self._output_cif)
-            self.add_command_line("output.mmcif=%s" % self._output_mmcif)
-            self.add_command_line("output.p4p=%s" % self._output_p4p)
+            self.add_command_line(f"output.cif={self._output_cif}")
+            self.add_command_line(f"output.mmcif={self._output_mmcif}")
+            self.add_command_line(f"output.p4p={self._output_p4p}")
             if self._output_correlation_plot is not None:
                 self.add_command_line(
-                    "output.correlation_plot.filename=%s"
-                    % self._output_correlation_plot
+                    f"output.correlation_plot.filename={self._output_correlation_plot}"
                 )
             if self._output_experiments is not None:
-                self.add_command_line(
-                    "output.experiments=%s" % self._output_experiments
-                )
+                self.add_command_line(f"output.experiments={self._output_experiments}")
             if self._phil_file is not None:
                 self.add_command_line(self._phil_file)
 

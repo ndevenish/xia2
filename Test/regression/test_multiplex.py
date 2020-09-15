@@ -34,7 +34,7 @@ def test_proteinase_k(mocker, regression_test, dials_data, tmpdir):
     ):
         assert Report.pychef_plots.return_value[k]["data"][0]["x"] == list(range(26))
     for f in expected_data_files:
-        assert tmpdir.join(f).check(file=1), "expected file %s missing" % f
+        assert tmpdir.join(f).check(file=1), f"expected file {f} missing"
     multiplex_expts = load.experiment_list(
         tmpdir.join("scaled.expt").strpath, check_format=False
     )
@@ -88,7 +88,7 @@ def test_proteinase_k_filter_deltacchalf(d_min, regression_test, dials_data, tmp
                 "filtering.deltacchalf.stdcutoff=1",
                 "max_clusters=1",
                 "nproc=1",
-                "resolution.d_min=%s" % d_min,
+                f"resolution.d_min={d_min}",
             ]
         )
         run_multiplex(command_line_args)
@@ -98,7 +98,7 @@ def test_proteinase_k_filter_deltacchalf(d_min, regression_test, dials_data, tmp
         "filtered.mtz",
         "filtered_unmerged.mtz",
     ]:
-        assert tmpdir.join(f).check(file=1), "expected file %s missing" % f
+        assert tmpdir.join(f).check(file=1), f"expected file {f} missing"
     assert len(load.experiment_list(tmpdir / "scaled.expt", check_format=False)) == 8
     assert len(load.experiment_list(tmpdir / "filtered.expt", check_format=False)) < 8
 
@@ -151,20 +151,20 @@ def test_proteinase_k_dose(
     command_line_args = (
         [
             "dose=1,20",
-            "symmetry.laue_group=%s" % laue_group,
-            "symmetry.space_group=%s" % space_group,
+            f"symmetry.laue_group={laue_group}",
+            f"symmetry.space_group={space_group}",
             "max_clusters=2",
         ]
         + expts
         + refls
     )
     if threshold is not None:
-        command_line_args.append("unit_cell_clustering.threshold=%s" % threshold)
+        command_line_args.append(f"unit_cell_clustering.threshold={threshold}")
     with tmpdir.as_cwd():
         run_multiplex(command_line_args)
 
     for f in expected_data_files:
-        assert tmpdir.join(f).check(file=1), "expected file %s missing" % f
+        assert tmpdir.join(f).check(file=1), f"expected file {f} missing"
 
     multiplex_expts = load.experiment_list(
         tmpdir.join("scaled.expt").strpath, check_format=False

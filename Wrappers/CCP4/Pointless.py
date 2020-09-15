@@ -117,7 +117,7 @@ def Pointless(DriverType=None):
                 raise RuntimeError("no lattice to lauegroup mapping")
 
             if lattice not in self._lattice_to_laue:
-                raise RuntimeError("lattice %s not possible" % lattice)
+                raise RuntimeError(f"lattice {lattice} not possible")
 
             self._input_laue_group = self._lattice_to_laue[lattice]
 
@@ -128,7 +128,7 @@ def Pointless(DriverType=None):
             self.check_hklin()
 
             self.start()
-            self.input("output summedlist %s" % summedlist)
+            self.input(f"output summedlist {summedlist}")
             self.close_wait()
 
             # get out the unit cell - we will need this...
@@ -176,12 +176,12 @@ def Pointless(DriverType=None):
                     % (self._pname, self._xname, self._dname)
                 )
 
-            self.input("xdsin %s" % self._xdsin)
+            self.input(f"xdsin {self._xdsin}")
 
             if self._scale_factor:
-                logger.debug("Scaling intensities by factor %e" % self._scale_factor)
+                logger.debug(f"Scaling intensities by factor {self._scale_factor:e}")
 
-                self.input("multiply %e" % self._scale_factor)
+                self.input(f"multiply {self._scale_factor:e}")
 
             self.close_wait()
 
@@ -198,14 +198,14 @@ def Pointless(DriverType=None):
             if not self._xdsin:
                 self.check_hklin()
                 self.set_task(
-                    "Computing the correct pointgroup for %s" % self.get_hklin()
+                    f"Computing the correct pointgroup for {self.get_hklin()}"
                 )
 
             else:
-                logger.debug("Pointless using XDS input file %s" % self._xdsin)
+                logger.debug(f"Pointless using XDS input file {self._xdsin}")
 
                 self.set_task(
-                    "Computing the correct pointgroup for %s" % self.get_xdsin()
+                    f"Computing the correct pointgroup for {self.get_xdsin()}"
                 )
 
             # FIXME this should probably be a standard CCP4 keyword
@@ -236,7 +236,7 @@ def Pointless(DriverType=None):
             if self._hklref:
                 dev = PhilIndex.params.xia2.settings.developmental
                 if dev.pointless_tolerance > 0.0:
-                    self.input("tolerance %f" % dev.pointless_tolerance)
+                    self.input(f"tolerance {dev.pointless_tolerance:f}")
 
             # may expect more %age variation for small molecule data
             if PhilIndex.params.xia2.settings.small_molecule:
@@ -244,11 +244,11 @@ def Pointless(DriverType=None):
                     self.input("tolerance 5.0")
             if PhilIndex.params.xia2.settings.symmetry.chirality is not None:
                 self.input(
-                    "chirality %s" % PhilIndex.params.xia2.settings.symmetry.chirality
+                    f"chirality {PhilIndex.params.xia2.settings.symmetry.chirality}"
                 )
 
             if self._input_laue_group:
-                self.input("lauegroup %s" % self._input_laue_group)
+                self.input(f"lauegroup {self._input_laue_group}")
 
             self.close_wait()
 
@@ -265,9 +265,7 @@ def Pointless(DriverType=None):
                     if ignore_errors:
                         fatal_error = True
                     else:
-                        raise RuntimeError(
-                            "Pointless error: %s" % output[j + 1].strip()
-                        )
+                        raise RuntimeError(f"Pointless error: {output[j + 1].strip()}")
                 if (
                     "Resolution range of Reference data and observed data do not"
                     in record
@@ -340,8 +338,8 @@ def Pointless(DriverType=None):
             # catch the case sometimes on ppc mac where pointless adds
             # an extra .xml on the end...
 
-            if not os.path.exists(xml_file) and os.path.exists("%s.xml" % xml_file):
-                xml_file = "%s.xml" % xml_file
+            if not os.path.exists(xml_file) and os.path.exists(f"{xml_file}.xml"):
+                xml_file = f"{xml_file}.xml"
 
             if not self._hklref:
 
@@ -489,13 +487,13 @@ def Pointless(DriverType=None):
 
                 self.check_hklin()
                 self.set_task(
-                    "Computing the correct spacegroup for %s" % self.get_hklin()
+                    f"Computing the correct spacegroup for {self.get_hklin()}"
                 )
 
             else:
-                logger.debug("Pointless using XDS input file %s" % self._xdsin)
+                logger.debug(f"Pointless using XDS input file {self._xdsin}")
                 self.set_task(
-                    "Computing the correct spacegroup for %s" % self.get_xdsin()
+                    f"Computing the correct spacegroup for {self.get_xdsin()}"
                 )
 
             # FIXME this should probably be a standard CCP4 keyword
@@ -517,7 +515,7 @@ def Pointless(DriverType=None):
 
             if PhilIndex.params.xia2.settings.symmetry.chirality is not None:
                 self.input(
-                    "chirality %s" % PhilIndex.params.xia2.settings.symmetry.chirality
+                    f"chirality {PhilIndex.params.xia2.settings.symmetry.chirality}"
                 )
 
             self.close_wait()
@@ -530,8 +528,8 @@ def Pointless(DriverType=None):
             )
             mend_pointless_xml(xml_file)
 
-            if not os.path.exists(xml_file) and os.path.exists("%s.xml" % xml_file):
-                xml_file = "%s.xml" % xml_file
+            if not os.path.exists(xml_file) and os.path.exists(f"{xml_file}.xml"):
+                xml_file = f"{xml_file}.xml"
 
             dom = xml.dom.minidom.parse(xml_file)
 
