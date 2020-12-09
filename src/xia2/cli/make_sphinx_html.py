@@ -6,7 +6,7 @@ import xia2
 
 
 def run():
-    xia2_dir = os.path.dirname(xia2.__file__)
+    xia2_dir = os.path.abspath(os.path.join(os.path.dirname(xia2.__file__), "..", ".."))
     dest_dir = os.path.join(xia2_dir, "html")
     if os.path.exists(dest_dir):
         shutil.rmtree(dest_dir)
